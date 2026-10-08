@@ -372,7 +372,10 @@ function backupReminder(){
 
 /* ---------- email login + cloud sync (Supabase, optional) ---------- */
 const SB_SRC = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js";
-const CFG = window.DDL_SYNC || {};
+const CFG = Object.assign({}, window.DDL_SYNC || {});
+// accept a pasted URL with extra parts like /rest/v1/ — Supabase needs only the bare https://xxxx.supabase.co
+try{ if(CFG.url) CFG.url = new URL(String(CFG.url).trim()).origin; }catch(e){}
+if(CFG.key) CFG.key = String(CFG.key).trim();
 let sb = null, me = null, chan = null, pushT = null, pushing = false;
 let syncState = "loading", otpEmail = "", otpSentAt = 0, otpTimer = null;
 function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
@@ -465,6 +468,7 @@ function authErr(e, step){
   if(/not authorized|not allowed for this|email address .* not authorized/i.test(m)) return "这个邮箱暂时收不到验证码：网站还没设置好发信邮箱（SMTP）" + raw;
   if(/signups? not allowed|signup.*disabled/i.test(m)) return "Supabase 里关闭了新用户注册，需要在 Authentication 设置里打开" + raw;
   if(/error sending|smtp|mail/i.test(m)) return "验证码邮件发不出去：检查 Supabase 的 SMTP 设置（Gmail 地址、端口 587、16 位应用专用密码）" + raw;
+  if(/invalid path/i.test(m)) return "config.js 里的网址多了一截：只要 https://xxxx.supabase.co，后面不要带 /rest/v1 之类" + raw;
   if(/fetch|network|load failed/i.test(m)) return "连不上同步服务：检查网络，或 config.js 里的网址是否正确" + raw;
   if(step === "verify" && /expired|invalid|token|otp/i.test(m)) return "验证码不对或已过期，可以重新发送一个";
   if(/email/i.test(m) && /invalid/i.test(m)) return "这个邮箱地址不被接受，检查一下有没有打错" + raw;
