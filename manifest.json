@@ -1,7 +1,7 @@
 {
-  "name": "抱佛脚 DDL",
-  "short_name": "抱佛脚",
-  "description": "DDL 记录 · 做完打勾攒功德",
+  "name": "SaveDeadlines 抱佛脚",
+  "short_name": "SaveDeadlines",
+  "description": "Deadlines, ideas & merit · DDL 记录",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -9,7 +9,16 @@
   "theme_color": "#EDF2EE",
   "lang": "zh-CN",
   "icons": [
-    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
-    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ]
 }

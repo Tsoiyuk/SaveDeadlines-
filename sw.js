@@ -1,5 +1,5 @@
 // 离线缓存：先用网络拿最新版，没网时用缓存
-const CACHE = "baofojiao-v2";
+const CACHE = "savedeadlines-v3";
 const FILES = ["./", "index.html", "config.js", "manifest.json", "icon-192.png", "icon-512.png", "apple-touch-icon.png"];
 const CDN = "https://cdn.jsdelivr.net/npm/@supabase/";
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES))); self.skipWaiting(); });

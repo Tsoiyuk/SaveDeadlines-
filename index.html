@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>抱佛脚 DDL</title>
+<title>SaveDeadlines 抱佛脚</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#EDF2EE">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="抱佛脚">
+<meta name="apple-mobile-web-app-title" content="SaveDeadlines">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="manifest.json">
 <script src="config.js"></script>
@@ -265,18 +265,33 @@ details.doneideas summary{cursor:pointer;color:var(--muted)}
 .switch input::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--surface);transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.25)}
 .switch input:checked{background:var(--sage)}
 .switch input:checked::after{transform:translateX(18px)}
+.brand{display:block;font-family:var(--body);font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--sage);margin-bottom:6px}
+.merit{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+.fish.knock{animation:knock .26s ease-out}
+@keyframes knock{0%{transform:scale(1)}25%{transform:scale(.86) rotate(-7deg)}55%{transform:scale(1.05) rotate(3deg)}100%{transform:scale(1)}}
+.statrow{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 18px}
+.statrow .stats{margin:0}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;flex:none}
+.lang button{background:transparent;border:0;padding:3px 9px;font-size:12px;color:var(--muted)}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.rwswitch{padding:12px 0 4px;border-bottom:1px solid var(--line);margin:0 0 6px}
+dialog#meritAsk{border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);padding:18px 18px 14px;max-width:min(360px,calc(100vw - 32px))}
+dialog#meritAsk::backdrop{background:rgba(20,28,23,.35)}
+dialog#meritAsk h3{font-family:var(--display);font-weight:400;font-size:22px;margin:0 0 8px}
+dialog#meritAsk p{margin:0 0 14px;font-size:14px;color:var(--muted)}
+dialog#meritAsk .actions{display:flex;gap:8px;justify-content:flex-end}
 .databox{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
 .databox .btn{padding:8px 14px;font-size:14px}
-@media (max-width:420px){ .row2{grid-template-columns:minmax(0,1fr)} h1{font-size:34px} .stamp{right:56px} }
+@media (max-width:420px){ .row2{grid-template-columns:minmax(0,1fr)} h1{font-size:34px} .stamp{right:56px} .statrow{align-items:flex-start} }
 @media (prefers-reduced-motion: reduce){ .float,.task.just .stamp{animation:none;display:none} }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>抱佛脚<small>DDL 记录 · 做完打勾攒功德</small></h1>
-    <button class="merit merit-only" id="meritBtn" aria-label="查看功德与奖励">
-      <span><span class="num" id="points">0</span><span class="lbl">功德</span></span>
+    <h1><span class="brand">SaveDeadlines</span>抱佛脚<small></small></h1>
+    <button class="merit" id="meritBtn" type="button">
+      <span class="merit-only"><span class="num" id="points">0</span><span class="lbl" data-i18n>功德</span></span>
       <svg class="fish" viewBox="0 0 64 54" aria-hidden="true">
         <path d="M6 30c0-14 13-24 28-24 13 0 24 7 26 18 1 6-4 9-10 9H34c-3 0-4 3-2 5l4 4c-2 4-9 6-15 5C12 45 6 39 6 30z" fill="var(--gold)"/>
         <path d="M16 27c6 3 22 3 34-1" stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round"/>
@@ -284,7 +299,12 @@ details.doneideas summary{cursor:pointer;color:var(--muted)}
       </svg>
     </button>
   </header>
-  <p class="stats" id="stats"></p>
+  <div class="statrow">
+    <p class="stats" id="stats"></p>
+    <div class="lang" id="langSw" role="group" aria-label="Language">
+      <button type="button" data-l="zh" lang="zh">中</button><button type="button" data-l="en" lang="en">EN</button><button type="button" data-l="de" lang="de">DE</button>
+    </div>
+  </div>
   <details class="add acct" id="acctBox" hidden>
     <summary><span class="dot" id="acctDot"></span><span id="acctSum">正在连接同步…</span><span class="plus">+</span></summary>
     <div class="form" id="acctBody"></div>
@@ -292,106 +312,136 @@ details.doneideas summary{cursor:pointer;color:var(--muted)}
   <p class="banner" id="banner" hidden></p>
 
   <details class="add" id="addBox" data-kind="ddl">
-    <summary><span id="formTitle">新增 DDL 或想法</span><span class="plus">+</span></summary>
+    <summary><span id="formTitle"></span><span class="plus">+</span></summary>
     <div class="form">
-      <div class="seg kind" id="fKind" role="group" aria-label="记录类型">
+      <div class="seg kind" id="fKind" role="group" data-i18n-aria="记录类型" aria-label="记录类型">
         <button type="button" data-k="ddl" aria-pressed="true">DDL</button>
-        <button type="button" data-k="idea" aria-pressed="false">想法</button>
+        <button type="button" data-k="idea" aria-pressed="false" data-i18n>想法</button>
       </div>
-      <label><span id="fTitleLbl">任务名称</span><input id="fTitle" maxlength="80" placeholder="例如：C++ 作业 3"></label>
-      <label class="ddl-only">截止时间<input id="fDue" type="datetime-local"></label>
-      <span class="hint idea-only">没有截止时间、以后有空想做的事。最近没有 DDL 的时候，「进行中」会提醒你可以做它。</span>
-      <label class="idea-only">备注（可不填）<textarea id="fIdeaNotes" placeholder="为什么想做、需要准备什么……"></textarea></label>
+      <label><span id="fTitleLbl">任务名称</span><input id="fTitle" maxlength="80"></label>
+      <label class="ddl-only"><span data-i18n>截止时间</span><input id="fDue" type="datetime-local"></label>
+      <span class="hint idea-only" data-i18n>没有截止时间、以后有空想做的事。最近没有 DDL 的时候，「进行中」会提醒你可以做它。</span>
+      <label class="idea-only"><span data-i18n>备注（可不填）</span><textarea id="fIdeaNotes" data-i18n-ph="为什么想做、需要准备什么……"></textarea></label>
       <details class="opt ddl-only" id="fMore">
-        <summary>更多设置<span class="optsum" id="fMoreSum"></span></summary>
+        <summary><span data-i18n>更多设置</span><span class="optsum" id="fMoreSum"></span></summary>
         <div class="optbody">
           <div class="row2">
-            <label>计划开始<input id="fStart" type="datetime-local"></label>
-            <label>DDL 提醒
+            <label><span data-i18n>计划开始</span><input id="fStart" type="datetime-local"></label>
+            <label><span data-i18n>DDL 提醒</span>
               <select id="fRemind">
-                <option value="1d">提前 1 天</option>
-                <option value="3h">提前 3 小时</option>
-                <option value="1h">提前 1 小时</option>
-                <option value="none">不提醒</option>
+                <option value="1d" data-i18n>提前 1 天</option>
+                <option value="3h" data-i18n>提前 3 小时</option>
+                <option value="1h" data-i18n>提前 1 小时</option>
+                <option value="none" data-i18n>不提醒</option>
               </select>
             </label>
           </div>
-          <span class="hint">填了开始时间，到点会在「进行中」顶部提醒；导出到日历时也会多一个准点响的「开始」事件。</span>
+          <span class="hint" data-i18n>填了开始时间，到点会在「进行中」顶部提醒；导出到日历时也会多一个准点响的「开始」事件。</span>
           <div style="display:grid;gap:6px">
-            <span style="font-size:13px;color:var(--muted)">拆解步骤（越小越好；右边选这一步占多少比重）</span>
+            <span style="font-size:13px;color:var(--muted)" data-i18n>拆解步骤（越小越好；右边选这一步占多少比重）</span>
             <div class="steprows" id="fStepRows"></div>
-            <button type="button" class="addrow" id="fAddRow"><b>+</b>加一步</button>
+            <button type="button" class="addrow" id="fAddRow"><b>+</b><span data-i18n>加一步</span></button>
             <span class="hint" id="fStepHint"></span>
           </div>
-          <label>具体内容<textarea id="fNotes" placeholder="要交什么、哪几题、交到哪里……"></textarea></label>
-          <label class="merit-only">工作量（决定能攒多少功德）
+          <label><span data-i18n>具体内容</span><textarea id="fNotes" data-i18n-ph="要交什么、哪几题、交到哪里……"></textarea></label>
+          <label class="merit-only"><span data-i18n>工作量（决定能攒多少功德）</span>
             <div class="seg" id="fSize" role="group">
-              <button type="button" data-v="s">小 · 10</button>
-              <button type="button" data-v="m" aria-pressed="true">中 · 25</button>
-              <button type="button" data-v="l">大 · 50</button>
+              <button type="button" data-v="s" data-i18n>小 · 10</button>
+              <button type="button" data-v="m" aria-pressed="true" data-i18n>中 · 25</button>
+              <button type="button" data-v="l" data-i18n>大 · 50</button>
             </div>
           </label>
         </div>
       </details>
       <div class="actions">
-        <button class="btn ghost" id="fCancel" type="button" hidden>取消</button>
-        <button class="btn" id="fSave" type="button">保存</button>
+        <button class="btn ghost" id="fCancel" type="button" hidden data-i18n>取消</button>
+        <button class="btn" id="fSave" type="button" data-i18n>保存</button>
       </div>
       <p class="ferr" id="fErr" role="alert" hidden></p>
     </div>
   </details>
 
   <div class="tabs" role="tablist">
-    <button role="tab" data-tab="todo" aria-selected="true">进行中</button>
-    <button role="tab" data-tab="ideas">想法</button>
-    <button role="tab" data-tab="cal">日历</button>
-    <button role="tab" data-tab="done">已完成</button>
-    <button role="tab" data-tab="rewards" class="merit-only">奖励</button>
+    <button role="tab" data-tab="todo" aria-selected="true" data-i18n>进行中</button>
+    <button role="tab" data-tab="ideas" data-i18n>想法</button>
+    <button role="tab" data-tab="cal" data-i18n>日历</button>
+    <button role="tab" data-tab="done" data-i18n>已完成</button>
+    <button role="tab" data-tab="rewards" class="merit-only" data-i18n>奖励</button>
   </div>
   <div id="view"></div>
 
   <details class="help" id="setHelp">
-    <summary>设置</summary>
-    <label class="switch"><span>功德与奖励<small>关掉后只保留 DDL 和想法，界面更简洁。已经攒的功德会保留，随时可以再打开。</small></span><input type="checkbox" id="setMerit" role="switch" checked></label>
+    <summary data-i18n>设置</summary>
+    <label class="switch"><span><span data-i18n>功德与奖励</span><small data-i18n>关掉后只保留 DDL 和想法，界面更简洁。已经攒的功德会保留，随时可以再打开。</small></span><input type="checkbox" id="setMerit" role="switch" checked></label>
   </details>
   <details class="help">
-    <summary>怎么同步到 iPhone 日历？</summary>
+    <summary data-i18n>怎么同步到 iPhone 日历？</summary>
     <ol>
-      <li>在「进行中」点「导出全部到日历」，或在单个任务里点「加入日历」，会得到一个 .ics 文件。</li>
-      <li>iPhone（Safari）：点下载后选「打开」或在下载列表里点它，出现日历预览时选「全部添加」。</li>
-      <li>Windows：双击下载好的 .ics，用 Outlook 或系统「日历」打开即可导入。</li>
+      <li data-i18n>在「进行中」点「导出全部到日历」，或在单个任务里点「加入日历」，会得到一个 .ics 文件。</li>
+      <li data-i18n>iPhone（Safari）：点下载后选「打开」或在下载列表里点它，出现日历预览时选「全部添加」。</li>
+      <li data-i18n>Windows：双击下载好的 .ics，用 Outlook 或系统「日历」打开即可导入。</li>
     </ol>
-    日历里是导入的副本，任务改了需要重新导出一次。
+    <span data-i18n>日历里是导入的副本，任务改了需要重新导出一次。</span>
   </details>
   <details class="help" id="dataHelp">
-    <summary>数据存在哪？怎么换设备？</summary>
-    <p>没登录时，任务和功德只保存在这台设备的浏览器里。登录后会在云端存一份，电脑和手机用同一个邮箱登录就会自动同步，换手机也不会丢。</p>
-    <p>iPhone 上建议用 Safari 打开后点分享按钮 →「添加到主屏幕」，之后从主屏幕图标打开：像 App 一样全屏，没网也能用，数据也不容易被系统清理。</p>
-    <p>不想登录的话，也可以手动搬：在旧设备点「导出备份」，把 .json 文件发到新设备（微信、邮件、AirDrop 都行），在新设备点「导入备份」选这个文件。</p>
+    <summary data-i18n>数据存在哪？怎么换设备？</summary>
+    <p data-i18n>没登录时，任务和功德只保存在这台设备的浏览器里。登录后会在云端存一份，电脑和手机用同一个邮箱登录就会自动同步，换手机也不会丢。</p>
+    <p data-i18n>iPhone 上建议用 Safari 打开后点分享按钮 →「添加到主屏幕」，之后从主屏幕图标打开：像 App 一样全屏，没网也能用，数据也不容易被系统清理。</p>
+    <p data-i18n>不想登录的话，也可以手动搬：在旧设备点「导出备份」，把 .json 文件发到新设备（微信、邮件、AirDrop 都行），在新设备点「导入备份」选这个文件。</p>
     <div class="databox">
-      <button class="btn" id="bkOut" type="button">导出备份</button>
-      <button class="btn ghost" id="bkIn" type="button">导入备份</button>
+      <button class="btn" id="bkOut" type="button" data-i18n>导出备份</button>
+      <button class="btn ghost" id="bkIn" type="button" data-i18n>导入备份</button>
       <input type="file" id="bkFile" accept=".json,application/json" hidden>
     </div>
   </details>
 </div>
+<dialog id="meritAsk" aria-labelledby="maTitle">
+  <h3 id="maTitle" data-i18n>开始攒功德吗？</h3>
+  <p data-i18n>打开后，开始任务、完成步骤和子 DDL 都会攒功德，攒够了可以换自己设定的奖励。之前攒的功德也还在。</p>
+  <div class="actions">
+    <button class="btn ghost" type="button" id="maNo" data-i18n>先不用</button>
+    <button class="btn" type="button" id="maYes" data-i18n>开始攒功德</button>
+  </div>
+</dialog>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
 (function(){
 "use strict";
+/* ---------- i18n: Chinese text is the key; en/de come from L10N (see bottom) ---------- */
+const LOCALE = {zh:"zh-CN", en:"en-GB", de:"de-DE"};
+function pickLang(){
+  try{ const s = localStorage.getItem("ddl-lang"); if(LOCALE[s]) return s; }catch(e){}
+  const n = ((navigator.languages && navigator.languages[0]) || navigator.language || "").toLowerCase();
+  return n.startsWith("zh") ? "zh" : n.startsWith("de") ? "de" : "en";
+}
+let lang = pickLang();
+const L10N = {"功德":["Merit","Karma"],"想法":["Ideas","Ideen"],"截止时间":["Deadline","Deadline"],"没有截止时间、以后有空想做的事。最近没有 DDL 的时候，「进行中」会提醒你可以做它。":["Something you'd like to do someday, with no deadline. When no deadlines are coming up, \"Active\" will suggest it.","Etwas, das du irgendwann machen möchtest – ohne Deadline. Wenn keine Deadlines anstehen, schlägt „Aktiv“ es dir vor."],"备注（可不填）":["Notes (optional)","Notizen (optional)"],"更多设置":["More options","Weitere Optionen"],"计划开始":["Planned start","Geplanter Start"],"DDL 提醒":["Reminder","Erinnerung"],"提前 1 天":["1 day before","1 Tag vorher"],"提前 3 小时":["3 hours before","3 Stunden vorher"],"提前 1 小时":["1 hour before","1 Stunde vorher"],"不提醒":["No reminder","Keine Erinnerung"],"填了开始时间，到点会在「进行中」顶部提醒；导出到日历时也会多一个准点响的「开始」事件。":["With a start time, \"Active\" reminds you at the top when it's time; calendar exports also get a \"Start\" event that rings on time.","Mit Startzeit erinnert dich „Aktiv“ oben, sobald es so weit ist; beim Kalenderexport gibt es zusätzlich ein „Start“-Ereignis mit Alarm."],"拆解步骤（越小越好；右边选这一步占多少比重）":["Steps (the smaller the better; pick each step's weight on the right)","Schritte (je kleiner, desto besser; rechts die Gewichtung wählen)"],"加一步":["Add step","Schritt hinzufügen"],"具体内容":["Details","Details"],"工作量（决定能攒多少功德）":["Effort (decides how much merit you earn)","Aufwand (bestimmt, wie viel Karma du bekommst)"],"小 · 10":["Small · 10","Klein · 10"],"中 · 25":["Medium · 25","Mittel · 25"],"大 · 50":["Large · 50","Groß · 50"],"取消":["Cancel","Abbrechen"],"保存":["Save","Speichern"],"进行中":["Active","Aktiv"],"日历":["Calendar","Kalender"],"已完成":["Done","Erledigt"],"奖励":["Rewards","Belohnungen"],"设置":["Settings","Einstellungen"],"功德与奖励":["Merit & rewards","Karma & Belohnungen"],"关掉后只保留 DDL 和想法，界面更简洁。已经攒的功德会保留，随时可以再打开。":["Turn off to keep only deadlines and ideas for a cleaner look. Merit you've earned is kept, and you can switch it back on anytime.","Ausschalten, um nur Deadlines und Ideen zu behalten – schlichter. Gesammeltes Karma bleibt erhalten, du kannst es jederzeit wieder einschalten."],"怎么同步到 iPhone 日历？":["How do I add deadlines to my iPhone calendar?","Wie kommen Deadlines in den iPhone-Kalender?"],"在「进行中」点「导出全部到日历」，或在单个任务里点「加入日历」，会得到一个 .ics 文件。":["Tap \"Export all to calendar\" in \"Active\", or \"Add to calendar\" on a single task, to get an .ics file.","Tippe in „Aktiv“ auf „Alle in Kalender exportieren“ oder bei einer Aufgabe auf „Zum Kalender“ – du bekommst eine .ics-Datei."],"iPhone（Safari）：点下载后选「打开」或在下载列表里点它，出现日历预览时选「全部添加」。":["iPhone (Safari): after downloading, choose \"Open\" or tap it in your downloads, then choose \"Add All\" in the calendar preview.","iPhone (Safari): nach dem Download „Öffnen“ wählen oder in den Downloads antippen, dann in der Kalendervorschau „Alle hinzufügen“."],"Windows：双击下载好的 .ics，用 Outlook 或系统「日历」打开即可导入。":["Windows: double-click the .ics and open it with Outlook or the Calendar app to import.","Windows: die .ics doppelklicken und mit Outlook oder der Kalender-App öffnen."],"日历里是导入的副本，任务改了需要重新导出一次。":["The calendar holds an imported copy, so export again after changing a task.","Im Kalender liegt eine Kopie – nach Änderungen bitte erneut exportieren."],"数据存在哪？怎么换设备？":["Where is my data? How do I switch devices?","Wo sind meine Daten? Wie wechsle ich das Gerät?"],"没登录时，任务和功德只保存在这台设备的浏览器里。登录后会在云端存一份，电脑和手机用同一个邮箱登录就会自动同步，换手机也不会丢。":["When you're not logged in, everything is stored only in this browser on this device. Once you log in, a copy is kept in the cloud: log in with the same email on your computer and phone and they sync automatically, even if you get a new phone.","Ohne Login wird alles nur in diesem Browser auf diesem Gerät gespeichert. Nach dem Login liegt eine Kopie in der Cloud: Melde dich auf Computer und Handy mit derselben E-Mail an, dann wird automatisch synchronisiert – auch beim Handywechsel geht nichts verloren."],"iPhone 上建议用 Safari 打开后点分享按钮 →「添加到主屏幕」，之后从主屏幕图标打开：像 App 一样全屏，没网也能用，数据也不容易被系统清理。":["On iPhone, open this page in Safari, tap Share → \"Add to Home Screen\", and open it from the icon from then on: it runs full-screen like an app, works offline, and your data is less likely to be cleared by the system.","Auf dem iPhone die Seite in Safari öffnen, Teilen → „Zum Home-Bildschirm“ tippen und künftig über das Symbol öffnen: Vollbild wie eine App, funktioniert offline, und die Daten werden seltener vom System gelöscht."],"不想登录的话，也可以手动搬：在旧设备点「导出备份」，把 .json 文件发到新设备（微信、邮件、AirDrop 都行），在新设备点「导入备份」选这个文件。":["Prefer not to log in? Move data by hand: tap \"Export backup\" on the old device, send the .json file to the new one (email, AirDrop, any messenger), then tap \"Import backup\" there and pick the file.","Lieber ohne Login? Dann manuell: Auf dem alten Gerät „Backup exportieren“, die .json-Datei aufs neue Gerät schicken (E-Mail, AirDrop, Messenger) und dort „Backup importieren“ wählen."],"导出备份":["Export backup","Backup exportieren"],"导入备份":["Import backup","Backup importieren"],"开始攒功德吗？":["Start earning merit?","Karma sammeln?"],"打开后，开始任务、完成步骤和子 DDL 都会攒功德，攒够了可以换自己设定的奖励。之前攒的功德也还在。":["Starting tasks and finishing steps and sub-deadlines will earn merit, which you can trade for rewards you set yourself. Merit you earned before is still there.","Aufgaben beginnen sowie Schritte und Teil-Deadlines erledigen bringt Karma, das du gegen selbst gewählte Belohnungen eintauschen kannst. Früher gesammeltes Karma ist noch da."],"先不用":["Not now","Später"],"开始攒功德":["Start earning","Los geht's"],"记录类型":["Entry type","Eintragstyp"],"为什么想做、需要准备什么……":["Why you want to do it, what you'd need…","Warum du es machen willst, was du brauchst …"],"要交什么、哪几题、交到哪里……":["What to hand in, which exercises, where to submit…","Was abzugeben ist, welche Aufgaben, wo einreichen …"],"一杯奶茶":["A bubble tea","Ein Bubble Tea"],"追一集剧":["Watch an episode","Eine Folge schauen"],"周末睡懒觉":["Sleep in on the weekend","Am Wochenende ausschlafen"],"买个想要的小东西":["Buy a little treat","Etwas Kleines gönnen"],"这个浏览器不让网页保存数据（可能开了无痕模式），关掉页面后任务会丢失。换成普通模式打开就好。":["This browser won't let the page save data (private mode?). Tasks will be lost when you close the page. Open it in normal mode instead.","Dieser Browser erlaubt kein Speichern (privater Modus?). Aufgaben gehen beim Schließen verloren – bitte im normalen Modus öffnen."],"已经超过两周没备份了。登录后会自动存到云端；不想登录的话，拉到底部「数据存在哪」点「导出备份」。":["No backup for over two weeks. Log in to save to the cloud automatically, or scroll to \"Where is my data?\" at the bottom and tap \"Export backup\".","Seit über zwei Wochen kein Backup. Melde dich an, um automatisch in der Cloud zu speichern, oder tippe unten unter „Wo sind meine Daten?“ auf „Backup exportieren“."],"这台设备上原有的任务已和账号里的合并":["Tasks on this device were merged with your account","Aufgaben auf diesem Gerät wurden mit deinem Konto zusammengeführt"],"还有改动没同步到云端，现在退出会丢掉这些改动。\n":["Some changes haven't synced yet and will be lost if you log out now.\n","Einige Änderungen sind noch nicht synchronisiert und gehen beim Abmelden verloren.\n"],"退出后这台设备上的任务会清空，云端的还在，下次登录会回来。确定退出吗？":["Logging out clears tasks from this device. They stay in the cloud and come back when you log in again. Log out?","Beim Abmelden werden die Aufgaben auf diesem Gerät gelöscht. In der Cloud bleiben sie und kommen beim nächsten Login zurück. Abmelden?"],"已退出登录":["Logged out","Abgemeldet"],"（原始信息：{m}）":[" (details: {m})"," (Details: {m})"],"网站的同步设置不对：config.js 里的 key 填错了，应该是 anon public key（eyJ 开头）":["Sync is misconfigured: the key in config.js is wrong. It should be the anon public key (starts with eyJ)","Sync ist falsch eingerichtet: Der Key in config.js stimmt nicht. Es muss der anon public key sein (beginnt mit eyJ)"],"发得太频繁了，等一分钟再试":["Too many requests — wait a minute and try again","Zu viele Anfragen – bitte eine Minute warten"],"这个邮箱暂时收不到验证码：网站还没设置好发信邮箱（SMTP）":["Codes can't be sent to this address yet: the site's sender email (SMTP) isn't set up","An diese Adresse können noch keine Codes gesendet werden: Der Absender (SMTP) ist nicht eingerichtet"],"Supabase 里关闭了新用户注册，需要在 Authentication 设置里打开":["New sign-ups are disabled in Supabase; enable them in the Authentication settings","Neue Registrierungen sind in Supabase deaktiviert; in den Authentication-Einstellungen aktivieren"],"验证码邮件发不出去：检查 Supabase 的 SMTP 设置（Gmail 地址、端口 587、16 位应用专用密码）":["The code email couldn't be sent: check the SMTP settings in Supabase (Gmail address, port 587, 16-character app password)","Die Code-E-Mail konnte nicht gesendet werden: SMTP-Einstellungen in Supabase prüfen (Gmail-Adresse, Port 587, 16-stelliges App-Passwort)"],"config.js 里的网址多了一截：只要 https://xxxx.supabase.co，后面不要带 /rest/v1 之类":["The URL in config.js is too long: use only https://xxxx.supabase.co, without /rest/v1 or similar","Die URL in config.js ist zu lang: nur https://xxxx.supabase.co, ohne /rest/v1 o. Ä."],"连不上同步服务：检查网络，或 config.js 里的网址是否正确":["Can't reach the sync service: check your connection or the URL in config.js","Sync-Dienst nicht erreichbar: Verbindung oder URL in config.js prüfen"],"验证码不对或已过期，可以重新发送一个":["Wrong or expired code — you can request a new one","Falscher oder abgelaufener Code – du kannst einen neuen anfordern"],"这个邮箱地址不被接受，检查一下有没有打错":["This email address wasn't accepted — check for typos","Diese E-Mail-Adresse wurde nicht akzeptiert – bitte auf Tippfehler prüfen"],"出错了":["Something went wrong","Etwas ist schiefgelaufen"],"正在连接同步…":["Connecting to sync…","Verbinde mit Sync …"],"同步服务连不上，任务先存在本机":["Sync unavailable — tasks are saved on this device","Sync nicht erreichbar – Aufgaben werden auf diesem Gerät gespeichert"],"登录，让电脑和手机自动同步":["Log in to sync your computer and phone","Anmelden, um Computer und Handy zu synchronisieren"],"已同步":["Synced","Synchronisiert"],"同步中…":["Syncing…","Synchronisiere …"],"离线中，联网后自动同步":["Offline — will sync when you're back online","Offline – wird synchronisiert, sobald du online bist"],"同步没成功，稍后会自动重试":["Sync failed — will retry automatically","Sync fehlgeschlagen – neuer Versuch folgt automatisch"],"已登录":["Logged in","Angemeldet"],"可能是网络问题。任务照常保存在这台设备上，刷新页面会重新连接。":["Probably a network issue. Tasks are still saved on this device; reload the page to reconnect.","Wahrscheinlich ein Netzwerkproblem. Aufgaben werden weiter auf diesem Gerät gespeichert; Seite neu laden, um neu zu verbinden."],"登录邮箱：":["Logged in as: ","Angemeldet als: "],"在电脑和手机上用同一个邮箱登录，任务、功德和奖励就会自动同步。":["Log in with the same email on your computer and phone and your tasks, merit and rewards sync automatically.","Melde dich auf Computer und Handy mit derselben E-Mail an – Aufgaben, Karma und Belohnungen werden automatisch synchronisiert."],"立即同步":["Sync now","Jetzt synchronisieren"],"退出登录":["Log out","Abmelden"],"不用设密码：输入邮箱，收到验证码后填进来就登录了。第一次登录会自动注册。":["No password needed: enter your email, then type in the code you receive. Your first login creates an account automatically.","Kein Passwort nötig: E-Mail eingeben, dann den erhaltenen Code eintragen. Beim ersten Login wird automatisch ein Konto erstellt."],"你的邮箱":["Your email","Deine E-Mail"],"邮箱格式不对，检查一下":["That doesn't look like an email address","Das sieht nicht nach einer E-Mail-Adresse aus"],"发送中…":["Sending…","Wird gesendet …"],"发送验证码":["Send code","Code senden"],"验证码已发到 {e}":["Code sent to {e}","Code gesendet an {e}"],"没收到的话看看垃圾邮件箱。":["Didn't get it? Check your spam folder.","Nicht angekommen? Schau im Spam-Ordner nach."],"邮件里的验证码":["Code from the email","Code aus der E-Mail"],"验证码是邮件里的那串数字":["The code is the number in the email","Der Code ist die Zahl in der E-Mail"],"登录中…":["Logging in…","Anmeldung …"],"登录成功，开始同步":["Logged in — syncing now","Angemeldet – Synchronisierung läuft"],"登录":["Log in","Anmelden"],"重新发送（{n}）":["Resend ({n})","Erneut senden ({n})"],"重新发送":["Resend","Erneut senden"],"已重新发送":["Code resent","Code erneut gesendet"],"换个邮箱":["Use a different email","Andere E-Mail verwenden"],"逾期 {s}":["{s} overdue","{s} überfällig"],"剩 {s}":["{s} left","noch {s}"],"DDL 记录 · 做完打勾攒功德":["Deadlines · check them off, earn merit","Deadlines · abhaken, Karma sammeln"],"DDL 记录 · 想做的事也记下来":["Deadlines · and things you want to do","Deadlines · und Dinge, die du machen willst"],"查看功德与奖励":["View merit and rewards","Karma und Belohnungen ansehen"],"长按敲木鱼":["press and hold to tap the wooden fish","gedrückt halten, um den Holzfisch zu klopfen"],"待办":["To do","Offen"],"今天完成":["Done today","Heute erledigt"],"连续打卡":["Streak","Serie"],"{n} 天":["{n} d","{n} T."],"导出全部到日历":["Export all to calendar","Alle in Kalender exportieren"],"还没有完成的任务。":["Nothing finished yet.","Noch nichts erledigt."],"暂时没有 DDL。":["No deadlines right now.","Gerade keine Deadlines."],"做完一个回来打勾，功德就到账了。":["Finish one and check it off to earn merit.","Erledige eine und hake sie ab – schon gibt's Karma."],"做完一个回来打勾就好。":["Finish one and come back to check it off.","Erledige eine und hake sie hier ab."],"点上面的「新增」记一个 DDL，或者记下以后有空想做的事。":["Tap \"Add\" above to note a deadline, or something you'd like to do someday.","Tippe oben auf „Neu“, um eine Deadline oder etwas für irgendwann zu notieren."],"开始了 +":["Started +","Begonnen +"],"开始了":["Started","Begonnen"],"下一个子 DDL：":["Next sub-deadline: ","Nächste Teil-Deadline: "],"进度 {a}/{b}":["Progress {a}/{b}","Fortschritt {a}/{b}"],"{a}/{b} 步":["{a}/{b} steps","{a}/{b} Schritte"],"该开始了":["Time to start","Zeit anzufangen"],"计划 {d} 开始":["Planned start {d}","Geplanter Start {d}"],"只要先做：":["Just do this first: ","Mach zuerst nur das: "],"打开材料，看一眼就行":["Open the materials and take a look","Unterlagen öffnen und reinschauen"],"晚 1 小时":["1 hour later","1 Stunde später"],"好，1 小时后再叫你":["OK, I'll remind you in an hour","Okay, ich erinnere dich in einer Stunde"],"总览 · {n} 件":["Overview · {n}","Übersicht · {n}"],"完成":["Done","Erledigt"],"时间":["Time","Zeit"],"已过":["Past","Vorbei"],"时间比进度走得快一些，先做下一小步就好":["Time is moving faster than progress — just do the next small step","Die Zeit läuft schneller als der Fortschritt – mach einfach den nächsten kleinen Schritt"],"接着做：":["Next: ","Weiter mit: "],"第一步：":["First step: ","Erster Schritt: "],"还没拆步骤，":["No steps yet — ","Noch keine Schritte – "],"拆一下":["break it down","aufteilen"],"步骤都做完了，去下面打勾":["All steps done — check it off below","Alle Schritte erledigt – unten abhaken"],"，按时完成再 +{n}":[", +{n} more if on time",", +{n} extra, wenn pünktlich"],"全部 DDL":["All deadlines","Alle Deadlines"],"取消完成":["Mark as not done","Als offen markieren"],"标记完成":["Mark as done","Als erledigt markieren"],"截止 {d}":["Due {d}","Fällig {d}"],"工作量{s}":["Effort: {s}","Aufwand: {s}"],"下一步：":["Next step: ","Nächster Schritt: "],"按时":["On time","Pünktlich"],"补交":["Late","Verspätet"],"功德 +":["Merit +","Karma +"],"已得 {a} / {b}":["Earned {a} / {b}","Erhalten {a} / {b}"],"删除":["Delete","Löschen"],"再点一次确认删除":["Tap again to delete","Zum Löschen erneut tippen"],"删除这一步":["Delete this step","Diesen Schritt löschen"],"加一个小步骤":["Add a small step","Kleinen Schritt hinzufügen"],"没有写具体内容":["No details","Keine Details"],"编辑":["Edit","Bearbeiten"],"加入日历":["Add to calendar","Zum Kalender"],"子 DDL":["Sub-deadlines","Teil-Deadlines"],"把大项目拆成几个有日期的小截止":["split a big project into dated mini-deadlines","große Projekte in datierte Zwischenziele aufteilen"],"删除子 DDL ":["Delete sub-deadline ","Teil-Deadline löschen: "],"子 DDL，比如：周三交初稿":["Sub-deadline, e.g. first draft on Wednesday","Teil-Deadline, z. B. Entwurf am Mittwoch"],"子 DDL 名称":["Sub-deadline name","Name der Teil-Deadline"],"子 DDL 截止时间":["Sub-deadline due date","Fälligkeit der Teil-Deadline"],"写上子 DDL 的名称":["Give the sub-deadline a name","Gib der Teil-Deadline einen Namen"],"选一个子 DDL 的截止时间":["Pick a due date for the sub-deadline","Wähle eine Fälligkeit für die Teil-Deadline"],"子 DDL 不能晚于整个任务的截止时间（{d}）":["A sub-deadline can't be later than the task's deadline ({d})","Eine Teil-Deadline darf nicht nach der Deadline der Aufgabe liegen ({d})"],"已加子 DDL：":["Sub-deadline added: ","Teil-Deadline hinzugefügt: "],"加子 DDL":["Add sub-deadline","Teil-Deadline hinzufügen"],"最近 3 天都没有 DDL":["No deadlines in the next 3 days","Keine Deadlines in den nächsten 3 Tagen"],"现在没有 DDL":["No deadlines right now","Gerade keine Deadlines"],"有空的话，可以做点之前想做的事：":["If you have time, how about something you wanted to do:","Wenn du Zeit hast, wie wäre es mit etwas, das du machen wolltest:"],"换一批":["Show others","Andere zeigen"],"全部想法（{n}）":["All ideas ({n})","Alle Ideen ({n})"],"标记为还没做":["Mark as not done","Als offen markieren"],"标记为做了":["Mark as done","Als erledigt markieren"],"做于 {d}":["Done {d}","Erledigt {d}"],"记于 {d}":["Noted {d}","Notiert {d}"],"有备注":["has notes","mit Notiz"],"定个 DDL":["Set a deadline","Deadline setzen"],"记下一个以后有空想做的事":["Note something to do someday","Etwas für irgendwann notieren"],"新想法":["New idea","Neue Idee"],"记下了，最近没 DDL 的时候会提醒你":["Noted — I'll suggest it when no deadlines are coming up","Notiert – ich schlage es vor, wenn keine Deadlines anstehen"],"记下":["Add","Notieren"],"还没有想法。":["No ideas yet.","Noch keine Ideen."],"没有截止时间、但以后有空想做的事，都可以记在这里。最近没有 DDL 的时候，「进行中」会提醒你。":["Note things you'd like to do someday, with no deadline. When no deadlines are coming up, \"Active\" will remind you.","Notiere hier Dinge für irgendwann – ohne Deadline. Wenn keine Deadlines anstehen, erinnert dich „Aktiv“ daran."],"做过的想法（{n}）":["Done ideas ({n})","Erledigte Ideen ({n})"],"又做完一件想做的事：":["Another thing you wanted to do, done: ","Wieder etwas erledigt, das du machen wolltest: "],"上个月":["Previous month","Vorheriger Monat"],"今天":["Today","Heute"],"下个月":["Next month","Nächster Monat"],"{n} 个 DDL":["{n} deadline(s)","{n} Deadline(s)"],"没有 DDL":["no deadlines","keine Deadlines"],"{n} 个子 DDL":["{n} sub-deadline(s)","{n} Teil-Deadline(s)"],"在这天加一个 DDL":["Add a deadline on this day","Deadline an diesem Tag hinzufügen"],"这天没有 DDL。":["No deadlines on this day.","An diesem Tag keine Deadlines."],"已关闭功德与奖励，攒的功德会保留":["Merit & rewards turned off — your merit is kept","Karma & Belohnungen aus – dein Karma bleibt erhalten"],"不需要的话可以关掉，界面会只保留 DDL 和想法。点木鱼可以随时再打开。":["Don't need it? Turn it off to keep only deadlines and ideas. Tap the wooden fish to turn it back on anytime.","Nicht nötig? Ausschalten, dann bleiben nur Deadlines und Ideen. Tippe jederzeit auf den Holzfisch, um es wieder einzuschalten."],"开始一个任务 +5；任务的功德（小 10 / 中 25 / 大 50）按比重分给每个步骤，做完一步拿一份；按时完成再多 50%。每个子 DDL 按时完成 +5，迟了 +2。攒够了就兑换一个奖励。":["Starting a task: +5. A task's merit (small 10 / medium 25 / large 50) is split across its steps by weight, and each finished step earns its share; finishing on time adds 50%. Each sub-deadline: +5 on time, +2 if late. Save up and trade it for a reward.","Aufgabe beginnen: +5. Das Karma einer Aufgabe (klein 10 / mittel 25 / groß 50) wird nach Gewichtung auf die Schritte verteilt, jeder erledigte Schritt bringt seinen Anteil; pünktlich fertig gibt 50 % extra. Jede Teil-Deadline: +5 pünktlich, +2 verspätet. Sammle und tausche gegen eine Belohnung."],"兑换":["Redeem","Einlösen"],"删除奖励 ":["Delete reward ","Belohnung löschen: "],"自定义奖励，比如：吃顿火锅":["Your own reward, e.g. a nice dinner out","Eigene Belohnung, z. B. schön essen gehen"],"添加":["Add","Hinzufügen"],"写上奖励名称和需要的功德":["Enter a reward name and its merit cost","Name und Karma-Preis der Belohnung eingeben"],"兑换记录":["Redeemed","Eingelöst"],"还没有兑换过。":["Nothing redeemed yet.","Noch nichts eingelöst."],"撤销":["Undo","Rückgängig"],"已撤销，功德退回":["Undone — merit refunded","Rückgängig – Karma zurückerstattet"],"按时完成！":["Done on time!","Pünktlich erledigt!"],"完成了，迟到也算数":["Done — late still counts","Erledigt – spät zählt auch"]," · 功德 +":[" · merit +"," · Karma +"],"开始就赢了一半":["Starting is half the battle","Angefangen ist halb gewonnen"],"这一步搞定":["Step done","Schritt erledigt"]," · 下一步：":[" · next: "," · als Nächstes: "],"步骤全做完了，去打勾吧":["All steps done — go check it off","Alle Schritte erledigt – jetzt abhaken"],"子 DDL 按时完成":["Sub-deadline done on time","Teil-Deadline pünktlich erledigt"],"子 DDL 完成了":["Sub-deadline done","Teil-Deadline erledigt"]," · 下一个：":[" · next: "," · als Nächstes: "]," · 子 DDL 全做完了":[" · all sub-deadlines done"," · alle Teil-Deadlines erledigt"],"该开始「{t}」了，先做第一小步就好":["Time to start \"{t}\" — just do the first small step","Zeit für „{t}“ – mach einfach den ersten kleinen Schritt"],"兑换成功：{r}，去享受吧":["Redeemed: {r}. Enjoy!","Eingelöst: {r}. Viel Spaß!"],"比如：打开作业 PDF，读第一题":["e.g. open the assignment PDF, read question 1","z. B. Aufgaben-PDF öffnen, Aufgabe 1 lesen"],"比重":["Weight","Gewichtung"],"比重 {n}":["Weight {n}","Gewicht {n}"],"想做的事":["Something to do","Vorhaben"],"任务名称":["Task","Aufgabe"],"例如：学会做一道菜、读完一本书":["e.g. learn to cook a dish, finish a book","z. B. ein Gericht kochen lernen, ein Buch zu Ende lesen"],"例如：C++ 作业 3":["e.g. C++ assignment 3","z. B. C++-Übung 3"],"编辑：{t}":["Edit: {t}","Bearbeiten: {t}"],"编辑想法：{t}":["Edit idea: {t}","Idee bearbeiten: {t}"],"把想法定成 DDL":["Turn idea into a deadline","Idee zur Deadline machen"],"新增 DDL 或想法":["Add a deadline or idea","Deadline oder Idee hinzufügen"],"开始时间":["start time","Startzeit"],"提醒":["reminder","Erinnerung"],"{n} 个步骤":["{n} steps","{n} Schritte"],"工作量":["effort","Aufwand"],"已填：":["Set: ","Gesetzt: "],"开始时间 · 提醒 · 拆步骤 · 具体内容":["start time · reminder · steps · details","Startzeit · Erinnerung · Schritte · Details"]," · 工作量":[" · effort"," · Aufwand"],"比重决定这一步在进度条里占多少。":["The weight decides how much each step counts in the progress bar.","Die Gewichtung bestimmt, wie viel ein Schritt im Fortschrittsbalken zählt."],"拆成小步骤后，每次只需要想下一步。":["Once it's split into small steps, you only ever need to think about the next one.","In kleine Schritte aufgeteilt, musst du immer nur an den nächsten denken."],"这个任务共 {b} 功德，拆成步骤后按比重分给每一步。":["This task is worth {b} merit; split into steps, it's shared out by weight.","Diese Aufgabe bringt {b} Karma; in Schritte aufgeteilt, wird es nach Gewichtung verteilt."],"共 {b} 功德，分配：{list}；按时完成再 +{x}":["{b} merit in total: {list}; +{x} more if on time","{b} Karma insgesamt: {list}; +{x} extra, wenn pünktlich"],"第{i}步 +{p}":["step {i} +{p}","Schritt {i} +{p}"],"功德与奖励已打开":["Merit & rewards turned on","Karma & Belohnungen eingeschaltet"],"保存出错了：{m}。刷新页面再试一次。":["Couldn't save: {m}. Reload the page and try again.","Speichern fehlgeschlagen: {m}. Seite neu laden und erneut versuchen."],"先写上想做的事":["Write down what you'd like to do first","Schreib zuerst auf, was du machen möchtest"],"已保存修改":["Changes saved","Änderungen gespeichert"],"先写上任务名称":["Give the task a name first","Gib der Aufgabe zuerst einen Namen"],"选一个截止时间":["Pick a deadline","Wähle eine Deadline"],"开始时间格式不对，清空或重新选一下":["The start time isn't valid — clear it or pick again","Die Startzeit ist ungültig – leeren oder neu wählen"],"计划开始时间晚于截止时间了，改一下其中一个再保存":["The planned start is after the deadline — change one of them, then save","Der geplante Start liegt nach der Deadline – ändere eins davon und speichere"],"想法已经变成 DDL 了":["The idea is now a deadline","Die Idee ist jetzt eine Deadline"],"已加入，记得导出到日历":["Added — remember to export it to your calendar","Hinzugefügt – denk an den Kalenderexport"],"工作量：":["Effort: ","Aufwand: "],"DDL 快到了：":["Deadline coming up: ","Deadline naht: "],"子DDL｜{s}（{t}）":["Sub-deadline | {s} ({t})","Teil-Deadline | {s} ({t})"],"属于：{t}\n整个任务截止：{d}":["Part of: {t}\nTask deadline: {d}","Gehört zu: {t}\nDeadline der Aufgabe: {d}"],"子 DDL 快到了：":["Sub-deadline coming up: ","Teil-Deadline naht: "],"开始｜":["Start | ","Start | "],"先做第一步就好：\n":["Just do the first step:\n","Mach einfach den ersten Schritt:\n"],"先打开材料，做 5 分钟就好":["Just open the materials and work for 5 minutes","Öffne einfach die Unterlagen und arbeite 5 Minuten"],"该开始了：":["Time to start: ","Zeit anzufangen: "],"没有要导出的任务":["Nothing to export","Nichts zu exportieren"],"已导出，打开 .ics 就能加入日历":["Exported — open the .ics to add it to your calendar","Exportiert – öffne die .ics, um sie in den Kalender zu übernehmen"],"导出没有成功：":["Export failed: ","Export fehlgeschlagen: "],"未知错误":["unknown error","unbekannter Fehler"],"备份已导出，把文件存好或发到另一台设备":["Backup exported — keep the file safe or send it to another device","Backup exportiert – Datei sicher aufbewahren oder an ein anderes Gerät senden"],"这个文件读不出来，确认选的是 SaveDeadlines 抱佛脚导出的 .json":["Can't read this file — make sure it's a .json exported from SaveDeadlines 抱佛脚","Datei nicht lesbar – bitte eine aus SaveDeadlines 抱佛脚 exportierte .json wählen"],"这个文件里没有任务数据，确认选的是 SaveDeadlines 抱佛脚导出的备份":["No task data in this file — make sure it's a SaveDeadlines 抱佛脚 backup","Keine Aufgabendaten in dieser Datei – bitte ein Backup aus SaveDeadlines 抱佛脚 wählen"],"导入会用备份里的 {a} 个任务替换这里现有的 {b} 个任务和功德记录，确定吗？":["Importing replaces the {b} tasks and merit history here with the {a} tasks from the backup. Continue?","Der Import ersetzt die {b} Aufgaben und den Karma-Verlauf hier durch die {a} Aufgaben aus dem Backup. Fortfahren?"],"已导入 {n} 个任务":["Imported {n} tasks","{n} Aufgaben importiert"],"小":["small","klein"],"中":["medium","mittel"],"大":["large","groß"]};
+function T(k, v){
+  let s = lang === "zh" ? k : ((L10N[k] && L10N[k][lang === "en" ? 0 : 1]) || k);
+  if(v) s = s.replace(/\{(\w+)\}/g, (m, n) => v[n] != null ? v[n] : m);
+  return s;
+}
+const SP = () => lang === "zh" ? "　" : " · ";
+function applyI18n(){
+  document.documentElement.lang = LOCALE[lang];
+  document.querySelectorAll("[data-i18n]").forEach(e => { if(e.dataset.zh == null) e.dataset.zh = e.textContent.trim(); e.textContent = T(e.dataset.zh); });
+  document.querySelectorAll("[data-i18n-ph]").forEach(e => { e.placeholder = T(e.dataset.i18nPh); });
+  document.querySelectorAll("[data-i18n-aria]").forEach(e => { e.setAttribute("aria-label", T(e.dataset.i18nAria)); });
+  document.querySelectorAll("#langSw button").forEach(b => b.setAttribute("aria-pressed", b.dataset.l === lang));
+}
 const SIZE = {s:10, m:25, l:50};
 const START_PTS = 5;
 const notified = new Set();
 const SIZE_NAME = {s:"小", m:"中", l:"大"};
 const SUB_PTS = 5, SUB_LATE = 2;
-const DEFAULT_REWARDS = [
-  {id:"r1", name:"一杯奶茶", cost:60},
-  {id:"r2", name:"追一集剧", cost:40},
-  {id:"r3", name:"周末睡懒觉", cost:100},
-  {id:"r4", name:"买个想要的小东西", cost:200}
-];
-let state = {v:1, tasks:[], rewards:DEFAULT_REWARDS.slice(), redeemed:[], ideas:[], settings:{merit:true}};
+function defaultRewards(){ return [
+  {id:"r1", name:T("一杯奶茶"), cost:60},
+  {id:"r2", name:T("追一集剧"), cost:40},
+  {id:"r3", name:T("周末睡懒觉"), cost:100},
+  {id:"r4", name:T("买个想要的小东西"), cost:200}
+]; }
+let state = {v:1, tasks:[], rewards:defaultRewards(), redeemed:[], ideas:[], settings:{merit:true}};
 let calMonth = new Date(); calMonth.setDate(1); calMonth.setHours(0,0,0,0);
 let calSel = new Date(); calSel.setHours(0,0,0,0);
 let tab = "todo", openId = null, editingId = null, size = "m";
@@ -407,7 +457,7 @@ function normalize(d){
   return Object.assign({}, (d && typeof d === "object") ? d : {}, {
     v:1, updatedAt: (d && d.updatedAt) || 0,
     tasks: Array.isArray(d && d.tasks) ? d.tasks : [],
-    rewards: Array.isArray(d && d.rewards) ? d.rewards : DEFAULT_REWARDS.slice(),
+    rewards: Array.isArray(d && d.rewards) ? d.rewards : defaultRewards(),
     redeemed: Array.isArray(d && d.redeemed) ? d.redeemed : [],
     ideas: Array.isArray(d && d.ideas) ? d.ideas : [],
     settings: Object.assign({merit:true}, (d && d.settings) || {})
@@ -427,7 +477,7 @@ function apply(next){
 }
 function initLocal(){
   loadLocal(); render();
-  if(!storageOK()){ setBanner("这个浏览器不让网页保存数据（可能开了无痕模式），关掉页面后任务会丢失。换成普通模式打开就好。"); return; }
+  if(!storageOK()){ setBanner(T("这个浏览器不让网页保存数据（可能开了无痕模式），关掉页面后任务会丢失。换成普通模式打开就好。")); return; }
   if(navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(()=>{});
   // other tabs / windows of the same browser stay in sync
   window.addEventListener("storage", e => {
@@ -439,7 +489,7 @@ function backupReminder(){
   if(me) return;
   let last = 0; try{ last = parseInt(localStorage.getItem("ddl-last-backup") || "0", 10); }catch(e){}
   if(state.tasks.length >= 3 && Date.now() - last > 14*24*3600e3)
-    setBanner("已经超过两周没备份了。登录后会自动存到云端；不想登录的话，拉到底部「数据存在哪」点「导出备份」。");
+    setBanner(T("已经超过两周没备份了。登录后会自动存到云端；不想登录的话，拉到底部「数据存在哪」点「导出备份」。"));
 }
 
 /* ---------- email login + cloud sync (Supabase, optional) ---------- */
@@ -503,7 +553,7 @@ function reconcile(remote){
   if(!hasContent(state)){ apply(remote); setDirty(false); return; }
   if(!hasContent(remote)){ setDirty(true); schedulePush(0); return; }
   apply(merge(remote, state)); save();
-  toast("这台设备上原有的任务已和账号里的合并");
+  toast(T("这台设备上原有的任务已和账号里的合并"));
 }
 function subscribe(){
   if(chan){ sb.removeChannel(chan); chan = null; }
@@ -524,28 +574,28 @@ function onSignedIn(user){
   syncState = "syncing"; renderAcct(true); pull(); subscribe();
 }
 async function signOut(){
-  const warn = isDirty() ? "还有改动没同步到云端，现在退出会丢掉这些改动。\n" : "";
-  if(!confirm(warn + "退出后这台设备上的任务会清空，云端的还在，下次登录会回来。确定退出吗？")) return;
+  const warn = isDirty() ? T("还有改动没同步到云端，现在退出会丢掉这些改动。\n") : "";
+  if(!confirm(warn + T("退出后这台设备上的任务会清空，云端的还在，下次登录会回来。确定退出吗？"))) return;
   if(chan){ sb.removeChannel(chan); chan = null; }
   try{ await sb.auth.signOut(); }catch(e){}
   me = null; lsSet("ddl-owner", null); setDirty(false);
   apply(normalize({})); syncState = "off"; renderAcct(true);
-  toast("已退出登录");
+  toast(T("已退出登录"));
 }
 function setSync(st){ syncState = st; renderAcct(false); }
 function authErr(e, step){
   const m = String((e && (e.message || e.msg || e.error_description)) || "");
-  const raw = m ? "（原始信息：" + m + "）" : "";
-  if(/invalid api key|no api key|apikey/i.test(m)) return "网站的同步设置不对：config.js 里的 key 填错了，应该是 anon public key（eyJ 开头）" + raw;
-  if((e && e.status === 429) || /rate limit|too many|for security purposes/i.test(m)) return "发得太频繁了，等一分钟再试" + raw;
-  if(/not authorized|not allowed for this|email address .* not authorized/i.test(m)) return "这个邮箱暂时收不到验证码：网站还没设置好发信邮箱（SMTP）" + raw;
-  if(/signups? not allowed|signup.*disabled/i.test(m)) return "Supabase 里关闭了新用户注册，需要在 Authentication 设置里打开" + raw;
-  if(/error sending|smtp|mail/i.test(m)) return "验证码邮件发不出去：检查 Supabase 的 SMTP 设置（Gmail 地址、端口 587、16 位应用专用密码）" + raw;
-  if(/invalid path/i.test(m)) return "config.js 里的网址多了一截：只要 https://xxxx.supabase.co，后面不要带 /rest/v1 之类" + raw;
-  if(/fetch|network|load failed/i.test(m)) return "连不上同步服务：检查网络，或 config.js 里的网址是否正确" + raw;
-  if(step === "verify" && /expired|invalid|token|otp/i.test(m)) return "验证码不对或已过期，可以重新发送一个";
-  if(/email/i.test(m) && /invalid/i.test(m)) return "这个邮箱地址不被接受，检查一下有没有打错" + raw;
-  return "出错了" + raw;
+  const raw = m ? T("（原始信息：{m}）", {m}) : "";
+  if(/invalid api key|no api key|apikey/i.test(m)) return T("网站的同步设置不对：config.js 里的 key 填错了，应该是 anon public key（eyJ 开头）") + raw;
+  if((e && e.status === 429) || /rate limit|too many|for security purposes/i.test(m)) return T("发得太频繁了，等一分钟再试") + raw;
+  if(/not authorized|not allowed for this|email address .* not authorized/i.test(m)) return T("这个邮箱暂时收不到验证码：网站还没设置好发信邮箱（SMTP）") + raw;
+  if(/signups? not allowed|signup.*disabled/i.test(m)) return T("Supabase 里关闭了新用户注册，需要在 Authentication 设置里打开") + raw;
+  if(/error sending|smtp|mail/i.test(m)) return T("验证码邮件发不出去：检查 Supabase 的 SMTP 设置（Gmail 地址、端口 587、16 位应用专用密码）") + raw;
+  if(/invalid path/i.test(m)) return T("config.js 里的网址多了一截：只要 https://xxxx.supabase.co，后面不要带 /rest/v1 之类") + raw;
+  if(/fetch|network|load failed/i.test(m)) return T("连不上同步服务：检查网络，或 config.js 里的网址是否正确") + raw;
+  if(step === "verify" && /expired|invalid|token|otp/i.test(m)) return T("验证码不对或已过期，可以重新发送一个");
+  if(/email/i.test(m) && /invalid/i.test(m)) return T("这个邮箱地址不被接受，检查一下有没有打错") + raw;
+  return T("出错了") + raw;
 }
 function renderAcct(full){
   const box = $("#acctBox");
@@ -553,83 +603,83 @@ function renderAcct(full){
   box.hidden = false;
   const dot = $("#acctDot"), sum = $("#acctSum");
   dot.className = "dot";
-  if(syncState === "loading") sum.textContent = "正在连接同步…";
-  else if(syncState === "unavailable") sum.textContent = "同步服务连不上，任务先存在本机";
-  else if(!me) sum.textContent = "登录，让电脑和手机自动同步";
+  if(syncState === "loading") sum.textContent = T("正在连接同步…");
+  else if(syncState === "unavailable") sum.textContent = T("同步服务连不上，任务先存在本机");
+  else if(!me) sum.textContent = T("登录，让电脑和手机自动同步");
   else {
     dot.classList.add(syncState);
-    sum.textContent = {ok:"已同步", syncing:"同步中…", offline:"离线中，联网后自动同步", error:"同步没成功，稍后会自动重试"}[syncState] || "已登录";
+    sum.textContent = {ok:T("已同步"), syncing:T("同步中…"), offline:T("离线中，联网后自动同步"), error:T("同步没成功，稍后会自动重试")}[syncState] || T("已登录");
     sum.textContent += " · " + (me.email || "");
   }
   if(!full) return;
   const b = $("#acctBody"); b.innerHTML = "";
   if(syncState === "loading") return;
   if(syncState === "unavailable"){
-    b.append(el("p",{class:"muted",text:"可能是网络问题。任务照常保存在这台设备上，刷新页面会重新连接。"}));
+    b.append(el("p",{class:"muted",text:T("可能是网络问题。任务照常保存在这台设备上，刷新页面会重新连接。")}));
     return;
   }
   if(me){
-    b.append(el("p",{text:"登录邮箱：" + (me.email || "")}));
-    b.append(el("p",{class:"muted",text:"在电脑和手机上用同一个邮箱登录，任务、功德和奖励就会自动同步。"}));
+    b.append(el("p",{text:T("登录邮箱：") + (me.email || "")}));
+    b.append(el("p",{class:"muted",text:T("在电脑和手机上用同一个邮箱登录，任务、功德和奖励就会自动同步。")}));
     b.append(el("div",{class:"actions"},[
-      el("button",{class:"btn",type:"button",text:"立即同步",onclick:()=>{ if(isDirty()) push(); else pull(); }}),
-      el("button",{class:"btn ghost",type:"button",text:"退出登录",onclick:signOut})
+      el("button",{class:"btn",type:"button",text:T("立即同步"),onclick:()=>{ if(isDirty()) push(); else pull(); }}),
+      el("button",{class:"btn ghost",type:"button",text:T("退出登录"),onclick:signOut})
     ]));
     return;
   }
   const err = el("p",{class:"ferr",role:"alert",hidden:""});
   const showErr = t => { err.textContent = t; err.hidden = false; };
   if(!otpEmail){
-    b.append(el("p",{class:"muted",text:"不用设密码：输入邮箱，收到验证码后填进来就登录了。第一次登录会自动注册。"}));
-    const em = el("input",{type:"email",placeholder:"你的邮箱",autocomplete:"email",inputmode:"email",value:lsGet("ddl-last-email") || ""});
+    b.append(el("p",{class:"muted",text:T("不用设密码：输入邮箱，收到验证码后填进来就登录了。第一次登录会自动注册。")}));
+    const em = el("input",{type:"email",placeholder:T("你的邮箱"),autocomplete:"email",inputmode:"email",value:lsGet("ddl-last-email") || ""});
     const go = async () => {
       const v = em.value.trim();
-      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){ showErr("邮箱格式不对，检查一下"); em.classList.add("bad"); return; }
-      btn.disabled = true; btn.textContent = "发送中…"; err.hidden = true;
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){ showErr(T("邮箱格式不对，检查一下")); em.classList.add("bad"); return; }
+      btn.disabled = true; btn.textContent = T("发送中…"); err.hidden = true;
       try{
         const { error } = await sb.auth.signInWithOtp({email: v, options: {shouldCreateUser: true}});
         if(error) throw error;
         otpEmail = v; otpSentAt = Date.now(); lsSet("ddl-last-email", v); renderAcct(true);
         const c = document.querySelector("#acctBody input"); if(c) c.focus();
-      }catch(e){ showErr(authErr(e)); btn.disabled = false; btn.textContent = "发送验证码"; }
+      }catch(e){ showErr(authErr(e)); btn.disabled = false; btn.textContent = T("发送验证码"); }
     };
-    const btn = el("button",{class:"btn",type:"button",text:"发送验证码",onclick:go});
+    const btn = el("button",{class:"btn",type:"button",text:T("发送验证码"),onclick:go});
     em.addEventListener("keydown", e => { if(e.key === "Enter" && !e.isComposing){ e.preventDefault(); go(); } });
     em.addEventListener("input", () => { em.classList.remove("bad"); err.hidden = true; });
     b.append(em, el("div",{class:"actions"},[btn]), err);
     return;
   }
-  b.append(el("p",{text:"验证码已发到 " + otpEmail}));
-  b.append(el("p",{class:"muted",text:"没收到的话看看垃圾邮件箱。"}));
-  const code = el("input",{type:"text",inputmode:"numeric",autocomplete:"one-time-code",maxlength:"10",placeholder:"邮件里的验证码"});
+  b.append(el("p",{text:T("验证码已发到 {e}", {e:otpEmail})}));
+  b.append(el("p",{class:"muted",text:T("没收到的话看看垃圾邮件箱。")}));
+  const code = el("input",{type:"text",inputmode:"numeric",autocomplete:"one-time-code",maxlength:"10",placeholder:T("邮件里的验证码")});
   const verify = async () => {
     const t = code.value.replace(/\s/g,"");
-    if(!/^\d{6,10}$/.test(t)){ showErr("验证码是邮件里的那串数字"); code.classList.add("bad"); return; }
-    vbtn.disabled = true; vbtn.textContent = "登录中…"; err.hidden = true;
+    if(!/^\d{6,10}$/.test(t)){ showErr(T("验证码是邮件里的那串数字")); code.classList.add("bad"); return; }
+    vbtn.disabled = true; vbtn.textContent = T("登录中…"); err.hidden = true;
     try{
       const { data, error } = await sb.auth.verifyOtp({email: otpEmail, token: t, type: "email"});
       if(error) throw error;
-      if(data && data.user){ onSignedIn(data.user); $("#acctBox").open = false; toast("登录成功，开始同步"); }
-    }catch(e){ showErr(authErr(e, "verify")); vbtn.disabled = false; vbtn.textContent = "登录"; }
+      if(data && data.user){ onSignedIn(data.user); $("#acctBox").open = false; toast(T("登录成功，开始同步")); }
+    }catch(e){ showErr(authErr(e, "verify")); vbtn.disabled = false; vbtn.textContent = T("登录"); }
   };
-  const vbtn = el("button",{class:"btn",type:"button",text:"登录",onclick:verify});
+  const vbtn = el("button",{class:"btn",type:"button",text:T("登录"),onclick:verify});
   code.addEventListener("keydown", e => { if(e.key === "Enter" && !e.isComposing){ e.preventDefault(); verify(); } });
   code.addEventListener("input", () => { code.classList.remove("bad"); err.hidden = true; });
   const resend = el("button",{class:"btn ghost",type:"button"});
   const tick = () => {
     const left = 60 - Math.floor((Date.now() - otpSentAt) / 1000);
-    resend.disabled = left > 0; resend.textContent = left > 0 ? "重新发送（" + left + "）" : "重新发送";
+    resend.disabled = left > 0; resend.textContent = left > 0 ? T("重新发送（{n}）", {n:left}) : T("重新发送");
     if(left <= 0) clearInterval(otpTimer);
   };
   resend.onclick = async () => {
     resend.disabled = true;
     try{ const { error } = await sb.auth.signInWithOtp({email: otpEmail, options: {shouldCreateUser: true}}); if(error) throw error;
-      otpSentAt = Date.now(); clearInterval(otpTimer); otpTimer = setInterval(tick, 1000); tick(); toast("已重新发送");
+      otpSentAt = Date.now(); clearInterval(otpTimer); otpTimer = setInterval(tick, 1000); tick(); toast(T("已重新发送"));
     }catch(e){ showErr(authErr(e)); tick(); }
   };
   clearInterval(otpTimer); otpTimer = setInterval(tick, 1000); tick();
   b.append(code, el("div",{class:"actions"},[vbtn, resend,
-    el("button",{class:"link",type:"button",text:"换个邮箱",onclick:()=>{ otpEmail = ""; clearInterval(otpTimer); renderAcct(true); }})]), err);
+    el("button",{class:"link",type:"button",text:T("换个邮箱"),onclick:()=>{ otpEmail = ""; clearInterval(otpTimer); renderAcct(true); }})]), err);
 }
 function initSync(){
   if(!CFG.url || !CFG.key){ renderAcct(true); return; }
@@ -707,14 +757,18 @@ function streak(){
 function countdown(due){
   const ms = new Date(due).getTime() - Date.now();
   const abs = Math.abs(ms), m = Math.floor(abs/60000), h = Math.floor(m/60), d = Math.floor(h/24);
-  let s = d >= 1 ? d + "天" + (h%24 ? (h%24) + "时" : "") : h >= 1 ? h + "小时" + (m%60 ? (m%60)+"分" : "") : Math.max(m,1) + "分钟";
-  return {text: ms < 0 ? "逾期 " + s : "剩 " + s, ms};
+  const U = {zh:[T("天"),T("时"),T("小时"),T("分"),T("分钟")], en:["d ","h","h ","m"," min"], de:[" T. "," Std."," Std. "," Min."," Min."]}[lang];
+  let s = d >= 1 ? d + U[0] + (h%24 ? (h%24) + U[1] : "") : h >= 1 ? h + U[2] + (m%60 ? (m%60) + U[3] : "") : Math.max(m,1) + U[4];
+  s = s.trim();
+  return {text: ms < 0 ? T("逾期 {s}", {s}) : T("剩 {s}", {s}), ms};
 }
 function urgency(ms){ return ms < 24*3600e3 ? "u-red" : ms < 3*24*3600e3 ? "u-gold" : ""; }
 function fmtDue(due){
-  const d = new Date(due), w = "日一二三四五六"[d.getDay()];
-  return (d.getMonth()+1) + "月" + d.getDate() + "日 周" + w + " " + String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0");
+  const d = new Date(due), hm = String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0");
+  if(lang === "zh") return (d.getMonth()+1) + "月" + d.getDate() + "日 周" + "日一二三四五六"[d.getDay()] + " " + hm;
+  return fmtDate(d, {weekday:"short", month:"short", day:"numeric"}) + ", " + hm;
 }
+function fmtDate(d, opt){ try{ return new Intl.DateTimeFormat(LOCALE[lang], opt).format(d); }catch(e){ return d.toDateString(); } }
 
 /* ---------- render ---------- */
 function el(tag, attrs, kids){
@@ -729,15 +783,16 @@ function el(tag, attrs, kids){
 }
 function render(){
   document.body.classList.toggle("nomerit", !M());
-  $("h1 small").textContent = M() ? "DDL 记录 · 做完打勾攒功德" : "DDL 记录 · 想做的事也记下来";
+  $("h1 small").textContent = M() ? T("DDL 记录 · 做完打勾攒功德") : T("DDL 记录 · 想做的事也记下来");
   $("#setMerit").checked = M();
+  $("#meritBtn").setAttribute("aria-label", M() ? T("查看功德与奖励") + " · " + T("长按敲木鱼") : T("开始攒功德吗？") + " · " + T("长按敲木鱼"));
   if(!M() && tab === "rewards") tab = "todo";
   $("#points").textContent = points();
   const todo = state.tasks.filter(t=>!t.done);
   const today = state.tasks.filter(t=>t.done && t.doneAt && dayKey(t.doneAt) === dayKey(Date.now())).length;
   const st = streak();
   $("#stats").innerHTML = "";
-  [["待办 ", todo.length], ["　今天完成 ", today], ["　连续打卡 ", st + " 天"]].forEach(([a,b]) => {
+  [[T("待办") + " ", todo.length], [SP() + T("今天完成") + " ", today], [SP() + T("连续打卡") + " ", T("{n} 天", {n:st})]].forEach(([a,b]) => {
     $("#stats").append(a); $("#stats").append(el("b",{text:String(b)}));
   });
   document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === tab));
@@ -751,12 +806,12 @@ function render(){
   if(tab === "todo"){ const sug = ideaSuggest(list); if(sug) v.append(sug); }
   if(tab === "todo" && list.length){
     renderNow(v, list);
-    v.append(el("div",{class:"toolbar"},[el("button",{class:"link",text:"导出全部到日历",onclick:()=>exportICS(list)})]));
+    v.append(el("div",{class:"toolbar"},[el("button",{class:"link",text:T("导出全部到日历"),onclick:()=>exportICS(list)})]));
   }
   if(!list.length){
     v.append(el("div",{class:"empty-state"},[
-      el("p",{text: tab === "done" ? "还没有完成的任务。" : "暂时没有 DDL。"}),
-      el("p",{text: tab === "done" ? (M() ? "做完一个回来打勾，功德就到账了。" : "做完一个回来打勾就好。") : "点上面的「新增」记一个 DDL，或者记下以后有空想做的事。"})
+      el("p",{text: tab === "done" ? T("还没有完成的任务。") : T("暂时没有 DDL。")}),
+      el("p",{text: tab === "done" ? (M() ? T("做完一个回来打勾，功德就到账了。") : T("做完一个回来打勾就好。")) : T("点上面的「新增」记一个 DDL，或者记下以后有空想做的事。")})
     ]));
     return;
   }
@@ -765,12 +820,12 @@ function render(){
   v.append(ul);
 }
 function stepsOf(t){ return t.steps || (t.steps = []); }
-function startLabel(){ return M() ? "开始了 +" + START_PTS : "开始了"; }
+function startLabel(){ return M() ? T("开始了 +") + START_PTS : T("开始了"); }
 function subNextEl(t){
   if(t.done) return null;
   const x = nextSub(t); if(!x) return null;
   const cd = countdown(x.due);
-  return el("div",{class:"subnext"},[el("span",{text:"下一个子 DDL："}), document.createTextNode(x.title + "　"), el("b",{class:"cdx " + urgency(cd.ms),style:"font-weight:500",text:cd.text})]);
+  return el("div",{class:"subnext"},[el("span",{text:T("下一个子 DDL：")}), document.createTextNode(x.title + "　"), el("b",{class:"cdx " + urgency(cd.ms),style:"font-weight:500",text:cd.text})]);
 }
 function nextStep(t){ return stepsOf(t).find(x=>!x.done); }
 function shouldStart(t){ return !t.done && !t.startedAt && t.start && new Date(t.start).getTime() <= Date.now(); }
@@ -778,7 +833,7 @@ function progEl(t){
   const st = stepsOf(t); if(!st.length) return null;
   const n = st.filter(x=>x.done).length, pct = Math.round(doneRatio(t) * 100);
   const bar = el("span",{class:"bar"},[el("i",{style:"width:" + pct + "%"})]);
-  return el("div",{class:"prog","aria-label":"进度 " + n + "/" + st.length},[bar, el("span",{text:n + "/" + st.length + " 步"})]);
+  return el("div",{class:"prog","aria-label":T("进度 {a}/{b}", {a:n, b:st.length})},[bar, el("span",{text:T("{a}/{b} 步", {a:n, b:st.length})})]);
 }
 function barRow(label, cls, ratio, num){
   return [el("span",{text:label}), el("span",{class:"bar " + cls},[el("i",{style:"width:" + Math.round(ratio*100) + "%"})]), el("span",{class:"num",text:num})];
@@ -787,21 +842,21 @@ function renderNow(v, list){
   const go = list.filter(shouldStart);
   const box = el("div",{class:"now"});
   if(go.length){
-    box.append(el("h2",{class:"sec",text:"该开始了"}));
+    box.append(el("h2",{class:"sec",text:T("该开始了")}));
     go.forEach(t => {
       const first = nextStep(t);
       box.append(el("div",{class:"card"},[
         el("div",{class:"ct",text:t.title}),
-        el("div",{class:"meta",text:"计划 " + fmtDue(t.start) + " 开始　" + countdown(t.due).text}),
-        el("div",{class:"next"},[el("span",{text:"只要先做："}), document.createTextNode(first ? first.text : "打开材料，看一眼就行")]),
+        el("div",{class:"meta",text:T("计划 {d} 开始", {d:fmtDue(t.start)}) + SP() + countdown(t.due).text}),
+        el("div",{class:"next"},[el("span",{text:T("只要先做：")}), document.createTextNode(first ? first.text : T("打开材料，看一眼就行"))]),
         el("div",{class:"row"},[
           el("button",{class:"small-btn",text:startLabel(),onclick:()=>startTask(t.id)}),
-          el("button",{class:"btn ghost",style:"padding:6px 12px;font-size:14px",text:"晚 1 小时",onclick:()=>{ t.start = new Date(Date.now()+3600e3).toISOString(); notified.delete(t.id); save(); render(); toast("好，1 小时后再叫你"); }})
+          el("button",{class:"btn ghost",style:"padding:6px 12px;font-size:14px",text:T("晚 1 小时"),onclick:()=>{ t.start = new Date(Date.now()+3600e3).toISOString(); notified.delete(t.id); save(); render(); toast(T("好，1 小时后再叫你")); }})
         ])
       ]));
     });
   }
-  box.append(el("h2",{class:"sec",text:"总览 · " + list.length + " 件"}));
+  box.append(el("h2",{class:"sec",text:T("总览 · {n} 件", {n:list.length})}));
   list.forEach(t => {
     const cd = countdown(t.due), dr = doneRatio(t), tr = timeRatio(t);
     const behind = cd.ms < 0 || tr - dr > 0.25;
@@ -810,51 +865,51 @@ function renderNow(v, list){
         el("button",{class:"ct",text:t.title,onclick:()=>{ openId = t.id; render(); const r = document.querySelector('.list [data-id="'+t.id+'"]'); if(r) r.scrollIntoView({behavior:"smooth",block:"center"}); }}),
         el("span",{class:"cd",text:cd.text})
       ]),
-      el("div",{class:"bars"}, barRow("完成", "done", dr, Math.round(dr*100) + "%").concat(
-        barRow("时间", "time" + (behind ? " behind" : ""), tr, cd.ms < 0 ? "已过" : Math.round(tr*100) + "%")))
+      el("div",{class:"bars"}, barRow(T("完成"), "done", dr, Math.round(dr*100) + "%").concat(
+        barRow(T("时间"), "time" + (behind ? " behind" : ""), tr, cd.ms < 0 ? T("已过") : Math.round(tr*100) + "%")))
     ];
-    if(behind && cd.ms >= 0) kids.push(el("div",{class:"behind-note",text:"时间比进度走得快一些，先做下一小步就好"}));
+    if(behind && cd.ms >= 0) kids.push(el("div",{class:"behind-note",text:T("时间比进度走得快一些，先做下一小步就好")}));
     const sn = subNextEl(t); if(sn) kids.push(sn);
     const nx = nextStep(t);
     if(nx){
       const cb = el("input",{type:"checkbox",id:"nx-" + nx.id,onchange:()=>toggleStep(t.id, nx.id)});
       const al = stepAlloc(t)[stepsOf(t).indexOf(nx)];
-      kids.push(el("div",{class:"nextline"},[cb, el("label",{for:"nx-" + nx.id},[el("span",{class:"meta",text: t.startedAt ? "接着做：" : "第一步："}), document.createTextNode(nx.text + "　"), M() ? el("span",{class:"pts",style:"color:var(--gold)",text:"+" + al}) : null])]));
+      kids.push(el("div",{class:"nextline"},[cb, el("label",{for:"nx-" + nx.id},[el("span",{class:"meta",text: t.startedAt ? T("接着做：") : T("第一步：")}), document.createTextNode(nx.text + "　"), M() ? el("span",{class:"pts",style:"color:var(--gold)",text:"+" + al}) : null])]));
     } else if(!stepsOf(t).length){
-      kids.push(el("div",{class:"next"},[el("span",{text:"还没拆步骤，"}), el("button",{class:"link",text:"拆一下",onclick:()=>startEdit(t.id)})]));
+      kids.push(el("div",{class:"next"},[el("span",{text:T("还没拆步骤，")}), el("button",{class:"link",text:T("拆一下"),onclick:()=>startEdit(t.id)})]));
     } else {
-      kids.push(el("div",{class:"next",text:"步骤都做完了，去下面打勾" + (cd.ms >= 0 && M() ? "，按时完成再 +" + bonusOf(t) : "")}));
+      kids.push(el("div",{class:"next",text:T("步骤都做完了，去下面打勾") + (cd.ms >= 0 && M() ? T("，按时完成再 +{n}", {n:bonusOf(t)}) : "")}));
     }
     box.append(el("div",{class:"ov " + urgency(cd.ms)}, kids));
   });
   v.append(box);
-  v.append(el("h2",{class:"sec",text:"全部 DDL"}));
+  v.append(el("h2",{class:"sec",text:T("全部 DDL")}));
 }
 function taskRow(t){
   const cd = countdown(t.due);
   const li = el("li",{class:"task " + (t.done ? "done" : urgency(cd.ms)) + (openId === t.id ? " open" : ""), "data-id":t.id});
-  const chk = el("button",{class:"check","aria-label": t.done ? "取消完成" : "标记完成", onclick:()=>toggle(t.id)});
+  const chk = el("button",{class:"check","aria-label": t.done ? T("取消完成") : T("标记完成"), onclick:()=>toggle(t.id)});
   chk.innerHTML = '<svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const mid = el("div",{},[
     el("button",{class:"title",text:t.title,"aria-expanded":openId===t.id,onclick:()=>{ openId = openId === t.id ? null : t.id; render(); }}),
     (() => {
-      const m = el("div",{class:"meta",text: "截止 " + fmtDue(t.due) + (M() ? "　工作量" + SIZE_NAME[t.size||"m"] : "")});
-      if(!t.done && t.startedAt) m.append(el("span",{class:"tag doing",text:"进行中"}));
-      else if(shouldStart(t)) m.append(el("span",{class:"tag go",text:"该开始了"}));
+      const m = el("div",{class:"meta",text: T("截止 {d}", {d:fmtDue(t.due)}) + (M() ? SP() + T("工作量{s}", {s:T(SIZE_NAME[t.size||"m"])}) : "")});
+      if(!t.done && t.startedAt) m.append(el("span",{class:"tag doing",text:T("进行中")}));
+      else if(shouldStart(t)) m.append(el("span",{class:"tag go",text:T("该开始了")}));
       return m;
     })(),
-    (!t.done && !t.startedAt && t.start && !shouldStart(t)) ? el("div",{class:"meta",text:"计划 " + fmtDue(t.start) + " 开始"}) : null,
+    (!t.done && !t.startedAt && t.start && !shouldStart(t)) ? el("div",{class:"meta",text:T("计划 {d} 开始", {d:fmtDue(t.start)})}) : null,
     progEl(t),
     subNextEl(t),
-    (!t.done && nextStep(t) && openId !== t.id) ? el("div",{class:"next"},[el("span",{text:"下一步："}), document.createTextNode(nextStep(t).text)]) : null
+    (!t.done && nextStep(t) && openId !== t.id) ? el("div",{class:"next"},[el("span",{text:T("下一步：")}), document.createTextNode(nextStep(t).text)]) : null
   ]);
   const right = el("div",{class:"when"},[
-    el("div",{class:"cd",text: t.done ? (t.doneAt <= new Date(t.due).getTime() ? "按时" : "补交") : cd.text}),
-    !M() ? null : t.done ? el("div",{class:"pts",text:"功德 +" + taskPoints(t)}) : el("div",{class:"pts",text:"已得 " + taskPoints(t) + " / " + (baseOf(t) + START_PTS + (cd.ms > 0 ? bonusOf(t) : 0) + subsOf(t).length * SUB_PTS)})
+    el("div",{class:"cd",text: t.done ? (t.doneAt <= new Date(t.due).getTime() ? T("按时") : T("补交")) : cd.text}),
+    !M() ? null : t.done ? el("div",{class:"pts",text:T("功德 +") + taskPoints(t)}) : el("div",{class:"pts",text:T("已得 {a} / {b}", {a:taskPoints(t), b:baseOf(t) + START_PTS + (cd.ms > 0 ? bonusOf(t) : 0) + subsOf(t).length * SUB_PTS})})
   ]);
-  const del = el("button",{class:"danger",text:"删除",onclick:(e)=>{
+  const del = el("button",{class:"danger",text:T("删除"),onclick:(e)=>{
     if(e.currentTarget.dataset.armed){ state.tasks = state.tasks.filter(x=>x.id!==t.id); save(); render(); }
-    else { e.currentTarget.dataset.armed = 1; e.currentTarget.textContent = "再点一次确认删除"; }
+    else { e.currentTarget.dataset.armed = 1; e.currentTarget.textContent = T("再点一次确认删除"); }
   }});
   const stepsUl = el("ul",{class:"steps"});
   const al = stepAlloc(t);
@@ -864,26 +919,26 @@ function taskRow(t){
       el("input",{type:"checkbox",id:cid,checked: x.done ? "" : false,onchange:()=>toggleStep(t.id, x.id)}),
       el("label",{for:cid,text:x.text}),
       el("span",{class:"sp merit-only",text:"+" + al[i]}),
-      el("button",{class:"x","aria-label":"删除这一步",text:"×",onclick:()=>{ t.steps = stepsOf(t).filter(y=>y.id!==x.id); save(); render(); }})
+      el("button",{class:"x","aria-label":T("删除这一步"),text:"×",onclick:()=>{ t.steps = stepsOf(t).filter(y=>y.id!==x.id); save(); render(); }})
     ]));
   });
-  const stepIn = el("input",{placeholder:"加一个小步骤",maxlength:"80"});
+  const stepIn = el("input",{placeholder:T("加一个小步骤"),maxlength:"80"});
   const addStep = () => { const tx = stepIn.value.trim(); if(!tx) return; stepsOf(t).push({id:uid(),text:tx,done:false,w:1}); save(); render();
     const i = document.querySelector('[data-id="'+t.id+'"] .addstep input'); if(i) i.focus(); };
   stepIn.addEventListener("keydown", e => { if(e.key === "Enter" && !e.isComposing){ e.preventDefault(); addStep(); } });
   const more = el("div",{class:"more"},[
     stepsOf(t).length ? stepsUl : null,
-    !t.done ? el("div",{class:"addstep"},[stepIn, el("button",{"aria-label":"加一步",text:"+",style:"font-size:20px",onclick:addStep})]) : null,
+    !t.done ? el("div",{class:"addstep"},[stepIn, el("button",{"aria-label":T("加一步"),text:"+",style:"font-size:20px",onclick:addStep})]) : null,
     subsSection(t),
-    el("div",{class:"notes" + (t.notes ? "" : " empty"),text: t.notes || "没有写具体内容"}),
+    el("div",{class:"notes" + (t.notes ? "" : " empty"),text: t.notes || T("没有写具体内容")}),
     el("div",{class:"mini"},[
       (!t.done && !t.startedAt) ? el("button",{text:startLabel(),onclick:()=>startTask(t.id)}) : null,
-      el("button",{text:"编辑",onclick:()=>startEdit(t.id)}),
-      !t.done ? el("button",{text:"加入日历",onclick:()=>exportICS([t])}) : null,
+      el("button",{text:T("编辑"),onclick:()=>startEdit(t.id)}),
+      !t.done ? el("button",{text:T("加入日历"),onclick:()=>exportICS([t])}) : null,
       del
     ])
   ]);
-  li.append(chk, mid, right, more, el("span",{class:"stamp",text:"已完成","aria-hidden":"true"}));
+  li.append(chk, mid, right, more, el("span",{class:"stamp",text:T("已完成"),"aria-hidden":"true"}));
   return li;
 }
 function defaultSubDue(t){
@@ -895,36 +950,36 @@ function subsSection(t){
   const subs = subsOf(t).slice().sort((a,b)=>new Date(a.due)-new Date(b.due));
   if(t.done && !subs.length) return null;
   const wrap = el("div",{class:"subwrap"});
-  wrap.append(el("div",{class:"subhd",text:"子 DDL" + (subs.length ? "　" + subs.filter(x=>x.done).length + "/" + subs.length : "　把大项目拆成几个有日期的小截止")}));
+  wrap.append(el("div",{class:"subhd",text:T("子 DDL") + SP() + (subs.length ? subs.filter(x=>x.done).length + "/" + subs.length : T("把大项目拆成几个有日期的小截止"))}));
   if(subs.length){
     const ul = el("ul",{class:"subs"});
     subs.forEach(x => {
       const cid = "sb-" + t.id + "-" + x.id, cd = countdown(x.due);
       const when = el("small",{},[document.createTextNode(fmtDue(x.due) + "　"),
-        x.done ? document.createTextNode(subOnTime(x) ? "按时" : "补交") : el("span",{class:"cdx " + urgency(cd.ms),text:cd.text})]);
+        x.done ? document.createTextNode(subOnTime(x) ? T("按时") : T("补交")) : el("span",{class:"cdx " + urgency(cd.ms),text:cd.text})]);
       ul.append(el("li",{class: x.done ? "ok" : ""},[
         el("input",{type:"checkbox",id:cid,checked: x.done ? "" : false,onchange:()=>toggleSub(t.id, x.id)}),
         el("label",{for:cid},[document.createTextNode(x.title), when]),
         el("span",{class:"sp merit-only",style:"font-size:12px;color:var(--gold);white-space:nowrap;margin-top:2px",text: x.done ? "+" + (subOnTime(x) ? SUB_PTS : SUB_LATE) : "+" + SUB_PTS}),
-        el("button",{class:"x","aria-label":"删除子 DDL " + x.title,text:"×",onclick:()=>{ t.subs = subsOf(t).filter(y=>y.id!==x.id); save(); render(); }})
+        el("button",{class:"x","aria-label":T("删除子 DDL ") + x.title,text:"×",onclick:()=>{ t.subs = subsOf(t).filter(y=>y.id!==x.id); save(); render(); }})
       ]));
     });
     wrap.append(ul);
   }
   if(!t.done){
-    const ti = el("input",{placeholder:"子 DDL，比如：周三交初稿",maxlength:"80","aria-label":"子 DDL 名称"});
-    const du = el("input",{type:"datetime-local",value:defaultSubDue(t),"aria-label":"子 DDL 截止时间"});
+    const ti = el("input",{placeholder:T("子 DDL，比如：周三交初稿"),maxlength:"80","aria-label":T("子 DDL 名称")});
+    const du = el("input",{type:"datetime-local",value:defaultSubDue(t),"aria-label":T("子 DDL 截止时间")});
     const add = () => {
       const tx = ti.value.trim();
-      if(!tx){ toast("写上子 DDL 的名称"); ti.focus(); return; }
-      if(!du.value || isNaN(new Date(du.value))){ toast("选一个子 DDL 的截止时间"); du.focus(); return; }
-      if(new Date(du.value) > new Date(t.due)){ toast("子 DDL 不能晚于整个任务的截止时间（" + fmtDue(t.due) + "）"); du.focus(); return; }
+      if(!tx){ toast(T("写上子 DDL 的名称")); ti.focus(); return; }
+      if(!du.value || isNaN(new Date(du.value))){ toast(T("选一个子 DDL 的截止时间")); du.focus(); return; }
+      if(new Date(du.value) > new Date(t.due)){ toast(T("子 DDL 不能晚于整个任务的截止时间（{d}）", {d:fmtDue(t.due)})); du.focus(); return; }
       subsOf(t).push({id:uid(), title:tx, due:new Date(du.value).toISOString(), done:false, doneAt:null});
-      save(); render(); toast("已加子 DDL：" + tx);
+      save(); render(); toast(T("已加子 DDL：") + tx);
       const i = document.querySelector('[data-id="'+t.id+'"] .addsub input'); if(i) i.focus();
     };
     ti.addEventListener("keydown", e => { if(e.key === "Enter" && !e.isComposing){ e.preventDefault(); add(); } });
-    wrap.append(el("div",{class:"addsub"},[ti, du, el("button",{type:"button","aria-label":"加子 DDL",text:"+",onclick:add})]));
+    wrap.append(el("div",{class:"addsub"},[ti, du, el("button",{type:"button","aria-label":T("加子 DDL"),text:"+",onclick:add})]));
   }
   return wrap;
 }
@@ -944,33 +999,33 @@ function ideaSuggest(list){
     ul.append(el("li",{},[el("input",{type:"checkbox",id:cid,onchange:()=>toggleIdea(i.id)}), el("label",{for:cid,text:i.text})]));
   });
   return el("div",{class:"ideacard"},[
-    el("h3",{text: list.length ? "最近 3 天都没有 DDL" : "现在没有 DDL"}),
-    el("p",{text:"有空的话，可以做点之前想做的事："}),
+    el("h3",{text: list.length ? T("最近 3 天都没有 DDL") : T("现在没有 DDL")}),
+    el("p",{text:T("有空的话，可以做点之前想做的事：")}),
     ul,
     el("div",{class:"row"},[
-      n > 3 ? el("button",{class:"link",text:"换一批",onclick:()=>{ ideaOff += 3; render(); }}) : null,
-      el("button",{class:"link",text:"全部想法（" + n + "）",onclick:()=>{ tab = "ideas"; render(); }})
+      n > 3 ? el("button",{class:"link",text:T("换一批"),onclick:()=>{ ideaOff += 3; render(); }}) : null,
+      el("button",{class:"link",text:T("全部想法（{n}）", {n}),onclick:()=>{ tab = "ideas"; render(); }})
     ])
   ]);
 }
 function ideaRow(i){
   const li = el("li",{class:"task idea" + (i.done ? " done" : "") + (openId === i.id ? " open" : ""),"data-id":i.id});
-  const chk = el("button",{class:"check","aria-label": i.done ? "标记为还没做" : "标记为做了", onclick:()=>toggleIdea(i.id)});
+  const chk = el("button",{class:"check","aria-label": i.done ? T("标记为还没做") : T("标记为做了"), onclick:()=>toggleIdea(i.id)});
   chk.innerHTML = '<svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const d = new Date(i.done ? i.doneAt : i.created);
   const mid = el("div",{},[
     el("button",{class:"title",text:i.text,"aria-expanded":openId===i.id,onclick:()=>{ openId = openId === i.id ? null : i.id; render(); }}),
-    el("div",{class:"meta",text:(i.done ? "做于 " : "记于 ") + (d.getMonth()+1) + "月" + d.getDate() + "日" + (i.notes && openId !== i.id ? "　有备注" : "")})
+    el("div",{class:"meta",text:T(i.done ? "做于 {d}" : "记于 {d}", {d:fmtDate(d, {month:"short", day:"numeric"})}) + (i.notes && openId !== i.id ? SP() + T("有备注") : "")})
   ]);
-  const del = el("button",{class:"danger",text:"删除",onclick:(e)=>{
+  const del = el("button",{class:"danger",text:T("删除"),onclick:(e)=>{
     if(e.currentTarget.dataset.armed){ state.ideas = state.ideas.filter(x=>x.id!==i.id); save(); render(); }
-    else { e.currentTarget.dataset.armed = 1; e.currentTarget.textContent = "再点一次确认删除"; }
+    else { e.currentTarget.dataset.armed = 1; e.currentTarget.textContent = T("再点一次确认删除"); }
   }});
   const more = el("div",{class:"more"},[
     i.notes ? el("div",{class:"notes",text:i.notes}) : null,
     el("div",{class:"mini"},[
-      !i.done ? el("button",{text:"定个 DDL",onclick:()=>convertIdea(i.id)}) : null,
-      el("button",{text:"编辑",onclick:()=>startEditIdea(i.id)}),
+      !i.done ? el("button",{text:T("定个 DDL"),onclick:()=>convertIdea(i.id)}) : null,
+      el("button",{text:T("编辑"),onclick:()=>startEditIdea(i.id)}),
       del
     ])
   ]);
@@ -978,20 +1033,20 @@ function ideaRow(i){
   return li;
 }
 function renderIdeas(v){
-  const inp = el("input",{placeholder:"记下一个以后有空想做的事",maxlength:"80","aria-label":"新想法"});
+  const inp = el("input",{placeholder:T("记下一个以后有空想做的事"),maxlength:"80","aria-label":T("新想法")});
   const add = () => {
     const tx = inp.value.trim(); if(!tx){ inp.focus(); return; }
     state.ideas.push({id:uid(), text:tx, notes:"", created:Date.now(), done:false, doneAt:null});
-    save(); render(); toast("记下了，最近没 DDL 的时候会提醒你");
+    save(); render(); toast(T("记下了，最近没 DDL 的时候会提醒你"));
     const q = document.querySelector(".quick input"); if(q) q.focus();
   };
   inp.addEventListener("keydown", e => { if(e.key === "Enter" && !e.isComposing){ e.preventDefault(); add(); } });
-  v.append(el("div",{class:"quick"},[inp, el("button",{class:"btn",type:"button",text:"记下",onclick:add})]));
+  v.append(el("div",{class:"quick"},[inp, el("button",{class:"btn",type:"button",text:T("记下"),onclick:add})]));
   const open = openIdeas();
   if(!open.length){
     v.append(el("div",{class:"empty-state"},[
-      el("p",{text:"还没有想法。"}),
-      el("p",{text:"没有截止时间、但以后有空想做的事，都可以记在这里。最近没有 DDL 的时候，「进行中」会提醒你。"})
+      el("p",{text:T("还没有想法。")}),
+      el("p",{text:T("没有截止时间、但以后有空想做的事，都可以记在这里。最近没有 DDL 的时候，「进行中」会提醒你。")})
     ]));
   } else {
     const ul = el("ul",{class:"list"}); open.forEach(i => ul.append(ideaRow(i))); v.append(ul);
@@ -999,7 +1054,7 @@ function renderIdeas(v){
   const done = state.ideas.filter(i=>i.done).sort((a,b)=>(b.doneAt||0)-(a.doneAt||0));
   if(done.length){
     const ul = el("ul",{class:"list"}); done.forEach(i => ul.append(ideaRow(i)));
-    const dt = el("details",{class:"doneideas"},[el("summary",{text:"做过的想法（" + done.length + "）"}), ul]);
+    const dt = el("details",{class:"doneideas"},[el("summary",{text:T("做过的想法（{n}）", {n:done.length})}), ul]);
     if(done.some(i => i.id === openId)) dt.open = true;
     v.append(dt);
   }
@@ -1008,7 +1063,7 @@ function toggleIdea(id){
   const i = state.ideas.find(x=>x.id===id); if(!i) return;
   i.done = !i.done; i.doneAt = i.done ? Date.now() : null;
   save(); render();
-  if(i.done) toast("又做完一件想做的事：" + i.text);
+  if(i.done) toast(T("又做完一件想做的事：") + i.text);
 }
 function convertIdea(id){
   const i = state.ideas.find(x=>x.id===id); if(!i) return;
@@ -1016,14 +1071,14 @@ function convertIdea(id){
   $("#fTitle").value = i.text; $("#fNotes").value = i.notes || "";
   if(i.notes) $("#fMore").open = true;
   updateMoreSum(); lockKind();
-  $("#formTitle").textContent = "把想法定成 DDL"; $("#fCancel").hidden = false;
+  setFormTitle(); $("#fCancel").hidden = false;
   $("#addBox").open = true; $("#addBox").scrollIntoView({behavior:"smooth",block:"start"}); $("#fDue").focus();
 }
 function startEditIdea(id){
   const i = state.ideas.find(x=>x.id===id); if(!i) return;
   resetForm(); editingIdea = id; setKind("idea");
   $("#fTitle").value = i.text; $("#fIdeaNotes").value = i.notes || ""; lockKind();
-  $("#formTitle").textContent = "编辑想法：" + i.text; $("#fCancel").hidden = false;
+  setFormTitle(); $("#fCancel").hidden = false;
   $("#addBox").open = true; $("#addBox").scrollIntoView({behavior:"smooth",block:"start"}); $("#fTitle").focus();
 }
 function sameDay(a,b){ return dayKey(a) === dayKey(b); }
@@ -1031,14 +1086,14 @@ function renderCalendar(v){
   const y = calMonth.getFullYear(), m = calMonth.getMonth();
   const shift = n => { calMonth = new Date(y, m + n, 1); render(); };
   v.append(el("div",{class:"calhead"},[
-    el("span",{class:"m",text: y + "年" + (m+1) + "月"}),
+    el("span",{class:"m",text: fmtDate(calMonth, {year:"numeric", month:"long"})}),
     el("div",{class:"nav"},[
-      el("button",{"aria-label":"上个月",text:"‹",onclick:()=>shift(-1)}),
-      el("button",{text:"今天",onclick:()=>{ const t = new Date(); t.setHours(0,0,0,0); calSel = t; calMonth = new Date(t.getFullYear(), t.getMonth(), 1); render(); }}),
-      el("button",{"aria-label":"下个月",text:"›",onclick:()=>shift(1)})
+      el("button",{"aria-label":T("上个月"),text:"‹",onclick:()=>shift(-1)}),
+      el("button",{text:T("今天"),onclick:()=>{ const t = new Date(); t.setHours(0,0,0,0); calSel = t; calMonth = new Date(t.getFullYear(), t.getMonth(), 1); render(); }}),
+      el("button",{"aria-label":T("下个月"),text:"›",onclick:()=>shift(1)})
     ])
   ]));
-  v.append(el("div",{class:"wk"}, "一二三四五六日".split("").map(c => el("div",{text:c}))));
+  v.append(el("div",{class:"wk"}, {zh:T("一二三四五六日").split(""), en:["Mo","Tu","We","Th","Fr","Sa","Su"], de:["Mo","Di","Mi","Do","Fr","Sa","So"]}[lang].map(c => el("div",{text:c}))));
   const byDay = {};
   const startDay = {}, subDay = {};
   state.tasks.forEach(t => {
@@ -1064,55 +1119,57 @@ function renderCalendar(v){
     grid.append(el("button",{
       class: (d.getMonth() !== m ? "out " : "") + (sameDay(d, Date.now()) ? "today" : ""),
       "aria-pressed": sameDay(d, calSel),
-      "aria-label": (d.getMonth()+1) + "月" + d.getDate() + "日，" + (list.length ? list.length + " 个 DDL" : "没有 DDL") + (subsD.length ? "，" + subsD.length + " 个子 DDL" : ""),
+      "aria-label": fmtDate(d, {month:"long", day:"numeric"}) + ", " + (list.length ? T("{n} 个 DDL", {n:list.length}) : T("没有 DDL")) + (subsD.length ? ", " + T("{n} 个子 DDL", {n:subsD.length}) : ""),
       onclick: () => { calSel = d; if(d.getMonth() !== m) calMonth = new Date(d.getFullYear(), d.getMonth(), 1); render(); }
     },[el("span",{class:"dn",text:String(d.getDate())}), chips]));
   }
   v.append(grid);
   const sel = [...new Set((byDay[dayKey(calSel)] || []).concat(startDay[dayKey(calSel)] || [], (subDay[dayKey(calSel)] || []).map(o => o.t)))];
-  const w = "日一二三四五六"[calSel.getDay()];
   v.append(el("div",{class:"dayhead"},[
-    el("h2",{text:(calSel.getMonth()+1) + "月" + calSel.getDate() + "日 周" + w}),
-    el("button",{class:"link",text:"在这天加一个 DDL",onclick:()=>{
+    el("h2",{text:fmtDate(calSel, {month:"long", day:"numeric", weekday:"short"})}),
+    el("button",{class:"link",text:T("在这天加一个 DDL"),onclick:()=>{
       resetForm(); const d = new Date(calSel); d.setHours(23,59,0,0); $("#fDue").value = toLocalInput(d);
       $("#addBox").open = true; $("#addBox").scrollIntoView({behavior:"smooth",block:"start"}); $("#fTitle").focus();
     }})
   ]));
-  if(!sel.length){ v.append(el("div",{class:"empty-state"},[el("p",{text:"这天没有 DDL。"})])); return; }
+  if(!sel.length){ v.append(el("div",{class:"empty-state"},[el("p",{text:T("这天没有 DDL。")})])); return; }
   const ul = el("ul",{class:"list"});
   sel.forEach(t => ul.append(taskRow(t)));
   v.append(ul);
 }
 function renderRewards(v){
   const p = points();
-  v.append(el("p",{class:"stats",text:"开始一个任务 +5；任务的功德（小 10 / 中 25 / 大 50）按比重分给每个步骤，做完一步拿一份；按时完成再多 50%。每个子 DDL 按时完成 +5，迟了 +2。攒够了就兑换一个奖励。不需要功德的话，可以在页面底部「设置」里关掉。"}));
+  const sw = el("input",{type:"checkbox",role:"switch",checked:"",id:"rwSwitch"});
+  sw.addEventListener("change", () => { setMerit(false); toast(T("已关闭功德与奖励，攒的功德会保留")); });
+  v.append(el("label",{class:"switch rwswitch"},[el("span",{},[document.createTextNode(T("功德与奖励")), el("small",{text:T("不需要的话可以关掉，界面会只保留 DDL 和想法。点木鱼可以随时再打开。")})]), sw]));
+  v.append(el("p",{class:"stats",text:T("开始一个任务 +5；任务的功德（小 10 / 中 25 / 大 50）按比重分给每个步骤，做完一步拿一份；按时完成再多 50%。每个子 DDL 按时完成 +5，迟了 +2。攒够了就兑换一个奖励。")}));
   state.rewards.forEach(r => {
     v.append(el("div",{class:"rw"},[
       el("div",{text:r.name}),
       el("span",{class:"cost",text:r.cost}),
       el("div",{},[
-        el("button",{class:"small-btn",text:"兑换",disabled: p < r.cost ? "" : false,onclick:()=>redeem(r)}),
-        el("button",{class:"x","aria-label":"删除奖励 " + r.name,text:"×",onclick:()=>{ state.rewards = state.rewards.filter(x=>x.id!==r.id); save(); render(); }})
+        el("button",{class:"small-btn",text:T("兑换"),disabled: p < r.cost ? "" : false,onclick:()=>redeem(r)}),
+        el("button",{class:"x","aria-label":T("删除奖励 ") + r.name,text:"×",onclick:()=>{ state.rewards = state.rewards.filter(x=>x.id!==r.id); save(); render(); }})
       ])
     ]));
   });
-  const name = el("input",{placeholder:"自定义奖励，比如：吃顿火锅",maxlength:"40"});
-  const cost = el("input",{type:"number",min:"1",placeholder:"功德",inputmode:"numeric"});
-  v.append(el("div",{class:"addrw"},[name,cost,el("button",{class:"btn",text:"添加",onclick:()=>{
+  const name = el("input",{placeholder:T("自定义奖励，比如：吃顿火锅"),maxlength:"40"});
+  const cost = el("input",{type:"number",min:"1",placeholder:T("功德"),inputmode:"numeric"});
+  v.append(el("div",{class:"addrw"},[name,cost,el("button",{class:"btn",text:T("添加"),onclick:()=>{
     const n = name.value.trim(), c = parseInt(cost.value,10);
-    if(!n || !(c>0)){ toast("写上奖励名称和需要的功德"); return; }
+    if(!n || !(c>0)){ toast(T("写上奖励名称和需要的功德")); return; }
     state.rewards.push({id:uid(),name:n,cost:c}); save(); render();
   }})]));
-  v.append(el("h2",{text:"兑换记录"}));
+  v.append(el("h2",{text:T("兑换记录")}));
   const h = el("div",{class:"hist"});
-  if(!state.redeemed.length) h.append(el("p",{text:"还没有兑换过。"}));
+  if(!state.redeemed.length) h.append(el("p",{text:T("还没有兑换过。")}));
   else {
     const ul = el("ul");
     state.redeemed.slice().reverse().slice(0,15).forEach((r,i) => {
       const d = new Date(r.at);
       ul.append(el("li",{},[
         el("span",{text:(d.getMonth()+1)+"/"+d.getDate()+"　"+r.name+"　−"+r.cost}),
-        i === 0 ? el("button",{class:"link",text:"撤销",onclick:()=>{ state.redeemed.pop(); save(); render(); toast("已撤销，功德退回"); }}) : null
+        i === 0 ? el("button",{class:"link",text:T("撤销"),onclick:()=>{ state.redeemed.pop(); save(); render(); toast(T("已撤销，功德退回")); }}) : null
       ]));
     });
     h.append(ul);
@@ -1132,8 +1189,8 @@ function toggle(id){
     save(); render();
     const li = document.querySelector('.list [data-id="'+id+'"]');
     if(li){ li.classList.add("just"); }
-    floatMerit("功德 +" + gain);
-    toast((onTime(t) ? "按时完成！" : "完成了，迟到也算数") + (M() ? " · 功德 +" + gain : ""));
+    floatMerit(T("功德 +") + gain);
+    toast((onTime(t) ? T("按时完成！") : T("完成了，迟到也算数")) + (M() ? T(" · 功德 +") + gain : ""));
   } else {
     t.done = false; t.doneAt = null; save(); render();
   }
@@ -1141,7 +1198,7 @@ function toggle(id){
 function startTask(id){
   const t = state.tasks.find(x=>x.id===id); if(!t || t.startedAt) return;
   t.startedAt = Date.now(); save(); render();
-  floatMerit("功德 +" + START_PTS); toast("开始就赢了一半" + (M() ? " · 功德 +" + START_PTS : ""));
+  floatMerit(T("功德 +") + START_PTS); toast(T("开始就赢了一半") + (M() ? T(" · 功德 +") + START_PTS : ""));
 }
 function toggleStep(tid, sid){
   const t = state.tasks.find(x=>x.id===tid); if(!t) return;
@@ -1152,8 +1209,8 @@ function toggleStep(tid, sid){
   const gain = taskPoints(t) - before;
   save(); render();
   if(x.done){
-    floatMerit("功德 +" + gain);
-    toast(nextStep(t) ? "这一步搞定" + (M() ? " +" + gain : "") + " · 下一步：" + nextStep(t).text : "步骤全做完了，去打勾吧");
+    floatMerit(T("功德 +") + gain);
+    toast(nextStep(t) ? T("这一步搞定") + (M() ? " +" + gain : "") + T(" · 下一步：") + nextStep(t).text : T("步骤全做完了，去打勾吧"));
   }
 }
 function toggleSub(tid, sid){
@@ -1165,16 +1222,16 @@ function toggleSub(tid, sid){
   const gain = taskPoints(t) - before;
   save(); render();
   if(x.done){
-    floatMerit("功德 +" + gain);
+    floatMerit(T("功德 +") + gain);
     const nx = nextSub(t);
-    toast((subOnTime(x) ? "子 DDL 按时完成" : "子 DDL 完成了") + (M() ? " +" + gain : "") + (nx ? " · 下一个：" + nx.title : (subsOf(t).length ? " · 子 DDL 全做完了" : "")));
+    toast((subOnTime(x) ? T("子 DDL 按时完成") : T("子 DDL 完成了")) + (M() ? " +" + gain : "") + (nx ? T(" · 下一个：") + nx.title : (subsOf(t).length ? T(" · 子 DDL 全做完了") : "")));
   }
 }
 function checkStarts(){
   state.tasks.forEach(t => {
     if(shouldStart(t) && !notified.has(t.id)){
       notified.add(t.id);
-      toast("该开始「" + t.title + "」了，先做第一小步就好");
+      toast(T("该开始「{t}」了，先做第一小步就好", {t:t.title}));
     }
   });
 }
@@ -1182,7 +1239,7 @@ function redeem(r){
   if(points() < r.cost) return;
   state.redeemed.push({name:r.name,cost:r.cost,at:Date.now()});
   save(); render(); floatMerit("−" + r.cost);
-  toast("兑换成功：" + r.name + "，去享受吧");
+  toast(T("兑换成功：{r}，去享受吧", {r:r.name}));
 }
 function floatMerit(t){
   if(!M()) return;
@@ -1197,13 +1254,13 @@ function toLocalInput(d){ const p = n => String(n).padStart(2,"0"); return d.get
 function stepRow(x){
   x = x || {};
   const row = el("div",{class:"steprow","data-sid":x.id || "","data-done":x.done ? "1" : ""});
-  const inp = el("input",{placeholder:"比如：打开作业 PDF，读第一题",maxlength:"80",value:x.text || ""});
-  const sel = el("select",{"aria-label":"比重"});
-  [1,2,3,4,5].forEach(n => sel.append(el("option",{value:String(n),text:"比重 " + n})));
+  const inp = el("input",{placeholder:T("比如：打开作业 PDF，读第一题"),maxlength:"80",value:x.text || ""});
+  const sel = el("select",{"aria-label":T("比重")});
+  [1,2,3,4,5].forEach(n => sel.append(el("option",{value:String(n),text:T("比重 {n}", {n})})));
   sel.value = String(x.w || 1);
   inp.addEventListener("keydown", e => { if(e.key === "Enter" && !e.isComposing){ e.preventDefault(); const r = stepRow(); row.after(r); r.querySelector("input").focus(); updateHint(); } });
   inp.addEventListener("input", updateHint); sel.addEventListener("change", updateHint);
-  row.append(inp, sel, el("button",{type:"button",class:"rm","aria-label":"删除这一步",text:"×",onclick:()=>{ row.remove(); if(!$("#fStepRows").children.length) $("#fStepRows").append(stepRow()); updateHint(); }}));
+  row.append(inp, sel, el("button",{type:"button",class:"rm","aria-label":T("删除这一步"),text:"×",onclick:()=>{ row.remove(); if(!$("#fStepRows").children.length) $("#fStepRows").append(stepRow()); updateHint(); }}));
   return row;
 }
 function readRows(){
@@ -1215,28 +1272,32 @@ function readRows(){
 function setKind(k){
   kind = k; $("#addBox").dataset.kind = k;
   document.querySelectorAll("#fKind button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === k));
-  $("#fTitleLbl").textContent = k === "idea" ? "想做的事" : "任务名称";
-  $("#fTitle").placeholder = k === "idea" ? "例如：学会做一道菜、读完一本书" : "例如：C++ 作业 3";
+  $("#fTitleLbl").textContent = k === "idea" ? T("想做的事") : T("任务名称");
+  $("#fTitle").placeholder = k === "idea" ? T("例如：学会做一道菜、读完一本书") : T("例如：C++ 作业 3");
   clearErr();
+}
+function setFormTitle(){
+  const t = editingId && state.tasks.find(x=>x.id===editingId), i = editingIdea && state.ideas.find(x=>x.id===editingIdea);
+  $("#formTitle").textContent = t ? T("编辑：{t}", {t:t.title}) : i ? T("编辑想法：{t}", {t:i.text}) : convertingIdea ? T("把想法定成 DDL") : T("新增 DDL 或想法");
 }
 function lockKind(){ $("#fKind").hidden = true; }
 function updateMoreSum(){
   const parts = [];
-  if($("#fStart").value) parts.push("开始时间");
-  if($("#fRemind").value !== "1d") parts.push("提醒");
-  const n = readRows().length; if(n) parts.push(n + " 个步骤");
-  if($("#fNotes").value.trim()) parts.push("具体内容");
-  if(M() && size !== "m") parts.push("工作量");
-  $("#fMoreSum").textContent = parts.length ? "已填：" + parts.join("、")
-    : "开始时间 · 提醒 · 拆步骤 · 具体内容" + (M() ? " · 工作量" : "");
+  if($("#fStart").value) parts.push(T("开始时间"));
+  if($("#fRemind").value !== "1d") parts.push(T("提醒"));
+  const n = readRows().length; if(n) parts.push(T("{n} 个步骤", {n}));
+  if($("#fNotes").value.trim()) parts.push(T("具体内容"));
+  if(M() && size !== "m") parts.push(T("工作量"));
+  $("#fMoreSum").textContent = parts.length ? T("已填：") + parts.join(lang === "zh" ? "、" : ", ")
+    : T("开始时间 · 提醒 · 拆步骤 · 具体内容") + (M() ? T(" · 工作量") : "");
 }
 function updateHint(){
   updateMoreSum();
   const rows = readRows(), B = SIZE[size];
-  if(!M()){ $("#fStepHint").textContent = rows.length ? "比重决定这一步在进度条里占多少。" : "拆成小步骤后，每次只需要想下一步。"; return; }
-  if(!rows.length){ $("#fStepHint").textContent = "这个任务共 " + B + " 功德，拆成步骤后按比重分给每一步。"; return; }
+  if(!M()){ $("#fStepHint").textContent = rows.length ? T("比重决定这一步在进度条里占多少。") : T("拆成小步骤后，每次只需要想下一步。"); return; }
+  if(!rows.length){ $("#fStepHint").textContent = T("这个任务共 {b} 功德，拆成步骤后按比重分给每一步。", {b:B}); return; }
   const al = allocate(B, rows.map(x=>x.w));
-  $("#fStepHint").textContent = "共 " + B + " 功德，分配：" + rows.map((x,i)=>"第" + (i+1) + "步 +" + al[i]).join("，") + "；按时完成再 +" + Math.round(B*.5);
+  $("#fStepHint").textContent = T("共 {b} 功德，分配：{list}；按时完成再 +{x}", {b:B, list:rows.map((x,i)=>T("第{i}步 +{p}", {i:i+1, p:al[i]})).join(lang === "zh" ? "，" : ", "), x:Math.round(B*.5)});
 }
 function fillRows(steps){
   const box = $("#fStepRows"); box.innerHTML = "";
@@ -1251,9 +1312,8 @@ $("#addBox").addEventListener("toggle", () => {
   if($("#addBox").open && !editingId && !editingIdea && !convertingIdea && !$("#fTitle").value) setKind(tab === "ideas" ? "idea" : "ddl");
 });
 $("#setMerit").addEventListener("change", e => {
-  state.settings = Object.assign({}, state.settings, {merit: e.target.checked});
-  save(); render(); updateHint();
-  toast(e.target.checked ? "功德与奖励已打开" : "已关闭功德与奖励，攒的功德会保留");
+  setMerit(e.target.checked);
+  toast(e.target.checked ? T("功德与奖励已打开") : T("已关闭功德与奖励，攒的功德会保留"));
 });
 $("#addBox").addEventListener("toggle", () => { if(!$("#addBox").open && renderLater){ renderLater = false; render(); } });
 $("#fAddRow").addEventListener("click", () => { const r = stepRow(); $("#fStepRows").append(r); r.querySelector("input").focus(); updateHint(); });
@@ -1263,7 +1323,7 @@ function resetForm(){
   $("#fTitle").value = ""; $("#fNotes").value = ""; $("#fIdeaNotes").value = ""; $("#fRemind").value = "1d"; $("#fStart").value = ""; fillRows([]);
   const d = new Date(); d.setDate(d.getDate()+1); d.setHours(23,59,0,0); $("#fDue").value = toLocalInput(d);
   $("#fMore").open = false; $("#fKind").hidden = false; setKind("ddl");
-  setSize("m"); $("#formTitle").textContent = "新增 DDL 或想法"; $("#fCancel").hidden = true;
+  setSize("m"); setFormTitle(); $("#fCancel").hidden = true;
 }
 function setSize(v){ size = v; if($("#fStepRows")) updateHint(); document.querySelectorAll("#fSize button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.v === v)); }
 function startEdit(id){
@@ -1274,14 +1334,14 @@ function startEdit(id){
   setKind("ddl"); lockKind();
   $("#fMore").open = !!(t.start || stepsOf(t).length || t.notes || (t.remind && t.remind !== "1d") || (M() && t.size && t.size !== "m"));
   updateMoreSum();
-  $("#formTitle").textContent = "编辑：" + t.title; $("#fCancel").hidden = false;
+  setFormTitle(); $("#fCancel").hidden = false;
   $("#addBox").open = true; $("#addBox").scrollIntoView({behavior:"smooth",block:"start"}); $("#fTitle").focus();
 }
 $("#fSize").addEventListener("click", e => { const b = e.target.closest("button"); if(b) setSize(b.dataset.v); });
 $("#fCancel").addEventListener("click", () => { resetForm(); $("#addBox").open = false; });
 $("#fSave").addEventListener("click", () => {
   try{ saveForm(); }
-  catch(e){ formErr("保存出错了：" + ((e && e.message) || e) + "。刷新页面再试一次。"); }
+  catch(e){ formErr(T("保存出错了：{m}。刷新页面再试一次。", {m:(e && e.message) || e})); }
 });
 function formErr(msg, field){
   const p = $("#fErr"); p.textContent = msg; p.hidden = false;
@@ -1292,13 +1352,13 @@ function formErr(msg, field){
 function clearErr(){ $("#fErr").hidden = true; document.querySelectorAll(".form .bad").forEach(x=>x.classList.remove("bad")); }
 function saveIdea(){
   const text = $("#fTitle").value.trim(), notes = $("#fIdeaNotes").value.trim();
-  if(!text){ formErr("先写上想做的事", $("#fTitle")); return; }
+  if(!text){ formErr(T("先写上想做的事"), $("#fTitle")); return; }
   if(editingIdea){
     const i = state.ideas.find(x=>x.id===editingIdea); if(i){ i.text = text; i.notes = notes; }
-    toast("已保存修改");
+    toast(T("已保存修改"));
   } else {
     state.ideas.push({id:uid(), text, notes, created:Date.now(), done:false, doneAt:null});
-    toast("记下了，最近没 DDL 的时候会提醒你");
+    toast(T("记下了，最近没 DDL 的时候会提醒你"));
   }
   save(); resetForm(); $("#addBox").open = false;
   tab = "ideas";
@@ -1308,13 +1368,13 @@ function saveForm(){
   clearErr();
   if(kind === "idea") return saveIdea();
   const title = $("#fTitle").value.trim(), dueStr = $("#fDue").value;
-  if(!title){ formErr("先写上任务名称", $("#fTitle")); return; }
-  if(!dueStr || isNaN(new Date(dueStr))){ formErr("选一个截止时间", $("#fDue")); return; }
+  if(!title){ formErr(T("先写上任务名称"), $("#fTitle")); return; }
+  if(!dueStr || isNaN(new Date(dueStr))){ formErr(T("选一个截止时间"), $("#fDue")); return; }
   const due = new Date(dueStr).toISOString();
   const startStr = $("#fStart").value;
-  if(startStr && isNaN(new Date(startStr))){ formErr("开始时间格式不对，清空或重新选一下", $("#fStart")); return; }
+  if(startStr && isNaN(new Date(startStr))){ formErr(T("开始时间格式不对，清空或重新选一下"), $("#fStart")); return; }
   const start = startStr ? new Date(startStr).toISOString() : null;
-  if(start && new Date(start) > new Date(due)){ formErr("计划开始时间晚于截止时间了，改一下其中一个再保存", $("#fStart")); return; }
+  if(start && new Date(start) > new Date(due)){ formErr(T("计划开始时间晚于截止时间了，改一下其中一个再保存"), $("#fStart")); return; }
   const rows = readRows();
   const data = {title, due, start, notes:$("#fNotes").value.trim(), size, remind:$("#fRemind").value};
   if(editingId){
@@ -1323,12 +1383,12 @@ function saveForm(){
       t.steps = rows.map(r => ({id: r.id || uid(), text: r.text, w: r.w, done: r.done}));
       if((t.start||null) !== start) notified.delete(t.id);
       Object.assign(t, data); }
-    toast("已保存修改");
+    toast(T("已保存修改"));
   } else {
     state.tasks.push(Object.assign({id:uid(), done:false, doneAt:null, startedAt:null, created:Date.now(),
       steps: rows.map(r => ({id:uid(), text:r.text, w:r.w, done:false})), subs:[]}, data));
-    if(convertingIdea){ state.ideas = state.ideas.filter(x=>x.id!==convertingIdea); toast("想法已经变成 DDL 了"); }
-    else toast("已加入，记得导出到日历");
+    if(convertingIdea){ state.ideas = state.ideas.filter(x=>x.id!==convertingIdea); toast(T("想法已经变成 DDL 了")); }
+    else toast(T("已加入，记得导出到日历"));
   }
   save(); resetForm(); $("#addBox").open = false;
   if(tab === "cal"){ const d = new Date(due); d.setHours(0,0,0,0); calSel = d; calMonth = new Date(d.getFullYear(), d.getMonth(), 1); }
@@ -1336,7 +1396,69 @@ function saveForm(){
   render();
 }
 document.querySelector(".tabs").addEventListener("click", e => { const b = e.target.closest("button"); if(b){ tab = b.dataset.tab; render(); } });
-$("#meritBtn").addEventListener("click", () => { tab = "rewards"; render(); $("#view").scrollIntoView({behavior:"smooth"}); });
+function setMerit(on){
+  state.settings = Object.assign({}, state.settings, {merit: on});
+  save(); render(); updateHint();
+}
+function meritClick(){
+  if(M()){ tab = "rewards"; render(); $("#view").scrollIntoView({behavior:"smooth"}); return; }
+  const dlg = $("#meritAsk");
+  if(dlg.showModal){ dlg.showModal(); $("#maYes").focus(); }
+  else if(confirm(T("开始攒功德吗？") + "\n" + T("打开后，开始任务、完成步骤和子 DDL 都会攒功德，攒够了可以换自己设定的奖励。之前攒的功德也还在。"))) startMerit();
+}
+function startMerit(){ setMerit(true); tab = "rewards"; render(); toast(T("功德与奖励已打开")); }
+$("#maYes").addEventListener("click", () => { $("#meritAsk").close(); startMerit(); });
+$("#maNo").addEventListener("click", () => $("#meritAsk").close());
+$("#meritAsk").addEventListener("click", e => { if(e.target === e.currentTarget) e.currentTarget.close(); });
+
+// long-press the wooden fish: knock sound + shake + "功德 +1" (just for fun, doesn't change real merit)
+let actx = null;
+function audioUnlock(){
+  try{
+    if(!actx){ const AC = window.AudioContext || window.webkitAudioContext; if(AC) actx = new AC(); }
+    if(actx && actx.state === "suspended") actx.resume();
+  }catch(e){}
+}
+function knockSound(){
+  if(!actx) return;
+  try{
+    const t = actx.currentTime, out = actx.createGain(); out.gain.value = 0.8; out.connect(actx.destination);
+    // hollow wooden body: two quickly damped partials with a tiny pitch drop
+    [[540, .6, .18], [1230, .22, .08], [2010, .08, .04]].forEach(([f, g, d]) => {
+      const o = actx.createOscillator(), a = actx.createGain();
+      o.type = "sine"; o.frequency.setValueAtTime(f * 1.06, t); o.frequency.exponentialRampToValueAtTime(f, t + .025);
+      a.gain.setValueAtTime(.0001, t); a.gain.exponentialRampToValueAtTime(g, t + .002); a.gain.exponentialRampToValueAtTime(.0001, t + d);
+      o.connect(a); a.connect(out); o.start(t); o.stop(t + d + .03);
+    });
+    // stick click
+    const len = Math.floor(actx.sampleRate * .015), buf = actx.createBuffer(1, len, actx.sampleRate), ch = buf.getChannelData(0);
+    for(let i = 0; i < len; i++) ch[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
+    const src = actx.createBufferSource(), bp = actx.createBiquadFilter(), ng = actx.createGain();
+    src.buffer = buf; bp.type = "bandpass"; bp.frequency.value = 3000; bp.Q.value = .9; ng.gain.value = .5;
+    src.connect(bp); bp.connect(ng); ng.connect(out); src.start(t);
+  }catch(e){}
+}
+function knock(){
+  knockSound();
+  const f = $("#meritBtn .fish"); f.classList.remove("knock"); void f.getBoundingClientRect(); f.classList.add("knock");
+  const b = $("#meritBtn"), fl = el("span",{class:"float",text:T("功德") + " +1"});
+  fl.style.right = (4 + Math.random() * 30) + "px";
+  b.append(fl); setTimeout(() => fl.remove(), 1300);
+  if(navigator.vibrate) try{ navigator.vibrate(12); }catch(e){}
+}
+(function(){
+  const btn = $("#meritBtn");
+  let lpT = null, lpI = null, fired = false;
+  const end = () => { clearTimeout(lpT); clearInterval(lpI); lpT = lpI = null; };
+  btn.addEventListener("pointerdown", e => {
+    if(e.button > 0) return;
+    audioUnlock(); fired = false; end();
+    lpT = setTimeout(() => { fired = true; knock(); lpI = setInterval(knock, 380); }, 450);
+  });
+  ["pointerup","pointerleave","pointercancel"].forEach(ev => btn.addEventListener(ev, end));
+  btn.addEventListener("contextmenu", e => e.preventDefault());
+  btn.addEventListener("click", e => { if(fired){ fired = false; e.preventDefault(); return; } meritClick(); });
+})();
 
 /* ---------- calendar export (.ics) ---------- */
 function icsDate(d){ return new Date(d).toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,""); }
@@ -1359,17 +1481,17 @@ function buildICS(tasks){
     L.push("BEGIN:VEVENT","UID:" + t.id + "@baofojiao-ddl","DTSTAMP:" + now,
       "DTSTART:" + icsDate(start),"DTEND:" + icsDate(end),
       "SUMMARY:" + icsText("DDL｜" + t.title),
-      "DESCRIPTION:" + icsText((t.notes || "") + (M() ? "\n\n工作量：" + SIZE_NAME[t.size||"m"] : "")));
+      "DESCRIPTION:" + icsText((t.notes || "") + (M() ? "\n\n" + T("工作量：") + T(SIZE_NAME[t.size||"m"]) : "")));
     const trig = {"1d":"-P1D","3h":"-PT3H","1h":"-PT1H"}[t.remind];
-    if(trig) L.push("BEGIN:VALARM","ACTION:DISPLAY","TRIGGER:" + trig,"DESCRIPTION:" + icsText("DDL 快到了：" + t.title),"END:VALARM");
+    if(trig) L.push("BEGIN:VALARM","ACTION:DISPLAY","TRIGGER:" + trig,"DESCRIPTION:" + icsText(T("DDL 快到了：") + t.title),"END:VALARM");
     L.push("END:VEVENT");
     subsOf(t).filter(x => !x.done).forEach(x => {
       const e2 = new Date(x.due).getTime();
       L.push("BEGIN:VEVENT","UID:" + t.id + "-" + x.id + "@baofojiao-ddl","DTSTAMP:" + now,
         "DTSTART:" + icsDate(e2 - 30*60000),"DTEND:" + icsDate(e2),
-        "SUMMARY:" + icsText("子DDL｜" + x.title + "（" + t.title + "）"),
-        "DESCRIPTION:" + icsText("属于：" + t.title + "\n整个任务截止：" + fmtDue(t.due)));
-      if(trig) L.push("BEGIN:VALARM","ACTION:DISPLAY","TRIGGER:" + trig,"DESCRIPTION:" + icsText("子 DDL 快到了：" + x.title),"END:VALARM");
+        "SUMMARY:" + icsText(T("子DDL｜{s}（{t}）", {s:x.title, t:t.title})),
+        "DESCRIPTION:" + icsText(T("属于：{t}\n整个任务截止：{d}", {t:t.title, d:fmtDue(t.due)})));
+      if(trig) L.push("BEGIN:VALARM","ACTION:DISPLAY","TRIGGER:" + trig,"DESCRIPTION:" + icsText(T("子 DDL 快到了：") + x.title),"END:VALARM");
       L.push("END:VEVENT");
     });
     if(t.start && !t.startedAt){
@@ -1377,9 +1499,9 @@ function buildICS(tasks){
       const st = stepsOf(t).filter(x=>!x.done).map((x,i)=>(i+1) + ". " + x.text).join("\n");
       L.push("BEGIN:VEVENT","UID:" + t.id + "-start@baofojiao-ddl","DTSTAMP:" + now,
         "DTSTART:" + icsDate(s0),"DTEND:" + icsDate(s0 + 30*60000),
-        "SUMMARY:" + icsText("开始｜" + t.title),
-        "DESCRIPTION:" + icsText(st ? "先做第一步就好：\n" + st : "先打开材料，做 5 分钟就好"),
-        "BEGIN:VALARM","ACTION:DISPLAY","TRIGGER:PT0M","DESCRIPTION:" + icsText("该开始了：" + t.title),"END:VALARM",
+        "SUMMARY:" + icsText(T("开始｜") + t.title),
+        "DESCRIPTION:" + icsText(st ? T("先做第一步就好：\n") + st : T("先打开材料，做 5 分钟就好")),
+        "BEGIN:VALARM","ACTION:DISPLAY","TRIGGER:PT0M","DESCRIPTION:" + icsText(T("该开始了：") + t.title),"END:VALARM",
         "END:VEVENT");
     }
   });
@@ -1396,36 +1518,42 @@ function download(filename, text, type){
 }
 function stamp(){ const d = new Date(); return (d.getMonth()+1) + "-" + d.getDate(); }
 function exportICS(tasks){
-  if(!tasks.length){ toast("没有要导出的任务"); return; }
+  if(!tasks.length){ toast(T("没有要导出的任务")); return; }
   try{
     const name = tasks.length === 1 ? "ddl-" + (tasks[0].title.replace(/[\\/:*?"<>|]/g,"").slice(0,30) || "task") + ".ics" : "ddl-all-" + stamp() + ".ics";
     download(name, buildICS(tasks), "text/calendar;charset=utf-8");
-    toast("已导出，打开 .ics 就能加入日历");
-  }catch(e){ toast("导出没有成功：" + ((e && e.message) || "未知错误")); }
+    toast(T("已导出，打开 .ics 就能加入日历"));
+  }catch(e){ toast(T("导出没有成功：") + ((e && e.message) || T("未知错误"))); }
 }
 
 /* ---------- backup ---------- */
 $("#bkOut").addEventListener("click", () => {
   try{
-    download("抱佛脚备份-" + stamp() + ".json", JSON.stringify(state, null, 1), "application/json");
+    download("SaveDeadlines-backup-" + stamp() + ".json", JSON.stringify(state, null, 1), "application/json");
     try{ localStorage.setItem("ddl-last-backup", String(Date.now())); }catch(e){}
     $("#banner").hidden = true;
-    toast("备份已导出，把文件存好或发到另一台设备");
-  }catch(e){ toast("导出没有成功：" + ((e && e.message) || "未知错误")); }
+    toast(T("备份已导出，把文件存好或发到另一台设备"));
+  }catch(e){ toast(T("导出没有成功：") + ((e && e.message) || T("未知错误"))); }
 });
 $("#bkIn").addEventListener("click", () => $("#bkFile").click());
 $("#bkFile").addEventListener("change", async e => {
   const f = e.target.files && e.target.files[0]; e.target.value = "";
   if(!f) return;
   let d;
-  try{ d = JSON.parse(await f.text()); }catch(err){ toast("这个文件读不出来，确认选的是抱佛脚导出的 .json"); return; }
-  if(!d || !Array.isArray(d.tasks)){ toast("这个文件里没有任务数据，确认选的是抱佛脚导出的备份"); return; }
+  try{ d = JSON.parse(await f.text()); }catch(err){ toast(T("这个文件读不出来，确认选的是 SaveDeadlines 抱佛脚导出的 .json")); return; }
+  if(!d || !Array.isArray(d.tasks)){ toast(T("这个文件里没有任务数据，确认选的是 SaveDeadlines 抱佛脚导出的备份")); return; }
   const incoming = normalize(d);
-  if(state.tasks.length && !confirm("导入会用备份里的 " + incoming.tasks.length + " 个任务替换这里现有的 " + state.tasks.length + " 个任务和功德记录，确定吗？")) return;
+  if(state.tasks.length && !confirm(T("导入会用备份里的 {a} 个任务替换这里现有的 {b} 个任务和功德记录，确定吗？", {a:incoming.tasks.length, b:state.tasks.length}))) return;
   state = incoming; save(); tab = "todo"; render();
-  toast("已导入 " + incoming.tasks.length + " 个任务");
+  toast(T("已导入 {n} 个任务", {n:incoming.tasks.length}));
 });
 
+$("#langSw").addEventListener("click", e => {
+  const b = e.target.closest("button"); if(!b || b.dataset.l === lang) return;
+  lang = b.dataset.l; try{ localStorage.setItem("ddl-lang", lang); }catch(err){}
+  applyI18n(); setKind(kind); setFormTitle(); updateHint(); render(); renderAcct(true);
+});
+applyI18n();
 resetForm();
 initLocal();
 initSync();
