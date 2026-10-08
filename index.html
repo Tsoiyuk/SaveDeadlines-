@@ -457,13 +457,18 @@ async function signOut(){
   toast("已退出登录");
 }
 function setSync(st){ syncState = st; renderAcct(false); }
-function authErr(e){
-  const m = String((e && (e.message || e.msg)) || "");
-  if((e && e.status === 429) || /rate|seconds|too many/i.test(m)) return "发得太频繁了，等一分钟再试";
-  if(/not authorized|not allowed/i.test(m)) return "这个邮箱暂时收不到验证码：网站还没设置发信邮箱，请联系网站管理员";
-  if(/expired|invalid|token/i.test(m)) return "验证码不对或已过期，可以重新发送一个";
-  if(/fetch|network|load failed/i.test(m)) return "连不上同步服务，检查一下网络";
-  return "出错了：" + (m || "未知错误");
+function authErr(e, step){
+  const m = String((e && (e.message || e.msg || e.error_description)) || "");
+  const raw = m ? "（原始信息：" + m + "）" : "";
+  if(/invalid api key|no api key|apikey/i.test(m)) return "网站的同步设置不对：config.js 里的 key 填错了，应该是 anon public key（eyJ 开头）" + raw;
+  if((e && e.status === 429) || /rate limit|too many|for security purposes/i.test(m)) return "发得太频繁了，等一分钟再试" + raw;
+  if(/not authorized|not allowed for this|email address .* not authorized/i.test(m)) return "这个邮箱暂时收不到验证码：网站还没设置好发信邮箱（SMTP）" + raw;
+  if(/signups? not allowed|signup.*disabled/i.test(m)) return "Supabase 里关闭了新用户注册，需要在 Authentication 设置里打开" + raw;
+  if(/error sending|smtp|mail/i.test(m)) return "验证码邮件发不出去：检查 Supabase 的 SMTP 设置（Gmail 地址、端口 587、16 位应用专用密码）" + raw;
+  if(/fetch|network|load failed/i.test(m)) return "连不上同步服务：检查网络，或 config.js 里的网址是否正确" + raw;
+  if(step === "verify" && /expired|invalid|token|otp/i.test(m)) return "验证码不对或已过期，可以重新发送一个";
+  if(/email/i.test(m) && /invalid/i.test(m)) return "这个邮箱地址不被接受，检查一下有没有打错" + raw;
+  return "出错了" + raw;
 }
 function renderAcct(full){
   const box = $("#acctBox");
@@ -528,7 +533,7 @@ function renderAcct(full){
       const { data, error } = await sb.auth.verifyOtp({email: otpEmail, token: t, type: "email"});
       if(error) throw error;
       if(data && data.user){ onSignedIn(data.user); $("#acctBox").open = false; toast("登录成功，开始同步"); }
-    }catch(e){ showErr(authErr(e)); vbtn.disabled = false; vbtn.textContent = "登录"; }
+    }catch(e){ showErr(authErr(e, "verify")); vbtn.disabled = false; vbtn.textContent = "登录"; }
   };
   const vbtn = el("button",{class:"btn",type:"button",text:"登录",onclick:verify});
   code.addEventListener("keydown", e => { if(e.key === "Enter" && !e.isComposing){ e.preventDefault(); verify(); } });
