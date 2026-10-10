@@ -217,8 +217,66 @@ details.acct > summary .plus{margin-left:auto;font-size:18px}
 .tabs{overflow-x:auto;scrollbar-width:none}
 .tabs button{flex:none}
 .kind{max-width:220px}
-#addBox[data-kind="idea"] .ddl-only{display:none!important}
+#addBox:not([data-kind="ddl"]) .ddl-only{display:none!important}
 #addBox:not([data-kind="idea"]) .idea-only{display:none!important}
+#addBox:not([data-kind="event"]) .event-only{display:none!important}
+#addBox[data-kind="event"] .noevent{display:none!important}
+.kind{max-width:300px}
+.starrow{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted)}
+.stars{display:flex;gap:2px}
+.stars button{background:none;border:0;padding:2px 3px;font-size:22px;line-height:1;color:var(--line);cursor:pointer}
+.stars button.on{color:var(--gold)}
+.stars-s{color:var(--gold);letter-spacing:1px;margin-left:6px;font-size:12px}
+.evgrid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);gap:10px}
+@media (max-width:420px){ .evgrid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)} .evgrid label:first-child{grid-column:1/-1} }
+label.chk{display:flex;flex-direction:row;align-items:center;gap:8px;font-size:14px;color:var(--ink)}
+label.chk input{width:18px;height:18px;accent-color:var(--sage)}
+.warn{color:var(--red)!important}
+.quiet{display:flex;align-items:center;gap:8px;font-size:14px;margin:10px 0 4px;flex-wrap:wrap}
+.quiet span:first-child{flex:1;min-width:120px}
+.quiet input{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:5px 8px;font-size:14px}
+.sortsw{display:flex;gap:4px;align-items:center;font-size:13px;color:var(--muted)}
+.sortsw button{background:none;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12px;color:var(--muted)}
+.sortsw button[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.todaycard,.freecard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:6px 0 10px}
+.freecard{border-left:4px solid var(--gold)}
+.todaycard h3,.freecard h3{font-family:var(--display);font-weight:400;font-size:19px;margin:0 0 6px}
+.freecard p{margin:0 0 8px;font-size:14px}
+.freecard .row{display:flex;gap:10px;align-items:center}
+.evlist{list-style:none;margin:0 0 6px;padding:0}
+.evlist li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:5px 0;border-bottom:1px dashed var(--line)}
+.evlist li:last-child{border-bottom:0}
+.evlist .tm{font-variant-numeric:tabular-nums;font-size:13px;color:var(--sage);white-space:nowrap}
+.evlist li.past .tm,.evlist li.past .et{color:var(--muted)}
+.evlist .et{word-break:break-word}
+.evlist .et small{display:block;font-size:12px;color:var(--muted)}
+.evlist .badge{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:0 6px;margin-left:6px;color:var(--muted)}
+.evlist .badge.now{border-color:var(--gold);color:var(--gold)}
+.evlist .acts{display:flex;gap:10px;font-size:13px}
+.evlist .acts button{background:none;border:0;color:var(--sage);padding:0;font-size:13px}
+.evlist .acts button.danger{color:var(--red)}
+.memo ul{list-style:none;margin:0;padding:0}
+.memo li{display:flex;align-items:flex-start;gap:10px;padding:4px 0}
+.memo li input[type=checkbox]{width:18px;height:18px;margin:2px 0 0;accent-color:var(--sage);flex:none}
+.memo li label{flex:1;word-break:break-word}
+.memo li.ok label{color:var(--muted);text-decoration:line-through}
+.memo li .x{background:none;border:0;color:var(--muted);font-size:16px;padding:0 4px}
+.memo .addm{display:flex;gap:8px;margin:6px 0}
+.memo .addm input{flex:1;min-width:0;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:7px 10px;font-size:16px}
+.memo .addm button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:0 12px;font-size:20px}
+.memo textarea{width:100%;min-height:64px;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 10px;font:inherit;font-size:15px;resize:vertical}
+.daysec{font-size:13px;color:var(--muted);margin:16px 0 6px;letter-spacing:.02em}
+.dayacts{display:flex;gap:14px}
+.chip.ev{background:transparent;border-left-color:var(--sage)}
+@media (max-width:520px){ .chip.ev{background:transparent;border:1.5px solid var(--sage);box-sizing:border-box} }
+.remain{font-size:13px;color:var(--muted);margin-top:4px}
+.remain.tight{color:var(--red)}
+.durs{font-size:12px;color:var(--muted);white-space:nowrap;margin-top:2px}
+.addstep select,.addsub select{min-width:0;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:6px;font-size:14px}
+.rw input{min-width:0;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:6px 8px;font-size:15px;width:100%}
+.rw .rwedit{display:flex;gap:6px;align-items:center}
+.rw .rwedit input[type=number]{width:80px}
 body.nomerit .merit-only{display:none!important}
 details.opt{border:1px solid var(--line);border-radius:10px;background:var(--bg)}
 details.opt summary{list-style:none;cursor:pointer;padding:10px 12px;font-size:14px;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;color:var(--ink)}
@@ -240,10 +298,10 @@ details.opt[open] summary::before{transform:rotate(90deg)}
 .subs label small{display:block;font-size:12px;color:var(--muted)}
 .subs li.ok label{color:var(--muted);text-decoration:line-through}
 .subs .x{background:none;border:0;color:var(--muted);padding:0 4px;font-size:16px}
-.addsub{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,200px) auto;gap:8px;margin-bottom:12px}
+.addsub{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,190px) auto auto;gap:8px;margin-bottom:12px}
 .addsub input{min-width:0;width:100%;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:7px 10px;font-size:16px}
 .addsub button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:0 12px;font-size:20px}
-@media (max-width:520px){ .addsub{grid-template-columns:minmax(0,1fr) auto} .addsub input[type=datetime-local]{grid-row:2;grid-column:1} }
+@media (max-width:520px){ .addsub{grid-template-columns:minmax(0,1fr) auto auto} .addsub input:not([type]){grid-column:1/3} .addsub input[type=datetime-local]{grid-row:2;grid-column:1/3} .addsub select{grid-row:2;grid-column:3/4} .addsub button{grid-row:1;grid-column:3/4} }
 .chip.sub{border-left-style:dotted}
 .task.idea{--bar:var(--gold)} .task.idea.done{--bar:var(--line)}
 .ideacard{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--sage);border-radius:10px;padding:12px 14px;margin:14px 0 8px}
@@ -317,9 +375,19 @@ dialog#meritAsk .actions{display:flex;gap:8px;justify-content:flex-end}
       <div class="seg kind" id="fKind" role="group" data-i18n-aria="记录类型" aria-label="记录类型">
         <button type="button" data-k="ddl" aria-pressed="true">DDL</button>
         <button type="button" data-k="idea" aria-pressed="false" data-i18n>想法</button>
+        <button type="button" data-k="event" aria-pressed="false" data-i18n>日程</button>
       </div>
       <label><span id="fTitleLbl">任务名称</span><input id="fTitle" maxlength="80"></label>
       <label class="ddl-only"><span data-i18n>截止时间</span><input id="fDue" type="datetime-local"></label>
+      <div class="starrow noevent"><span data-i18n>重要程度</span><div class="stars" id="fStars" role="radiogroup" data-i18n-aria="重要程度" aria-label="重要程度"></div></div>
+      <div class="event-only evgrid">
+        <label><span data-i18n>日期</span><input id="fEvDate" type="date"></label>
+        <label><span data-i18n>开始</span><input id="fEvStart" type="time"></label>
+        <label><span data-i18n>结束</span><input id="fEvEnd" type="time"></label>
+      </div>
+      <label class="event-only chk"><input type="checkbox" id="fEvWeekly"><span data-i18n>每周重复</span></label>
+      <label class="event-only" id="fEvUntilWrap" hidden><span data-i18n>重复到（可不填）</span><input id="fEvUntil" type="date"></label>
+      <label class="event-only"><span data-i18n>备注（可不填）</span><textarea id="fEvNotes" data-i18n-ph="地点、要带的东西……"></textarea></label>
       <span class="hint idea-only" data-i18n>没有截止时间、以后有空想做的事。最近没有 DDL 的时候，「进行中」会提醒你可以做它。</span>
       <label class="idea-only"><span data-i18n>备注（可不填）</span><textarea id="fIdeaNotes" data-i18n-ph="为什么想做、需要准备什么……"></textarea></label>
       <details class="opt ddl-only" id="fMore">
@@ -338,19 +406,22 @@ dialog#meritAsk .actions{display:flex;gap:8px;justify-content:flex-end}
           </div>
           <span class="hint" data-i18n>填了开始时间，到点会在「进行中」顶部提醒；导出到日历时也会多一个准点响的「开始」事件。</span>
           <div style="display:grid;gap:6px">
-            <span style="font-size:13px;color:var(--muted)" data-i18n>拆解步骤（越小越好；右边选这一步占多少比重）</span>
+            <span style="font-size:13px;color:var(--muted)" data-i18n>拆解步骤（越小越好；右边选这一步大概要多久）</span>
             <div class="steprows" id="fStepRows"></div>
             <button type="button" class="addrow" id="fAddRow"><b>+</b><span data-i18n>加一步</span></button>
             <span class="hint" id="fStepHint"></span>
           </div>
+          <label><span data-i18n>预计总时长（没拆步骤时用）</span><select id="fEst"></select></label>
           <label><span data-i18n>具体内容</span><textarea id="fNotes" data-i18n-ph="要交什么、哪几题、交到哪里……"></textarea></label>
           <label class="merit-only"><span data-i18n>工作量（决定能攒多少功德）</span>
             <div class="seg" id="fSize" role="group">
               <button type="button" data-v="s" data-i18n>小 · 10</button>
               <button type="button" data-v="m" aria-pressed="true" data-i18n>中 · 25</button>
               <button type="button" data-v="l" data-i18n>大 · 50</button>
+              <button type="button" data-v="c" data-i18n>自定义</button>
             </div>
           </label>
+          <label class="merit-only" id="fPtsWrap" hidden><span data-i18n>自定义功德数</span><input id="fPts" type="number" min="1" max="999" inputmode="numeric" value="30"></label>
         </div>
       </details>
       <div class="actions">
@@ -373,6 +444,9 @@ dialog#meritAsk .actions{display:flex;gap:8px;justify-content:flex-end}
   <details class="help" id="setHelp">
     <summary data-i18n>设置</summary>
     <label class="switch"><span><span data-i18n>功德与奖励</span><small data-i18n>关掉后只保留 DDL 和想法，界面更简洁。已经攒的功德会保留，随时可以再打开。</small></span><input type="checkbox" id="setMerit" role="switch" checked></label>
+    <label class="switch"><span><span data-i18n>桌面通知</span><small data-i18n>DDL 提醒、计划开始、日程开始前 10 分钟和空闲提醒会以系统通知弹出。只在这个页面开着时有效（可以放在后台）；关掉页面后的提醒请用「导出到日历」。这个设置只对这台设备有效。</small><small id="notifyStatus" class="warn" hidden></small></span><input type="checkbox" id="setNotify" role="switch"></label>
+    <label class="switch"><span><span data-i18n>空闲时提醒开始做任务</span><small data-i18n>现在和接下来 45 分钟都没有日程时，推荐一个最该做的任务，最多每小时一次。</small></span><input type="checkbox" id="setFree" role="switch"></label>
+    <div class="quiet"><span data-i18n>免打扰时段</span><input type="time" id="quietFrom" data-i18n-aria="免打扰开始" aria-label="免打扰开始"><span>–</span><input type="time" id="quietTo" data-i18n-aria="免打扰结束" aria-label="免打扰结束"></div>
   </details>
   <details class="help">
     <summary data-i18n>怎么同步到 iPhone 日历？</summary>
@@ -416,7 +490,7 @@ function pickLang(){
   return n.startsWith("zh") ? "zh" : n.startsWith("de") ? "de" : "en";
 }
 let lang = pickLang();
-const L10N = {"功德":["Merit","Karma"],"想法":["Ideas","Ideen"],"截止时间":["Deadline","Deadline"],"没有截止时间、以后有空想做的事。最近没有 DDL 的时候，「进行中」会提醒你可以做它。":["Something you'd like to do someday, with no deadline. When no deadlines are coming up, \"Active\" will suggest it.","Etwas, das du irgendwann machen möchtest – ohne Deadline. Wenn keine Deadlines anstehen, schlägt „Aktiv“ es dir vor."],"备注（可不填）":["Notes (optional)","Notizen (optional)"],"更多设置":["More options","Weitere Optionen"],"计划开始":["Planned start","Geplanter Start"],"DDL 提醒":["Reminder","Erinnerung"],"提前 1 天":["1 day before","1 Tag vorher"],"提前 3 小时":["3 hours before","3 Stunden vorher"],"提前 1 小时":["1 hour before","1 Stunde vorher"],"不提醒":["No reminder","Keine Erinnerung"],"填了开始时间，到点会在「进行中」顶部提醒；导出到日历时也会多一个准点响的「开始」事件。":["With a start time, \"Active\" reminds you at the top when it's time; calendar exports also get a \"Start\" event that rings on time.","Mit Startzeit erinnert dich „Aktiv“ oben, sobald es so weit ist; beim Kalenderexport gibt es zusätzlich ein „Start“-Ereignis mit Alarm."],"拆解步骤（越小越好；右边选这一步占多少比重）":["Steps (the smaller the better; pick each step's weight on the right)","Schritte (je kleiner, desto besser; rechts die Gewichtung wählen)"],"加一步":["Add step","Schritt hinzufügen"],"具体内容":["Details","Details"],"工作量（决定能攒多少功德）":["Effort (decides how much merit you earn)","Aufwand (bestimmt, wie viel Karma du bekommst)"],"小 · 10":["Small · 10","Klein · 10"],"中 · 25":["Medium · 25","Mittel · 25"],"大 · 50":["Large · 50","Groß · 50"],"取消":["Cancel","Abbrechen"],"保存":["Save","Speichern"],"进行中":["Active","Aktiv"],"日历":["Calendar","Kalender"],"已完成":["Done","Erledigt"],"奖励":["Rewards","Belohnungen"],"设置":["Settings","Einstellungen"],"功德与奖励":["Merit & rewards","Karma & Belohnungen"],"关掉后只保留 DDL 和想法，界面更简洁。已经攒的功德会保留，随时可以再打开。":["Turn off to keep only deadlines and ideas for a cleaner look. Merit you've earned is kept, and you can switch it back on anytime.","Ausschalten, um nur Deadlines und Ideen zu behalten – schlichter. Gesammeltes Karma bleibt erhalten, du kannst es jederzeit wieder einschalten."],"怎么同步到 iPhone 日历？":["How do I add deadlines to my iPhone calendar?","Wie kommen Deadlines in den iPhone-Kalender?"],"在「进行中」点「导出全部到日历」，或在单个任务里点「加入日历」，会得到一个 .ics 文件。":["Tap \"Export all to calendar\" in \"Active\", or \"Add to calendar\" on a single task, to get an .ics file.","Tippe in „Aktiv“ auf „Alle in Kalender exportieren“ oder bei einer Aufgabe auf „Zum Kalender“ – du bekommst eine .ics-Datei."],"iPhone（Safari）：点下载后选「打开」或在下载列表里点它，出现日历预览时选「全部添加」。":["iPhone (Safari): after downloading, choose \"Open\" or tap it in your downloads, then choose \"Add All\" in the calendar preview.","iPhone (Safari): nach dem Download „Öffnen“ wählen oder in den Downloads antippen, dann in der Kalendervorschau „Alle hinzufügen“."],"Windows：双击下载好的 .ics，用 Outlook 或系统「日历」打开即可导入。":["Windows: double-click the .ics and open it with Outlook or the Calendar app to import.","Windows: die .ics doppelklicken und mit Outlook oder der Kalender-App öffnen."],"日历里是导入的副本，任务改了需要重新导出一次。":["The calendar holds an imported copy, so export again after changing a task.","Im Kalender liegt eine Kopie – nach Änderungen bitte erneut exportieren."],"数据存在哪？怎么换设备？":["Where is my data? How do I switch devices?","Wo sind meine Daten? Wie wechsle ich das Gerät?"],"没登录时，任务和功德只保存在这台设备的浏览器里。登录后会在云端存一份，电脑和手机用同一个邮箱登录就会自动同步，换手机也不会丢。":["When you're not logged in, everything is stored only in this browser on this device. Once you log in, a copy is kept in the cloud: log in with the same email on your computer and phone and they sync automatically, even if you get a new phone.","Ohne Login wird alles nur in diesem Browser auf diesem Gerät gespeichert. Nach dem Login liegt eine Kopie in der Cloud: Melde dich auf Computer und Handy mit derselben E-Mail an, dann wird automatisch synchronisiert – auch beim Handywechsel geht nichts verloren."],"iPhone 上建议用 Safari 打开后点分享按钮 →「添加到主屏幕」，之后从主屏幕图标打开：像 App 一样全屏，没网也能用，数据也不容易被系统清理。":["On iPhone, open this page in Safari, tap Share → \"Add to Home Screen\", and open it from the icon from then on: it runs full-screen like an app, works offline, and your data is less likely to be cleared by the system.","Auf dem iPhone die Seite in Safari öffnen, Teilen → „Zum Home-Bildschirm“ tippen und künftig über das Symbol öffnen: Vollbild wie eine App, funktioniert offline, und die Daten werden seltener vom System gelöscht."],"不想登录的话，也可以手动搬：在旧设备点「导出备份」，把 .json 文件发到新设备（微信、邮件、AirDrop 都行），在新设备点「导入备份」选这个文件。":["Prefer not to log in? Move data by hand: tap \"Export backup\" on the old device, send the .json file to the new one (email, AirDrop, any messenger), then tap \"Import backup\" there and pick the file.","Lieber ohne Login? Dann manuell: Auf dem alten Gerät „Backup exportieren“, die .json-Datei aufs neue Gerät schicken (E-Mail, AirDrop, Messenger) und dort „Backup importieren“ wählen."],"导出备份":["Export backup","Backup exportieren"],"导入备份":["Import backup","Backup importieren"],"开始攒功德吗？":["Start earning merit?","Karma sammeln?"],"打开后，开始任务、完成步骤和子 DDL 都会攒功德，攒够了可以换自己设定的奖励。之前攒的功德也还在。":["Starting tasks and finishing steps and sub-deadlines will earn merit, which you can trade for rewards you set yourself. Merit you earned before is still there.","Aufgaben beginnen sowie Schritte und Teil-Deadlines erledigen bringt Karma, das du gegen selbst gewählte Belohnungen eintauschen kannst. Früher gesammeltes Karma ist noch da."],"先不用":["Not now","Später"],"开始攒功德":["Start earning","Los geht's"],"记录类型":["Entry type","Eintragstyp"],"为什么想做、需要准备什么……":["Why you want to do it, what you'd need…","Warum du es machen willst, was du brauchst …"],"要交什么、哪几题、交到哪里……":["What to hand in, which exercises, where to submit…","Was abzugeben ist, welche Aufgaben, wo einreichen …"],"一杯奶茶":["A bubble tea","Ein Bubble Tea"],"追一集剧":["Watch an episode","Eine Folge schauen"],"周末睡懒觉":["Sleep in on the weekend","Am Wochenende ausschlafen"],"买个想要的小东西":["Buy a little treat","Etwas Kleines gönnen"],"这个浏览器不让网页保存数据（可能开了无痕模式），关掉页面后任务会丢失。换成普通模式打开就好。":["This browser won't let the page save data (private mode?). Tasks will be lost when you close the page. Open it in normal mode instead.","Dieser Browser erlaubt kein Speichern (privater Modus?). Aufgaben gehen beim Schließen verloren – bitte im normalen Modus öffnen."],"已经超过两周没备份了。登录后会自动存到云端；不想登录的话，拉到底部「数据存在哪」点「导出备份」。":["No backup for over two weeks. Log in to save to the cloud automatically, or scroll to \"Where is my data?\" at the bottom and tap \"Export backup\".","Seit über zwei Wochen kein Backup. Melde dich an, um automatisch in der Cloud zu speichern, oder tippe unten unter „Wo sind meine Daten?“ auf „Backup exportieren“."],"这台设备上原有的任务已和账号里的合并":["Tasks on this device were merged with your account","Aufgaben auf diesem Gerät wurden mit deinem Konto zusammengeführt"],"还有改动没同步到云端，现在退出会丢掉这些改动。\n":["Some changes haven't synced yet and will be lost if you log out now.\n","Einige Änderungen sind noch nicht synchronisiert und gehen beim Abmelden verloren.\n"],"退出后这台设备上的任务会清空，云端的还在，下次登录会回来。确定退出吗？":["Logging out clears tasks from this device. They stay in the cloud and come back when you log in again. Log out?","Beim Abmelden werden die Aufgaben auf diesem Gerät gelöscht. In der Cloud bleiben sie und kommen beim nächsten Login zurück. Abmelden?"],"已退出登录":["Logged out","Abgemeldet"],"（原始信息：{m}）":[" (details: {m})"," (Details: {m})"],"网站的同步设置不对：config.js 里的 key 填错了，应该是 anon public key（eyJ 开头）":["Sync is misconfigured: the key in config.js is wrong. It should be the anon public key (starts with eyJ)","Sync ist falsch eingerichtet: Der Key in config.js stimmt nicht. Es muss der anon public key sein (beginnt mit eyJ)"],"发得太频繁了，等一分钟再试":["Too many requests — wait a minute and try again","Zu viele Anfragen – bitte eine Minute warten"],"这个邮箱暂时收不到验证码：网站还没设置好发信邮箱（SMTP）":["Codes can't be sent to this address yet: the site's sender email (SMTP) isn't set up","An diese Adresse können noch keine Codes gesendet werden: Der Absender (SMTP) ist nicht eingerichtet"],"Supabase 里关闭了新用户注册，需要在 Authentication 设置里打开":["New sign-ups are disabled in Supabase; enable them in the Authentication settings","Neue Registrierungen sind in Supabase deaktiviert; in den Authentication-Einstellungen aktivieren"],"验证码邮件发不出去：检查 Supabase 的 SMTP 设置（Gmail 地址、端口 587、16 位应用专用密码）":["The code email couldn't be sent: check the SMTP settings in Supabase (Gmail address, port 587, 16-character app password)","Die Code-E-Mail konnte nicht gesendet werden: SMTP-Einstellungen in Supabase prüfen (Gmail-Adresse, Port 587, 16-stelliges App-Passwort)"],"config.js 里的网址多了一截：只要 https://xxxx.supabase.co，后面不要带 /rest/v1 之类":["The URL in config.js is too long: use only https://xxxx.supabase.co, without /rest/v1 or similar","Die URL in config.js ist zu lang: nur https://xxxx.supabase.co, ohne /rest/v1 o. Ä."],"连不上同步服务：检查网络，或 config.js 里的网址是否正确":["Can't reach the sync service: check your connection or the URL in config.js","Sync-Dienst nicht erreichbar: Verbindung oder URL in config.js prüfen"],"验证码不对或已过期，可以重新发送一个":["Wrong or expired code — you can request a new one","Falscher oder abgelaufener Code – du kannst einen neuen anfordern"],"这个邮箱地址不被接受，检查一下有没有打错":["This email address wasn't accepted — check for typos","Diese E-Mail-Adresse wurde nicht akzeptiert – bitte auf Tippfehler prüfen"],"出错了":["Something went wrong","Etwas ist schiefgelaufen"],"正在连接同步…":["Connecting to sync…","Verbinde mit Sync …"],"同步服务连不上，任务先存在本机":["Sync unavailable — tasks are saved on this device","Sync nicht erreichbar – Aufgaben werden auf diesem Gerät gespeichert"],"登录，让电脑和手机自动同步":["Log in to sync your computer and phone","Anmelden, um Computer und Handy zu synchronisieren"],"已同步":["Synced","Synchronisiert"],"同步中…":["Syncing…","Synchronisiere …"],"离线中，联网后自动同步":["Offline — will sync when you're back online","Offline – wird synchronisiert, sobald du online bist"],"同步没成功，稍后会自动重试":["Sync failed — will retry automatically","Sync fehlgeschlagen – neuer Versuch folgt automatisch"],"已登录":["Logged in","Angemeldet"],"可能是网络问题。任务照常保存在这台设备上，刷新页面会重新连接。":["Probably a network issue. Tasks are still saved on this device; reload the page to reconnect.","Wahrscheinlich ein Netzwerkproblem. Aufgaben werden weiter auf diesem Gerät gespeichert; Seite neu laden, um neu zu verbinden."],"登录邮箱：":["Logged in as: ","Angemeldet als: "],"在电脑和手机上用同一个邮箱登录，任务、功德和奖励就会自动同步。":["Log in with the same email on your computer and phone and your tasks, merit and rewards sync automatically.","Melde dich auf Computer und Handy mit derselben E-Mail an – Aufgaben, Karma und Belohnungen werden automatisch synchronisiert."],"立即同步":["Sync now","Jetzt synchronisieren"],"退出登录":["Log out","Abmelden"],"不用设密码：输入邮箱，收到验证码后填进来就登录了。第一次登录会自动注册。":["No password needed: enter your email, then type in the code you receive. Your first login creates an account automatically.","Kein Passwort nötig: E-Mail eingeben, dann den erhaltenen Code eintragen. Beim ersten Login wird automatisch ein Konto erstellt."],"你的邮箱":["Your email","Deine E-Mail"],"邮箱格式不对，检查一下":["That doesn't look like an email address","Das sieht nicht nach einer E-Mail-Adresse aus"],"发送中…":["Sending…","Wird gesendet …"],"发送验证码":["Send code","Code senden"],"验证码已发到 {e}":["Code sent to {e}","Code gesendet an {e}"],"没收到的话看看垃圾邮件箱。":["Didn't get it? Check your spam folder.","Nicht angekommen? Schau im Spam-Ordner nach."],"邮件里的验证码":["Code from the email","Code aus der E-Mail"],"验证码是邮件里的那串数字":["The code is the number in the email","Der Code ist die Zahl in der E-Mail"],"登录中…":["Logging in…","Anmeldung …"],"登录成功，开始同步":["Logged in — syncing now","Angemeldet – Synchronisierung läuft"],"登录":["Log in","Anmelden"],"重新发送（{n}）":["Resend ({n})","Erneut senden ({n})"],"重新发送":["Resend","Erneut senden"],"已重新发送":["Code resent","Code erneut gesendet"],"换个邮箱":["Use a different email","Andere E-Mail verwenden"],"逾期 {s}":["{s} overdue","{s} überfällig"],"剩 {s}":["{s} left","noch {s}"],"DDL 记录 · 做完打勾攒功德":["Deadlines · check them off, earn merit","Deadlines · abhaken, Karma sammeln"],"DDL 记录 · 想做的事也记下来":["Deadlines · and things you want to do","Deadlines · und Dinge, die du machen willst"],"查看功德与奖励":["View merit and rewards","Karma und Belohnungen ansehen"],"长按敲木鱼":["press and hold to tap the wooden fish","gedrückt halten, um den Holzfisch zu klopfen"],"待办":["To do","Offen"],"今天完成":["Done today","Heute erledigt"],"连续打卡":["Streak","Serie"],"{n} 天":["{n} d","{n} T."],"导出全部到日历":["Export all to calendar","Alle in Kalender exportieren"],"还没有完成的任务。":["Nothing finished yet.","Noch nichts erledigt."],"暂时没有 DDL。":["No deadlines right now.","Gerade keine Deadlines."],"做完一个回来打勾，功德就到账了。":["Finish one and check it off to earn merit.","Erledige eine und hake sie ab – schon gibt's Karma."],"做完一个回来打勾就好。":["Finish one and come back to check it off.","Erledige eine und hake sie hier ab."],"点上面的「新增」记一个 DDL，或者记下以后有空想做的事。":["Tap \"Add\" above to note a deadline, or something you'd like to do someday.","Tippe oben auf „Neu“, um eine Deadline oder etwas für irgendwann zu notieren."],"开始了 +":["Started +","Begonnen +"],"开始了":["Started","Begonnen"],"下一个子 DDL：":["Next sub-deadline: ","Nächste Teil-Deadline: "],"进度 {a}/{b}":["Progress {a}/{b}","Fortschritt {a}/{b}"],"{a}/{b} 步":["{a}/{b} steps","{a}/{b} Schritte"],"该开始了":["Time to start","Zeit anzufangen"],"计划 {d} 开始":["Planned start {d}","Geplanter Start {d}"],"只要先做：":["Just do this first: ","Mach zuerst nur das: "],"打开材料，看一眼就行":["Open the materials and take a look","Unterlagen öffnen und reinschauen"],"晚 1 小时":["1 hour later","1 Stunde später"],"好，1 小时后再叫你":["OK, I'll remind you in an hour","Okay, ich erinnere dich in einer Stunde"],"总览 · {n} 件":["Overview · {n}","Übersicht · {n}"],"完成":["Done","Erledigt"],"时间":["Time","Zeit"],"已过":["Past","Vorbei"],"时间比进度走得快一些，先做下一小步就好":["Time is moving faster than progress — just do the next small step","Die Zeit läuft schneller als der Fortschritt – mach einfach den nächsten kleinen Schritt"],"接着做：":["Next: ","Weiter mit: "],"第一步：":["First step: ","Erster Schritt: "],"还没拆步骤，":["No steps yet — ","Noch keine Schritte – "],"拆一下":["break it down","aufteilen"],"步骤都做完了，去下面打勾":["All steps done — check it off below","Alle Schritte erledigt – unten abhaken"],"，按时完成再 +{n}":[", +{n} more if on time",", +{n} extra, wenn pünktlich"],"全部 DDL":["All deadlines","Alle Deadlines"],"取消完成":["Mark as not done","Als offen markieren"],"标记完成":["Mark as done","Als erledigt markieren"],"截止 {d}":["Due {d}","Fällig {d}"],"工作量{s}":["Effort: {s}","Aufwand: {s}"],"下一步：":["Next step: ","Nächster Schritt: "],"按时":["On time","Pünktlich"],"补交":["Late","Verspätet"],"功德 +":["Merit +","Karma +"],"已得 {a} / {b}":["Earned {a} / {b}","Erhalten {a} / {b}"],"删除":["Delete","Löschen"],"再点一次确认删除":["Tap again to delete","Zum Löschen erneut tippen"],"删除这一步":["Delete this step","Diesen Schritt löschen"],"加一个小步骤":["Add a small step","Kleinen Schritt hinzufügen"],"没有写具体内容":["No details","Keine Details"],"编辑":["Edit","Bearbeiten"],"加入日历":["Add to calendar","Zum Kalender"],"子 DDL":["Sub-deadlines","Teil-Deadlines"],"把大项目拆成几个有日期的小截止":["split a big project into dated mini-deadlines","große Projekte in datierte Zwischenziele aufteilen"],"删除子 DDL ":["Delete sub-deadline ","Teil-Deadline löschen: "],"子 DDL，比如：周三交初稿":["Sub-deadline, e.g. first draft on Wednesday","Teil-Deadline, z. B. Entwurf am Mittwoch"],"子 DDL 名称":["Sub-deadline name","Name der Teil-Deadline"],"子 DDL 截止时间":["Sub-deadline due date","Fälligkeit der Teil-Deadline"],"写上子 DDL 的名称":["Give the sub-deadline a name","Gib der Teil-Deadline einen Namen"],"选一个子 DDL 的截止时间":["Pick a due date for the sub-deadline","Wähle eine Fälligkeit für die Teil-Deadline"],"子 DDL 不能晚于整个任务的截止时间（{d}）":["A sub-deadline can't be later than the task's deadline ({d})","Eine Teil-Deadline darf nicht nach der Deadline der Aufgabe liegen ({d})"],"已加子 DDL：":["Sub-deadline added: ","Teil-Deadline hinzugefügt: "],"加子 DDL":["Add sub-deadline","Teil-Deadline hinzufügen"],"最近 3 天都没有 DDL":["No deadlines in the next 3 days","Keine Deadlines in den nächsten 3 Tagen"],"现在没有 DDL":["No deadlines right now","Gerade keine Deadlines"],"有空的话，可以做点之前想做的事：":["If you have time, how about something you wanted to do:","Wenn du Zeit hast, wie wäre es mit etwas, das du machen wolltest:"],"换一批":["Show others","Andere zeigen"],"全部想法（{n}）":["All ideas ({n})","Alle Ideen ({n})"],"标记为还没做":["Mark as not done","Als offen markieren"],"标记为做了":["Mark as done","Als erledigt markieren"],"做于 {d}":["Done {d}","Erledigt {d}"],"记于 {d}":["Noted {d}","Notiert {d}"],"有备注":["has notes","mit Notiz"],"定个 DDL":["Set a deadline","Deadline setzen"],"记下一个以后有空想做的事":["Note something to do someday","Etwas für irgendwann notieren"],"新想法":["New idea","Neue Idee"],"记下了，最近没 DDL 的时候会提醒你":["Noted — I'll suggest it when no deadlines are coming up","Notiert – ich schlage es vor, wenn keine Deadlines anstehen"],"记下":["Add","Notieren"],"还没有想法。":["No ideas yet.","Noch keine Ideen."],"没有截止时间、但以后有空想做的事，都可以记在这里。最近没有 DDL 的时候，「进行中」会提醒你。":["Note things you'd like to do someday, with no deadline. When no deadlines are coming up, \"Active\" will remind you.","Notiere hier Dinge für irgendwann – ohne Deadline. Wenn keine Deadlines anstehen, erinnert dich „Aktiv“ daran."],"做过的想法（{n}）":["Done ideas ({n})","Erledigte Ideen ({n})"],"又做完一件想做的事：":["Another thing you wanted to do, done: ","Wieder etwas erledigt, das du machen wolltest: "],"上个月":["Previous month","Vorheriger Monat"],"今天":["Today","Heute"],"下个月":["Next month","Nächster Monat"],"{n} 个 DDL":["{n} deadline(s)","{n} Deadline(s)"],"没有 DDL":["no deadlines","keine Deadlines"],"{n} 个子 DDL":["{n} sub-deadline(s)","{n} Teil-Deadline(s)"],"在这天加一个 DDL":["Add a deadline on this day","Deadline an diesem Tag hinzufügen"],"这天没有 DDL。":["No deadlines on this day.","An diesem Tag keine Deadlines."],"已关闭功德与奖励，攒的功德会保留":["Merit & rewards turned off — your merit is kept","Karma & Belohnungen aus – dein Karma bleibt erhalten"],"不需要的话可以关掉，界面会只保留 DDL 和想法。点木鱼可以随时再打开。":["Don't need it? Turn it off to keep only deadlines and ideas. Tap the wooden fish to turn it back on anytime.","Nicht nötig? Ausschalten, dann bleiben nur Deadlines und Ideen. Tippe jederzeit auf den Holzfisch, um es wieder einzuschalten."],"开始一个任务 +5；任务的功德（小 10 / 中 25 / 大 50）按比重分给每个步骤，做完一步拿一份；按时完成再多 50%。每个子 DDL 按时完成 +5，迟了 +2。攒够了就兑换一个奖励。":["Starting a task: +5. A task's merit (small 10 / medium 25 / large 50) is split across its steps by weight, and each finished step earns its share; finishing on time adds 50%. Each sub-deadline: +5 on time, +2 if late. Save up and trade it for a reward.","Aufgabe beginnen: +5. Das Karma einer Aufgabe (klein 10 / mittel 25 / groß 50) wird nach Gewichtung auf die Schritte verteilt, jeder erledigte Schritt bringt seinen Anteil; pünktlich fertig gibt 50 % extra. Jede Teil-Deadline: +5 pünktlich, +2 verspätet. Sammle und tausche gegen eine Belohnung."],"兑换":["Redeem","Einlösen"],"删除奖励 ":["Delete reward ","Belohnung löschen: "],"自定义奖励，比如：吃顿火锅":["Your own reward, e.g. a nice dinner out","Eigene Belohnung, z. B. schön essen gehen"],"添加":["Add","Hinzufügen"],"写上奖励名称和需要的功德":["Enter a reward name and its merit cost","Name und Karma-Preis der Belohnung eingeben"],"兑换记录":["Redeemed","Eingelöst"],"还没有兑换过。":["Nothing redeemed yet.","Noch nichts eingelöst."],"撤销":["Undo","Rückgängig"],"已撤销，功德退回":["Undone — merit refunded","Rückgängig – Karma zurückerstattet"],"按时完成！":["Done on time!","Pünktlich erledigt!"],"完成了，迟到也算数":["Done — late still counts","Erledigt – spät zählt auch"]," · 功德 +":[" · merit +"," · Karma +"],"开始就赢了一半":["Starting is half the battle","Angefangen ist halb gewonnen"],"这一步搞定":["Step done","Schritt erledigt"]," · 下一步：":[" · next: "," · als Nächstes: "],"步骤全做完了，去打勾吧":["All steps done — go check it off","Alle Schritte erledigt – jetzt abhaken"],"子 DDL 按时完成":["Sub-deadline done on time","Teil-Deadline pünktlich erledigt"],"子 DDL 完成了":["Sub-deadline done","Teil-Deadline erledigt"]," · 下一个：":[" · next: "," · als Nächstes: "]," · 子 DDL 全做完了":[" · all sub-deadlines done"," · alle Teil-Deadlines erledigt"],"该开始「{t}」了，先做第一小步就好":["Time to start \"{t}\" — just do the first small step","Zeit für „{t}“ – mach einfach den ersten kleinen Schritt"],"兑换成功：{r}，去享受吧":["Redeemed: {r}. Enjoy!","Eingelöst: {r}. Viel Spaß!"],"比如：打开作业 PDF，读第一题":["e.g. open the assignment PDF, read question 1","z. B. Aufgaben-PDF öffnen, Aufgabe 1 lesen"],"比重":["Weight","Gewichtung"],"比重 {n}":["Weight {n}","Gewicht {n}"],"想做的事":["Something to do","Vorhaben"],"任务名称":["Task","Aufgabe"],"例如：学会做一道菜、读完一本书":["e.g. learn to cook a dish, finish a book","z. B. ein Gericht kochen lernen, ein Buch zu Ende lesen"],"例如：C++ 作业 3":["e.g. C++ assignment 3","z. B. C++-Übung 3"],"编辑：{t}":["Edit: {t}","Bearbeiten: {t}"],"编辑想法：{t}":["Edit idea: {t}","Idee bearbeiten: {t}"],"把想法定成 DDL":["Turn idea into a deadline","Idee zur Deadline machen"],"新增 DDL 或想法":["Add a deadline or idea","Deadline oder Idee hinzufügen"],"开始时间":["start time","Startzeit"],"提醒":["reminder","Erinnerung"],"{n} 个步骤":["{n} steps","{n} Schritte"],"工作量":["effort","Aufwand"],"已填：":["Set: ","Gesetzt: "],"开始时间 · 提醒 · 拆步骤 · 具体内容":["start time · reminder · steps · details","Startzeit · Erinnerung · Schritte · Details"]," · 工作量":[" · effort"," · Aufwand"],"比重决定这一步在进度条里占多少。":["The weight decides how much each step counts in the progress bar.","Die Gewichtung bestimmt, wie viel ein Schritt im Fortschrittsbalken zählt."],"拆成小步骤后，每次只需要想下一步。":["Once it's split into small steps, you only ever need to think about the next one.","In kleine Schritte aufgeteilt, musst du immer nur an den nächsten denken."],"这个任务共 {b} 功德，拆成步骤后按比重分给每一步。":["This task is worth {b} merit; split into steps, it's shared out by weight.","Diese Aufgabe bringt {b} Karma; in Schritte aufgeteilt, wird es nach Gewichtung verteilt."],"共 {b} 功德，分配：{list}；按时完成再 +{x}":["{b} merit in total: {list}; +{x} more if on time","{b} Karma insgesamt: {list}; +{x} extra, wenn pünktlich"],"第{i}步 +{p}":["step {i} +{p}","Schritt {i} +{p}"],"功德与奖励已打开":["Merit & rewards turned on","Karma & Belohnungen eingeschaltet"],"保存出错了：{m}。刷新页面再试一次。":["Couldn't save: {m}. Reload the page and try again.","Speichern fehlgeschlagen: {m}. Seite neu laden und erneut versuchen."],"先写上想做的事":["Write down what you'd like to do first","Schreib zuerst auf, was du machen möchtest"],"已保存修改":["Changes saved","Änderungen gespeichert"],"先写上任务名称":["Give the task a name first","Gib der Aufgabe zuerst einen Namen"],"选一个截止时间":["Pick a deadline","Wähle eine Deadline"],"开始时间格式不对，清空或重新选一下":["The start time isn't valid — clear it or pick again","Die Startzeit ist ungültig – leeren oder neu wählen"],"计划开始时间晚于截止时间了，改一下其中一个再保存":["The planned start is after the deadline — change one of them, then save","Der geplante Start liegt nach der Deadline – ändere eins davon und speichere"],"想法已经变成 DDL 了":["The idea is now a deadline","Die Idee ist jetzt eine Deadline"],"已加入，记得导出到日历":["Added — remember to export it to your calendar","Hinzugefügt – denk an den Kalenderexport"],"工作量：":["Effort: ","Aufwand: "],"DDL 快到了：":["Deadline coming up: ","Deadline naht: "],"子DDL｜{s}（{t}）":["Sub-deadline | {s} ({t})","Teil-Deadline | {s} ({t})"],"属于：{t}\n整个任务截止：{d}":["Part of: {t}\nTask deadline: {d}","Gehört zu: {t}\nDeadline der Aufgabe: {d}"],"子 DDL 快到了：":["Sub-deadline coming up: ","Teil-Deadline naht: "],"开始｜":["Start | ","Start | "],"先做第一步就好：\n":["Just do the first step:\n","Mach einfach den ersten Schritt:\n"],"先打开材料，做 5 分钟就好":["Just open the materials and work for 5 minutes","Öffne einfach die Unterlagen und arbeite 5 Minuten"],"该开始了：":["Time to start: ","Zeit anzufangen: "],"没有要导出的任务":["Nothing to export","Nichts zu exportieren"],"已导出，打开 .ics 就能加入日历":["Exported — open the .ics to add it to your calendar","Exportiert – öffne die .ics, um sie in den Kalender zu übernehmen"],"导出没有成功：":["Export failed: ","Export fehlgeschlagen: "],"未知错误":["unknown error","unbekannter Fehler"],"备份已导出，把文件存好或发到另一台设备":["Backup exported — keep the file safe or send it to another device","Backup exportiert – Datei sicher aufbewahren oder an ein anderes Gerät senden"],"这个文件读不出来，确认选的是 SaveDeadlines 抱佛脚导出的 .json":["Can't read this file — make sure it's a .json exported from SaveDeadlines 抱佛脚","Datei nicht lesbar – bitte eine aus SaveDeadlines 抱佛脚 exportierte .json wählen"],"这个文件里没有任务数据，确认选的是 SaveDeadlines 抱佛脚导出的备份":["No task data in this file — make sure it's a SaveDeadlines 抱佛脚 backup","Keine Aufgabendaten in dieser Datei – bitte ein Backup aus SaveDeadlines 抱佛脚 wählen"],"导入会用备份里的 {a} 个任务替换这里现有的 {b} 个任务和功德记录，确定吗？":["Importing replaces the {b} tasks and merit history here with the {a} tasks from the backup. Continue?","Der Import ersetzt die {b} Aufgaben und den Karma-Verlauf hier durch die {a} Aufgaben aus dem Backup. Fortfahren?"],"已导入 {n} 个任务":["Imported {n} tasks","{n} Aufgaben importiert"],"小":["small","klein"],"中":["medium","mittel"],"大":["large","groß"]};
+const L10N = {"功德":["Merit","Karma"],"想法":["Ideas","Ideen"],"截止时间":["Deadline","Deadline"],"没有截止时间、以后有空想做的事。最近没有 DDL 的时候，「进行中」会提醒你可以做它。":["Something you'd like to do someday, with no deadline. When no deadlines are coming up, \"Active\" will suggest it.","Etwas, das du irgendwann machen möchtest – ohne Deadline. Wenn keine Deadlines anstehen, schlägt „Aktiv“ es dir vor."],"备注（可不填）":["Notes (optional)","Notizen (optional)"],"更多设置":["More options","Weitere Optionen"],"计划开始":["Planned start","Geplanter Start"],"DDL 提醒":["Reminder","Erinnerung"],"提前 1 天":["1 day before","1 Tag vorher"],"提前 3 小时":["3 hours before","3 Stunden vorher"],"提前 1 小时":["1 hour before","1 Stunde vorher"],"不提醒":["No reminder","Keine Erinnerung"],"填了开始时间，到点会在「进行中」顶部提醒；导出到日历时也会多一个准点响的「开始」事件。":["With a start time, \"Active\" reminds you at the top when it's time; calendar exports also get a \"Start\" event that rings on time.","Mit Startzeit erinnert dich „Aktiv“ oben, sobald es so weit ist; beim Kalenderexport gibt es zusätzlich ein „Start“-Ereignis mit Alarm."],"拆解步骤（越小越好；右边选这一步占多少比重）":["Steps (the smaller the better; pick each step's weight on the right)","Schritte (je kleiner, desto besser; rechts die Gewichtung wählen)"],"加一步":["Add step","Schritt hinzufügen"],"具体内容":["Details","Details"],"工作量（决定能攒多少功德）":["Effort (decides how much merit you earn)","Aufwand (bestimmt, wie viel Karma du bekommst)"],"小 · 10":["Small · 10","Klein · 10"],"中 · 25":["Medium · 25","Mittel · 25"],"大 · 50":["Large · 50","Groß · 50"],"取消":["Cancel","Abbrechen"],"保存":["Save","Speichern"],"进行中":["Active","Aktiv"],"日历":["Calendar","Kalender"],"已完成":["Done","Erledigt"],"奖励":["Rewards","Belohnungen"],"设置":["Settings","Einstellungen"],"功德与奖励":["Merit & rewards","Karma & Belohnungen"],"关掉后只保留 DDL 和想法，界面更简洁。已经攒的功德会保留，随时可以再打开。":["Turn off to keep only deadlines and ideas for a cleaner look. Merit you've earned is kept, and you can switch it back on anytime.","Ausschalten, um nur Deadlines und Ideen zu behalten – schlichter. Gesammeltes Karma bleibt erhalten, du kannst es jederzeit wieder einschalten."],"怎么同步到 iPhone 日历？":["How do I add deadlines to my iPhone calendar?","Wie kommen Deadlines in den iPhone-Kalender?"],"在「进行中」点「导出全部到日历」，或在单个任务里点「加入日历」，会得到一个 .ics 文件。":["Tap \"Export all to calendar\" in \"Active\", or \"Add to calendar\" on a single task, to get an .ics file.","Tippe in „Aktiv“ auf „Alle in Kalender exportieren“ oder bei einer Aufgabe auf „Zum Kalender“ – du bekommst eine .ics-Datei."],"iPhone（Safari）：点下载后选「打开」或在下载列表里点它，出现日历预览时选「全部添加」。":["iPhone (Safari): after downloading, choose \"Open\" or tap it in your downloads, then choose \"Add All\" in the calendar preview.","iPhone (Safari): nach dem Download „Öffnen“ wählen oder in den Downloads antippen, dann in der Kalendervorschau „Alle hinzufügen“."],"Windows：双击下载好的 .ics，用 Outlook 或系统「日历」打开即可导入。":["Windows: double-click the .ics and open it with Outlook or the Calendar app to import.","Windows: die .ics doppelklicken und mit Outlook oder der Kalender-App öffnen."],"日历里是导入的副本，任务改了需要重新导出一次。":["The calendar holds an imported copy, so export again after changing a task.","Im Kalender liegt eine Kopie – nach Änderungen bitte erneut exportieren."],"数据存在哪？怎么换设备？":["Where is my data? How do I switch devices?","Wo sind meine Daten? Wie wechsle ich das Gerät?"],"没登录时，任务和功德只保存在这台设备的浏览器里。登录后会在云端存一份，电脑和手机用同一个邮箱登录就会自动同步，换手机也不会丢。":["When you're not logged in, everything is stored only in this browser on this device. Once you log in, a copy is kept in the cloud: log in with the same email on your computer and phone and they sync automatically, even if you get a new phone.","Ohne Login wird alles nur in diesem Browser auf diesem Gerät gespeichert. Nach dem Login liegt eine Kopie in der Cloud: Melde dich auf Computer und Handy mit derselben E-Mail an, dann wird automatisch synchronisiert – auch beim Handywechsel geht nichts verloren."],"iPhone 上建议用 Safari 打开后点分享按钮 →「添加到主屏幕」，之后从主屏幕图标打开：像 App 一样全屏，没网也能用，数据也不容易被系统清理。":["On iPhone, open this page in Safari, tap Share → \"Add to Home Screen\", and open it from the icon from then on: it runs full-screen like an app, works offline, and your data is less likely to be cleared by the system.","Auf dem iPhone die Seite in Safari öffnen, Teilen → „Zum Home-Bildschirm“ tippen und künftig über das Symbol öffnen: Vollbild wie eine App, funktioniert offline, und die Daten werden seltener vom System gelöscht."],"不想登录的话，也可以手动搬：在旧设备点「导出备份」，把 .json 文件发到新设备（微信、邮件、AirDrop 都行），在新设备点「导入备份」选这个文件。":["Prefer not to log in? Move data by hand: tap \"Export backup\" on the old device, send the .json file to the new one (email, AirDrop, any messenger), then tap \"Import backup\" there and pick the file.","Lieber ohne Login? Dann manuell: Auf dem alten Gerät „Backup exportieren“, die .json-Datei aufs neue Gerät schicken (E-Mail, AirDrop, Messenger) und dort „Backup importieren“ wählen."],"导出备份":["Export backup","Backup exportieren"],"导入备份":["Import backup","Backup importieren"],"开始攒功德吗？":["Start earning merit?","Karma sammeln?"],"打开后，开始任务、完成步骤和子 DDL 都会攒功德，攒够了可以换自己设定的奖励。之前攒的功德也还在。":["Starting tasks and finishing steps and sub-deadlines will earn merit, which you can trade for rewards you set yourself. Merit you earned before is still there.","Aufgaben beginnen sowie Schritte und Teil-Deadlines erledigen bringt Karma, das du gegen selbst gewählte Belohnungen eintauschen kannst. Früher gesammeltes Karma ist noch da."],"先不用":["Not now","Später"],"开始攒功德":["Start earning","Los geht's"],"记录类型":["Entry type","Eintragstyp"],"为什么想做、需要准备什么……":["Why you want to do it, what you'd need…","Warum du es machen willst, was du brauchst …"],"要交什么、哪几题、交到哪里……":["What to hand in, which exercises, where to submit…","Was abzugeben ist, welche Aufgaben, wo einreichen …"],"一杯奶茶":["A bubble tea","Ein Bubble Tea"],"追一集剧":["Watch an episode","Eine Folge schauen"],"周末睡懒觉":["Sleep in on the weekend","Am Wochenende ausschlafen"],"买个想要的小东西":["Buy a little treat","Etwas Kleines gönnen"],"这个浏览器不让网页保存数据（可能开了无痕模式），关掉页面后任务会丢失。换成普通模式打开就好。":["This browser won't let the page save data (private mode?). Tasks will be lost when you close the page. Open it in normal mode instead.","Dieser Browser erlaubt kein Speichern (privater Modus?). Aufgaben gehen beim Schließen verloren – bitte im normalen Modus öffnen."],"已经超过两周没备份了。登录后会自动存到云端；不想登录的话，拉到底部「数据存在哪」点「导出备份」。":["No backup for over two weeks. Log in to save to the cloud automatically, or scroll to \"Where is my data?\" at the bottom and tap \"Export backup\".","Seit über zwei Wochen kein Backup. Melde dich an, um automatisch in der Cloud zu speichern, oder tippe unten unter „Wo sind meine Daten?“ auf „Backup exportieren“."],"这台设备上原有的任务已和账号里的合并":["Tasks on this device were merged with your account","Aufgaben auf diesem Gerät wurden mit deinem Konto zusammengeführt"],"还有改动没同步到云端，现在退出会丢掉这些改动。\n":["Some changes haven't synced yet and will be lost if you log out now.\n","Einige Änderungen sind noch nicht synchronisiert und gehen beim Abmelden verloren.\n"],"退出后这台设备上的任务会清空，云端的还在，下次登录会回来。确定退出吗？":["Logging out clears tasks from this device. They stay in the cloud and come back when you log in again. Log out?","Beim Abmelden werden die Aufgaben auf diesem Gerät gelöscht. In der Cloud bleiben sie und kommen beim nächsten Login zurück. Abmelden?"],"已退出登录":["Logged out","Abgemeldet"],"（原始信息：{m}）":[" (details: {m})"," (Details: {m})"],"网站的同步设置不对：config.js 里的 key 填错了，应该是 anon public key（eyJ 开头）":["Sync is misconfigured: the key in config.js is wrong. It should be the anon public key (starts with eyJ)","Sync ist falsch eingerichtet: Der Key in config.js stimmt nicht. Es muss der anon public key sein (beginnt mit eyJ)"],"发得太频繁了，等一分钟再试":["Too many requests — wait a minute and try again","Zu viele Anfragen – bitte eine Minute warten"],"这个邮箱暂时收不到验证码：网站还没设置好发信邮箱（SMTP）":["Codes can't be sent to this address yet: the site's sender email (SMTP) isn't set up","An diese Adresse können noch keine Codes gesendet werden: Der Absender (SMTP) ist nicht eingerichtet"],"Supabase 里关闭了新用户注册，需要在 Authentication 设置里打开":["New sign-ups are disabled in Supabase; enable them in the Authentication settings","Neue Registrierungen sind in Supabase deaktiviert; in den Authentication-Einstellungen aktivieren"],"验证码邮件发不出去：检查 Supabase 的 SMTP 设置（Gmail 地址、端口 587、16 位应用专用密码）":["The code email couldn't be sent: check the SMTP settings in Supabase (Gmail address, port 587, 16-character app password)","Die Code-E-Mail konnte nicht gesendet werden: SMTP-Einstellungen in Supabase prüfen (Gmail-Adresse, Port 587, 16-stelliges App-Passwort)"],"config.js 里的网址多了一截：只要 https://xxxx.supabase.co，后面不要带 /rest/v1 之类":["The URL in config.js is too long: use only https://xxxx.supabase.co, without /rest/v1 or similar","Die URL in config.js ist zu lang: nur https://xxxx.supabase.co, ohne /rest/v1 o. Ä."],"连不上同步服务：检查网络，或 config.js 里的网址是否正确":["Can't reach the sync service: check your connection or the URL in config.js","Sync-Dienst nicht erreichbar: Verbindung oder URL in config.js prüfen"],"验证码不对或已过期，可以重新发送一个":["Wrong or expired code — you can request a new one","Falscher oder abgelaufener Code – du kannst einen neuen anfordern"],"这个邮箱地址不被接受，检查一下有没有打错":["This email address wasn't accepted — check for typos","Diese E-Mail-Adresse wurde nicht akzeptiert – bitte auf Tippfehler prüfen"],"出错了":["Something went wrong","Etwas ist schiefgelaufen"],"正在连接同步…":["Connecting to sync…","Verbinde mit Sync …"],"同步服务连不上，任务先存在本机":["Sync unavailable — tasks are saved on this device","Sync nicht erreichbar – Aufgaben werden auf diesem Gerät gespeichert"],"登录，让电脑和手机自动同步":["Log in to sync your computer and phone","Anmelden, um Computer und Handy zu synchronisieren"],"已同步":["Synced","Synchronisiert"],"同步中…":["Syncing…","Synchronisiere …"],"离线中，联网后自动同步":["Offline — will sync when you're back online","Offline – wird synchronisiert, sobald du online bist"],"同步没成功，稍后会自动重试":["Sync failed — will retry automatically","Sync fehlgeschlagen – neuer Versuch folgt automatisch"],"已登录":["Logged in","Angemeldet"],"可能是网络问题。任务照常保存在这台设备上，刷新页面会重新连接。":["Probably a network issue. Tasks are still saved on this device; reload the page to reconnect.","Wahrscheinlich ein Netzwerkproblem. Aufgaben werden weiter auf diesem Gerät gespeichert; Seite neu laden, um neu zu verbinden."],"登录邮箱：":["Logged in as: ","Angemeldet als: "],"在电脑和手机上用同一个邮箱登录，任务、功德和奖励就会自动同步。":["Log in with the same email on your computer and phone and your tasks, merit and rewards sync automatically.","Melde dich auf Computer und Handy mit derselben E-Mail an – Aufgaben, Karma und Belohnungen werden automatisch synchronisiert."],"立即同步":["Sync now","Jetzt synchronisieren"],"退出登录":["Log out","Abmelden"],"不用设密码：输入邮箱，收到验证码后填进来就登录了。第一次登录会自动注册。":["No password needed: enter your email, then type in the code you receive. Your first login creates an account automatically.","Kein Passwort nötig: E-Mail eingeben, dann den erhaltenen Code eintragen. Beim ersten Login wird automatisch ein Konto erstellt."],"你的邮箱":["Your email","Deine E-Mail"],"邮箱格式不对，检查一下":["That doesn't look like an email address","Das sieht nicht nach einer E-Mail-Adresse aus"],"发送中…":["Sending…","Wird gesendet …"],"发送验证码":["Send code","Code senden"],"验证码已发到 {e}":["Code sent to {e}","Code gesendet an {e}"],"没收到的话看看垃圾邮件箱。":["Didn't get it? Check your spam folder.","Nicht angekommen? Schau im Spam-Ordner nach."],"邮件里的验证码":["Code from the email","Code aus der E-Mail"],"验证码是邮件里的那串数字":["The code is the number in the email","Der Code ist die Zahl in der E-Mail"],"登录中…":["Logging in…","Anmeldung …"],"登录成功，开始同步":["Logged in — syncing now","Angemeldet – Synchronisierung läuft"],"登录":["Log in","Anmelden"],"重新发送（{n}）":["Resend ({n})","Erneut senden ({n})"],"重新发送":["Resend","Erneut senden"],"已重新发送":["Code resent","Code erneut gesendet"],"换个邮箱":["Use a different email","Andere E-Mail verwenden"],"逾期 {s}":["{s} overdue","{s} überfällig"],"剩 {s}":["{s} left","noch {s}"],"DDL 记录 · 做完打勾攒功德":["Deadlines · check them off, earn merit","Deadlines · abhaken, Karma sammeln"],"DDL 记录 · 想做的事也记下来":["Deadlines · and things you want to do","Deadlines · und Dinge, die du machen willst"],"查看功德与奖励":["View merit and rewards","Karma und Belohnungen ansehen"],"长按敲木鱼":["press and hold to tap the wooden fish","gedrückt halten, um den Holzfisch zu klopfen"],"待办":["To do","Offen"],"今天完成":["Done today","Heute erledigt"],"连续打卡":["Streak","Serie"],"{n} 天":["{n} d","{n} T."],"导出全部到日历":["Export all to calendar","Alle in Kalender exportieren"],"还没有完成的任务。":["Nothing finished yet.","Noch nichts erledigt."],"暂时没有 DDL。":["No deadlines right now.","Gerade keine Deadlines."],"做完一个回来打勾，功德就到账了。":["Finish one and check it off to earn merit.","Erledige eine und hake sie ab – schon gibt's Karma."],"做完一个回来打勾就好。":["Finish one and come back to check it off.","Erledige eine und hake sie hier ab."],"点上面的「新增」记一个 DDL，或者记下以后有空想做的事。":["Tap \"Add\" above to note a deadline, or something you'd like to do someday.","Tippe oben auf „Neu“, um eine Deadline oder etwas für irgendwann zu notieren."],"开始了 +":["Started +","Begonnen +"],"开始了":["Started","Begonnen"],"下一个子 DDL：":["Next sub-deadline: ","Nächste Teil-Deadline: "],"进度 {a}/{b}":["Progress {a}/{b}","Fortschritt {a}/{b}"],"{a}/{b} 步":["{a}/{b} steps","{a}/{b} Schritte"],"该开始了":["Time to start","Zeit anzufangen"],"计划 {d} 开始":["Planned start {d}","Geplanter Start {d}"],"只要先做：":["Just do this first: ","Mach zuerst nur das: "],"打开材料，看一眼就行":["Open the materials and take a look","Unterlagen öffnen und reinschauen"],"晚 1 小时":["1 hour later","1 Stunde später"],"好，1 小时后再叫你":["OK, I'll remind you in an hour","Okay, ich erinnere dich in einer Stunde"],"总览 · {n} 件":["Overview · {n}","Übersicht · {n}"],"完成":["Done","Erledigt"],"时间":["Time","Zeit"],"已过":["Past","Vorbei"],"时间比进度走得快一些，先做下一小步就好":["Time is moving faster than progress — just do the next small step","Die Zeit läuft schneller als der Fortschritt – mach einfach den nächsten kleinen Schritt"],"接着做：":["Next: ","Weiter mit: "],"第一步：":["First step: ","Erster Schritt: "],"还没拆步骤，":["No steps yet — ","Noch keine Schritte – "],"拆一下":["break it down","aufteilen"],"步骤都做完了，去下面打勾":["All steps done — check it off below","Alle Schritte erledigt – unten abhaken"],"，按时完成再 +{n}":[", +{n} more if on time",", +{n} extra, wenn pünktlich"],"全部 DDL":["All deadlines","Alle Deadlines"],"取消完成":["Mark as not done","Als offen markieren"],"标记完成":["Mark as done","Als erledigt markieren"],"截止 {d}":["Due {d}","Fällig {d}"],"工作量{s}":["Effort: {s}","Aufwand: {s}"],"下一步：":["Next step: ","Nächster Schritt: "],"按时":["On time","Pünktlich"],"补交":["Late","Verspätet"],"功德 +":["Merit +","Karma +"],"已得 {a} / {b}":["Earned {a} / {b}","Erhalten {a} / {b}"],"删除":["Delete","Löschen"],"再点一次确认删除":["Tap again to delete","Zum Löschen erneut tippen"],"删除这一步":["Delete this step","Diesen Schritt löschen"],"加一个小步骤":["Add a small step","Kleinen Schritt hinzufügen"],"没有写具体内容":["No details","Keine Details"],"编辑":["Edit","Bearbeiten"],"加入日历":["Add to calendar","Zum Kalender"],"子 DDL":["Sub-deadlines","Teil-Deadlines"],"把大项目拆成几个有日期的小截止":["split a big project into dated mini-deadlines","große Projekte in datierte Zwischenziele aufteilen"],"删除子 DDL ":["Delete sub-deadline ","Teil-Deadline löschen: "],"子 DDL，比如：周三交初稿":["Sub-deadline, e.g. first draft on Wednesday","Teil-Deadline, z. B. Entwurf am Mittwoch"],"子 DDL 名称":["Sub-deadline name","Name der Teil-Deadline"],"子 DDL 截止时间":["Sub-deadline due date","Fälligkeit der Teil-Deadline"],"写上子 DDL 的名称":["Give the sub-deadline a name","Gib der Teil-Deadline einen Namen"],"选一个子 DDL 的截止时间":["Pick a due date for the sub-deadline","Wähle eine Fälligkeit für die Teil-Deadline"],"子 DDL 不能晚于整个任务的截止时间（{d}）":["A sub-deadline can't be later than the task's deadline ({d})","Eine Teil-Deadline darf nicht nach der Deadline der Aufgabe liegen ({d})"],"已加子 DDL：":["Sub-deadline added: ","Teil-Deadline hinzugefügt: "],"加子 DDL":["Add sub-deadline","Teil-Deadline hinzufügen"],"最近 3 天都没有 DDL":["No deadlines in the next 3 days","Keine Deadlines in den nächsten 3 Tagen"],"现在没有 DDL":["No deadlines right now","Gerade keine Deadlines"],"有空的话，可以做点之前想做的事：":["If you have time, how about something you wanted to do:","Wenn du Zeit hast, wie wäre es mit etwas, das du machen wolltest:"],"换一批":["Show others","Andere zeigen"],"全部想法（{n}）":["All ideas ({n})","Alle Ideen ({n})"],"标记为还没做":["Mark as not done","Als offen markieren"],"标记为做了":["Mark as done","Als erledigt markieren"],"做于 {d}":["Done {d}","Erledigt {d}"],"记于 {d}":["Noted {d}","Notiert {d}"],"有备注":["has notes","mit Notiz"],"定个 DDL":["Set a deadline","Deadline setzen"],"记下一个以后有空想做的事":["Note something to do someday","Etwas für irgendwann notieren"],"新想法":["New idea","Neue Idee"],"记下了，最近没 DDL 的时候会提醒你":["Noted — I'll suggest it when no deadlines are coming up","Notiert – ich schlage es vor, wenn keine Deadlines anstehen"],"记下":["Add","Notieren"],"还没有想法。":["No ideas yet.","Noch keine Ideen."],"没有截止时间、但以后有空想做的事，都可以记在这里。最近没有 DDL 的时候，「进行中」会提醒你。":["Note things you'd like to do someday, with no deadline. When no deadlines are coming up, \"Active\" will remind you.","Notiere hier Dinge für irgendwann – ohne Deadline. Wenn keine Deadlines anstehen, erinnert dich „Aktiv“ daran."],"做过的想法（{n}）":["Done ideas ({n})","Erledigte Ideen ({n})"],"又做完一件想做的事：":["Another thing you wanted to do, done: ","Wieder etwas erledigt, das du machen wolltest: "],"上个月":["Previous month","Vorheriger Monat"],"今天":["Today","Heute"],"下个月":["Next month","Nächster Monat"],"{n} 个 DDL":["{n} deadline(s)","{n} Deadline(s)"],"没有 DDL":["no deadlines","keine Deadlines"],"{n} 个子 DDL":["{n} sub-deadline(s)","{n} Teil-Deadline(s)"],"在这天加一个 DDL":["Add a deadline on this day","Deadline an diesem Tag hinzufügen"],"这天没有 DDL。":["No deadlines on this day.","An diesem Tag keine Deadlines."],"已关闭功德与奖励，攒的功德会保留":["Merit & rewards turned off — your merit is kept","Karma & Belohnungen aus – dein Karma bleibt erhalten"],"不需要的话可以关掉，界面会只保留 DDL 和想法。点木鱼可以随时再打开。":["Don't need it? Turn it off to keep only deadlines and ideas. Tap the wooden fish to turn it back on anytime.","Nicht nötig? Ausschalten, dann bleiben nur Deadlines und Ideen. Tippe jederzeit auf den Holzfisch, um es wieder einzuschalten."],"开始一个任务 +5；任务的功德（小 10 / 中 25 / 大 50）按比重分给每个步骤，做完一步拿一份；按时完成再多 50%。每个子 DDL 按时完成 +5，迟了 +2。攒够了就兑换一个奖励。":["Starting a task: +5. A task's merit (small 10 / medium 25 / large 50) is split across its steps by weight, and each finished step earns its share; finishing on time adds 50%. Each sub-deadline: +5 on time, +2 if late. Save up and trade it for a reward.","Aufgabe beginnen: +5. Das Karma einer Aufgabe (klein 10 / mittel 25 / groß 50) wird nach Gewichtung auf die Schritte verteilt, jeder erledigte Schritt bringt seinen Anteil; pünktlich fertig gibt 50 % extra. Jede Teil-Deadline: +5 pünktlich, +2 verspätet. Sammle und tausche gegen eine Belohnung."],"兑换":["Redeem","Einlösen"],"删除奖励 ":["Delete reward ","Belohnung löschen: "],"自定义奖励，比如：吃顿火锅":["Your own reward, e.g. a nice dinner out","Eigene Belohnung, z. B. schön essen gehen"],"添加":["Add","Hinzufügen"],"写上奖励名称和需要的功德":["Enter a reward name and its merit cost","Name und Karma-Preis der Belohnung eingeben"],"兑换记录":["Redeemed","Eingelöst"],"还没有兑换过。":["Nothing redeemed yet.","Noch nichts eingelöst."],"撤销":["Undo","Rückgängig"],"已撤销，功德退回":["Undone — merit refunded","Rückgängig – Karma zurückerstattet"],"按时完成！":["Done on time!","Pünktlich erledigt!"],"完成了，迟到也算数":["Done — late still counts","Erledigt – spät zählt auch"]," · 功德 +":[" · merit +"," · Karma +"],"开始就赢了一半":["Starting is half the battle","Angefangen ist halb gewonnen"],"这一步搞定":["Step done","Schritt erledigt"]," · 下一步：":[" · next: "," · als Nächstes: "],"步骤全做完了，去打勾吧":["All steps done — go check it off","Alle Schritte erledigt – jetzt abhaken"],"子 DDL 按时完成":["Sub-deadline done on time","Teil-Deadline pünktlich erledigt"],"子 DDL 完成了":["Sub-deadline done","Teil-Deadline erledigt"]," · 下一个：":[" · next: "," · als Nächstes: "]," · 子 DDL 全做完了":[" · all sub-deadlines done"," · alle Teil-Deadlines erledigt"],"该开始「{t}」了，先做第一小步就好":["Time to start \"{t}\" — just do the first small step","Zeit für „{t}“ – mach einfach den ersten kleinen Schritt"],"兑换成功：{r}，去享受吧":["Redeemed: {r}. Enjoy!","Eingelöst: {r}. Viel Spaß!"],"比如：打开作业 PDF，读第一题":["e.g. open the assignment PDF, read question 1","z. B. Aufgaben-PDF öffnen, Aufgabe 1 lesen"],"比重":["Weight","Gewichtung"],"比重 {n}":["Weight {n}","Gewicht {n}"],"想做的事":["Something to do","Vorhaben"],"任务名称":["Task","Aufgabe"],"例如：学会做一道菜、读完一本书":["e.g. learn to cook a dish, finish a book","z. B. ein Gericht kochen lernen, ein Buch zu Ende lesen"],"例如：C++ 作业 3":["e.g. C++ assignment 3","z. B. C++-Übung 3"],"编辑：{t}":["Edit: {t}","Bearbeiten: {t}"],"编辑想法：{t}":["Edit idea: {t}","Idee bearbeiten: {t}"],"把想法定成 DDL":["Turn idea into a deadline","Idee zur Deadline machen"],"新增 DDL 或想法":["Add a deadline or idea","Deadline oder Idee hinzufügen"],"开始时间":["start time","Startzeit"],"提醒":["reminder","Erinnerung"],"{n} 个步骤":["{n} steps","{n} Schritte"],"工作量":["effort","Aufwand"],"已填：":["Set: ","Gesetzt: "],"开始时间 · 提醒 · 拆步骤 · 具体内容":["start time · reminder · steps · details","Startzeit · Erinnerung · Schritte · Details"]," · 工作量":[" · effort"," · Aufwand"],"比重决定这一步在进度条里占多少。":["The weight decides how much each step counts in the progress bar.","Die Gewichtung bestimmt, wie viel ein Schritt im Fortschrittsbalken zählt."],"拆成小步骤后，每次只需要想下一步。":["Once it's split into small steps, you only ever need to think about the next one.","In kleine Schritte aufgeteilt, musst du immer nur an den nächsten denken."],"这个任务共 {b} 功德，拆成步骤后按比重分给每一步。":["This task is worth {b} merit; split into steps, it's shared out by weight.","Diese Aufgabe bringt {b} Karma; in Schritte aufgeteilt, wird es nach Gewichtung verteilt."],"共 {b} 功德，分配：{list}；按时完成再 +{x}":["{b} merit in total: {list}; +{x} more if on time","{b} Karma insgesamt: {list}; +{x} extra, wenn pünktlich"],"第{i}步 +{p}":["step {i} +{p}","Schritt {i} +{p}"],"功德与奖励已打开":["Merit & rewards turned on","Karma & Belohnungen eingeschaltet"],"保存出错了：{m}。刷新页面再试一次。":["Couldn't save: {m}. Reload the page and try again.","Speichern fehlgeschlagen: {m}. Seite neu laden und erneut versuchen."],"先写上想做的事":["Write down what you'd like to do first","Schreib zuerst auf, was du machen möchtest"],"已保存修改":["Changes saved","Änderungen gespeichert"],"先写上任务名称":["Give the task a name first","Gib der Aufgabe zuerst einen Namen"],"选一个截止时间":["Pick a deadline","Wähle eine Deadline"],"开始时间格式不对，清空或重新选一下":["The start time isn't valid — clear it or pick again","Die Startzeit ist ungültig – leeren oder neu wählen"],"计划开始时间晚于截止时间了，改一下其中一个再保存":["The planned start is after the deadline — change one of them, then save","Der geplante Start liegt nach der Deadline – ändere eins davon und speichere"],"想法已经变成 DDL 了":["The idea is now a deadline","Die Idee ist jetzt eine Deadline"],"已加入，记得导出到日历":["Added — remember to export it to your calendar","Hinzugefügt – denk an den Kalenderexport"],"工作量：":["Effort: ","Aufwand: "],"DDL 快到了：":["Deadline coming up: ","Deadline naht: "],"子DDL｜{s}（{t}）":["Sub-deadline | {s} ({t})","Teil-Deadline | {s} ({t})"],"属于：{t}\n整个任务截止：{d}":["Part of: {t}\nTask deadline: {d}","Gehört zu: {t}\nDeadline der Aufgabe: {d}"],"子 DDL 快到了：":["Sub-deadline coming up: ","Teil-Deadline naht: "],"开始｜":["Start | ","Start | "],"先做第一步就好：\n":["Just do the first step:\n","Mach einfach den ersten Schritt:\n"],"先打开材料，做 5 分钟就好":["Just open the materials and work for 5 minutes","Öffne einfach die Unterlagen und arbeite 5 Minuten"],"该开始了：":["Time to start: ","Zeit anzufangen: "],"没有要导出的任务":["Nothing to export","Nichts zu exportieren"],"已导出，打开 .ics 就能加入日历":["Exported — open the .ics to add it to your calendar","Exportiert – öffne die .ics, um sie in den Kalender zu übernehmen"],"导出没有成功：":["Export failed: ","Export fehlgeschlagen: "],"未知错误":["unknown error","unbekannter Fehler"],"备份已导出，把文件存好或发到另一台设备":["Backup exported — keep the file safe or send it to another device","Backup exportiert – Datei sicher aufbewahren oder an ein anderes Gerät senden"],"这个文件读不出来，确认选的是 SaveDeadlines 抱佛脚导出的 .json":["Can't read this file — make sure it's a .json exported from SaveDeadlines 抱佛脚","Datei nicht lesbar – bitte eine aus SaveDeadlines 抱佛脚 exportierte .json wählen"],"这个文件里没有任务数据，确认选的是 SaveDeadlines 抱佛脚导出的备份":["No task data in this file — make sure it's a SaveDeadlines 抱佛脚 backup","Keine Aufgabendaten in dieser Datei – bitte ein Backup aus SaveDeadlines 抱佛脚 wählen"],"导入会用备份里的 {a} 个任务替换这里现有的 {b} 个任务和功德记录，确定吗？":["Importing replaces the {b} tasks and merit history here with the {a} tasks from the backup. Continue?","Der Import ersetzt die {b} Aufgaben und den Karma-Verlauf hier durch die {a} Aufgaben aus dem Backup. Fortfahren?"],"已导入 {n} 个任务":["Imported {n} tasks","{n} Aufgaben importiert"],"小":["small","klein"],"中":["medium","mittel"],"大":["large","groß"],"DDL":["Deadlines","Deadlines"],"+ DDL":["+ Deadline","+ Deadline"],"日程":["Schedule","Termine"],"重要程度":["Importance","Wichtigkeit"],"日期":["Date","Datum"],"开始":["Start","Beginn"],"结束":["End","Ende"],"每周重复":["Repeat weekly","Wöchentlich wiederholen"],"重复到（可不填）":["Repeat until (optional)","Wiederholen bis (optional)"],"拆解步骤（越小越好；右边选这一步大概要多久）":["Steps (the smaller the better; pick roughly how long each takes on the right)","Schritte (je kleiner, desto besser; rechts die ungefähre Dauer wählen)"],"预计总时长（没拆步骤时用）":["Estimated total time (used when there are no steps)","Geschätzte Gesamtdauer (wenn keine Schritte)"],"自定义":["Custom","Eigene"],"自定义功德数":["Custom merit","Eigenes Karma"],"桌面通知":["Desktop notifications","Desktop-Benachrichtigungen"],"DDL 提醒、计划开始、日程开始前 10 分钟和空闲提醒会以系统通知弹出。只在这个页面开着时有效（可以放在后台）；关掉页面后的提醒请用「导出到日历」。这个设置只对这台设备有效。":["Deadline reminders, planned starts, schedule items 10 minutes ahead and free-time nudges pop up as system notifications. Works only while this page is open (a background tab is fine); for reminders when it's closed, use \"Export to calendar\". This setting applies to this device only.","Deadline-Erinnerungen, geplante Starts, Termine 10 Minuten vorher und Freizeit-Hinweise erscheinen als Systembenachrichtigung. Funktioniert nur, solange diese Seite offen ist (Hintergrund-Tab reicht); für Erinnerungen bei geschlossener Seite „In Kalender exportieren“ nutzen. Gilt nur für dieses Gerät."],"空闲时提醒开始做任务":["Nudge me to start a task when I'm free","Bei freier Zeit an Aufgaben erinnern"],"现在和接下来 45 分钟都没有日程时，推荐一个最该做的任务，最多每小时一次。":["When nothing is scheduled now or in the next 45 minutes, suggests the most pressing task — at most once an hour.","Wenn jetzt und in den nächsten 45 Minuten nichts geplant ist, wird die dringendste Aufgabe vorgeschlagen – höchstens einmal pro Stunde."],"免打扰时段":["Quiet hours","Ruhezeit"],"地点、要带的东西……":["Place, things to bring…","Ort, was mitzunehmen ist …"],"免打扰开始":["Quiet hours start","Beginn der Ruhezeit"],"免打扰结束":["Quiet hours end","Ende der Ruhezeit"],"吃一顿＿＿":["Eat out: ＿＿","Essen gehen: ＿＿"],"出去玩一天":["A day out","Ein Tagesausflug"],"{n} 功德":["{n} merit","{n} Karma"],"{n} 分钟":["{n} min","{n} Min."],"{n} 小时":["{n} h","{n} Std."],"排序":["Sort","Sortieren"],"按截止":["By deadline","Nach Deadline"],"按重要":["By importance","Nach Wichtigkeit"],"重要程度 {n}/5":["Importance {n}/5","Wichtigkeit {n}/5"],"预计时长":["estimated time","geschätzte Dauer"],"每周":["weekly","wöchentlich"],"日程已删除":["Schedule item deleted","Termin gelöscht"],"再点一次（会删除每周所有这一项）":["Tap again (deletes every week's occurrence)","Erneut tippen (löscht alle wöchentlichen Termine)"],"删除这条备忘":["Delete this note","Diese Notiz löschen"],"加一条今天要做的小事":["Add a little thing to do","Kleinigkeit hinzufügen"],"备忘":["Notes","Notizen"],"加一条备忘":["Add note","Notiz hinzufügen"],"随手记点什么……":["Jot something down…","Etwas notieren …"],"当天备忘":["Notes for the day","Notizen für den Tag"],"+ 日程":["+ Schedule","+ Termin"],"在日历里看":["Open in calendar","Im Kalender ansehen"],"现在有空":["You're free now","Gerade frei"],"接下来没有日程，可以做：":["Nothing scheduled — you could work on: ","Nichts geplant – du könntest weitermachen mit: "],"还需约 {h}":["About {h} left to do","Noch etwa {h} Arbeit"],"去做":["Let's go","Los"],"1 小时后再说":["Not now (1 h)","Später (1 Std.)"],"时间有点紧":["time is tight","wird knapp"],"子 DDL 预计时长":["Sub-deadline estimated time","Geschätzte Dauer der Teil-Deadline"],"{n} 个日程":["{n} schedule item(s)","{n} Termin(e)"],"这天没有日程。":["Nothing scheduled on this day.","An diesem Tag nichts geplant."],"开始一个任务 +5；任务的功德（小 10 / 中 25 / 大 50，或自定义）按预计时长分给每个步骤，做完一步拿一份；按时完成再多 50%。每个子 DDL 按时完成 +5，迟了 +2。攒够了就兑换一个奖励，奖励可以点「改」换成你想要的。":["Starting a task: +5. A task's merit (small 10 / medium 25 / large 50, or custom) is split across its steps by estimated time, and each finished step earns its share; finishing on time adds 50%. Each sub-deadline: +5 on time, +2 if late. Save up and redeem a reward — tap \"Edit\" to make rewards your own.","Aufgabe beginnen: +5. Das Karma einer Aufgabe (klein 10 / mittel 25 / groß 50 oder eigenes) wird nach geschätzter Dauer auf die Schritte verteilt, jeder erledigte Schritt bringt seinen Anteil; pünktlich fertig gibt 50 % extra. Jede Teil-Deadline: +5 pünktlich, +2 verspätet. Sammle und löse eine Belohnung ein – mit „Ändern“ passt du Belohnungen an."],"奖励名称":["Reward name","Name der Belohnung"],"奖励已更新":["Reward updated","Belohnung aktualisiert"],"改":["Edit","Ändern"],"修改奖励 ":["Edit reward ","Belohnung ändern: "],"日程名称":["What","Was"],"例如：C++ 课、小组会议":["e.g. C++ lecture, group meeting","z. B. C++-Vorlesung, Gruppentreffen"],"编辑日程：{t}":["Edit schedule item: {t}","Termin bearbeiten: {t}"],"新增 DDL、想法或日程":["Add a deadline, idea or schedule item","Deadline, Idee oder Termin hinzufügen"],"不填":["Not set","Keine Angabe"],"开始时间 · 提醒 · 拆步骤 · 预计时长 · 具体内容":["start time · reminder · steps · estimate · details","Startzeit · Erinnerung · Schritte · Dauer · Details"],"共约 {h}；预计时长决定每一步在进度条里占多少。":["About {h} in total; each step's estimate decides how much it counts in the progress bar.","Insgesamt etwa {h}; die geschätzte Dauer bestimmt, wie viel jeder Schritt im Fortschrittsbalken zählt."],"这个任务共 {b} 功德，拆成步骤后按预计时长分给每一步。":["This task is worth {b} merit; split into steps, it's shared out by estimated time.","Diese Aufgabe bringt {b} Karma; in Schritte aufgeteilt, wird es nach geschätzter Dauer verteilt."],"先写上日程名称":["Give it a name first","Gib zuerst einen Namen ein"],"选一个日期":["Pick a date","Wähle ein Datum"],"选一个开始时间":["Pick a start time","Wähle eine Startzeit"],"结束时间要晚于开始时间":["The end must be after the start","Das Ende muss nach dem Beginn liegen"],"重复截止日期早于开始日期了":["The repeat-until date is before the start date","Das Wiederholungsende liegt vor dem Startdatum"],"已加入每周日程":["Added as a weekly item","Als wöchentlicher Termin hinzugefügt"],"已加入日程":["Added to your schedule","Termin hinzugefügt"],"自定义功德数要填一个正整数":["Custom merit must be a positive whole number","Eigenes Karma muss eine positive ganze Zahl sein"],"日程快开始了：":["Starting soon: ","Gleich geht's los: "],"现在有空，可以做「{t}」":["You're free — how about \"{t}\"?","Gerade frei – wie wäre es mit „{t}“?"],"这个浏览器不支持桌面通知。iPhone 需要先「添加到主屏幕」再从图标打开。":["This browser doesn't support notifications. On iPhone, add the page to your Home Screen first and open it from the icon.","Dieser Browser unterstützt keine Benachrichtigungen. Auf dem iPhone die Seite zuerst zum Home-Bildschirm hinzufügen und über das Symbol öffnen."],"浏览器没有允许通知。需要的话，在浏览器的网站设置里允许通知后再打开。":["Notifications are blocked by the browser. Allow them in the site settings, then switch this on again.","Benachrichtigungen sind im Browser blockiert. In den Website-Einstellungen erlauben und dann erneut einschalten."],"通知已打开":["Notifications are on","Benachrichtigungen sind an"],"DDL、日程和空闲提醒会这样弹出来。":["Deadline, schedule and free-time reminders will appear like this.","Deadline-, Termin- und Freizeit-Erinnerungen erscheinen so."]};
 function T(k, v){
   let s = lang === "zh" ? k : ((L10N[k] && L10N[k][lang === "en" ? 0 : 1]) || k);
   if(v) s = s.replace(/\{(\w+)\}/g, (m, n) => v[n] != null ? v[n] : m);
@@ -436,16 +510,17 @@ const notified = new Set();
 const SIZE_NAME = {s:"小", m:"中", l:"大"};
 const SUB_PTS = 5, SUB_LATE = 2;
 function defaultRewards(){ return [
-  {id:"r1", name:T("一杯奶茶"), cost:60},
-  {id:"r2", name:T("追一集剧"), cost:40},
-  {id:"r3", name:T("周末睡懒觉"), cost:100},
+  {id:"r1", name:T("吃一顿＿＿"), cost:80},
+  {id:"r2", name:T("出去玩一天"), cost:150},
+  {id:"r3", name:T("追一集剧"), cost:40},
   {id:"r4", name:T("买个想要的小东西"), cost:200}
 ]; }
-let state = {v:1, tasks:[], rewards:defaultRewards(), redeemed:[], ideas:[], settings:{merit:true}};
+const DURS = [15, 30, 45, 60, 90, 120, 180, 240, 360, 480];
+let state = {v:1, tasks:[], rewards:defaultRewards(), redeemed:[], ideas:[], events:[], memos:{}, settings:{merit:true}};
 let calMonth = new Date(); calMonth.setDate(1); calMonth.setHours(0,0,0,0);
 let calSel = new Date(); calSel.setHours(0,0,0,0);
 let tab = "todo", openId = null, editingId = null, size = "m";
-let kind = "ddl", editingIdea = null, convertingIdea = null, ideaOff = Math.floor(Math.random() * 1000);
+let kind = "ddl", editingIdea = null, convertingIdea = null, editingEvent = null, editingReward = null, fStars = 3, ideaOff = Math.floor(Math.random() * 1000);
 const M = () => !state.settings || state.settings.merit !== false;
 let renderLater = false;
 const $ = s => document.querySelector(s);
@@ -460,6 +535,8 @@ function normalize(d){
     rewards: Array.isArray(d && d.rewards) ? d.rewards : defaultRewards(),
     redeemed: Array.isArray(d && d.redeemed) ? d.redeemed : [],
     ideas: Array.isArray(d && d.ideas) ? d.ideas : [],
+    events: Array.isArray(d && d.events) ? d.events : [],
+    memos: (d && d.memos && typeof d.memos === "object" && !Array.isArray(d.memos)) ? d.memos : {},
     settings: Object.assign({merit:true}, (d && d.settings) || {})
   });
 }
@@ -504,14 +581,24 @@ function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; 
 function lsSet(k,v){ try{ v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); }catch(e){} }
 function isDirty(){ return lsGet("ddl-dirty") === "1"; }
 function setDirty(v){ lsSet("ddl-dirty", v ? "1" : null); }
-function hasContent(x){ return x.tasks.length > 0 || x.redeemed.length > 0 || (x.ideas || []).length > 0; }
+function hasContent(x){ return x.tasks.length > 0 || x.redeemed.length > 0 || (x.ideas || []).length > 0 || (x.events || []).length > 0 || Object.keys(x.memos || {}).length > 0; }
 function merge(remote, local){
   const byId = (a, b) => { const m = new Map(); a.forEach(x => m.set(x.id, x)); b.forEach(x => m.set(x.id, x)); return [...m.values()]; };
   const rk = r => r.at + "|" + r.name + "|" + r.cost;
   const red = new Map(); remote.redeemed.concat(local.redeemed).forEach(r => red.set(rk(r), r));
   return normalize({...remote, ...local, updatedAt: Date.now(), tasks: byId(remote.tasks, local.tasks),
     rewards: byId(remote.rewards, local.rewards), redeemed: [...red.values()].sort((a,b) => a.at - b.at),
-    ideas: byId(remote.ideas || [], local.ideas || []), settings: local.settings});
+    ideas: byId(remote.ideas || [], local.ideas || []), events: byId(remote.events || [], local.events || []),
+    memos: mergeMemos(remote.memos || {}, local.memos || {}), settings: local.settings});
+}
+function mergeMemos(a, b){
+  const out = Object.assign({}, a);
+  Object.keys(b).forEach(k => {
+    if(!out[k]){ out[k] = b[k]; return; }
+    const m = new Map(); (out[k].items || []).concat(b[k].items || []).forEach(x => m.set(x.id, x));
+    out[k] = {text: b[k].text || out[k].text || "", items: [...m.values()]};
+  });
+  return out;
 }
 function schedulePush(delay){ clearTimeout(pushT); pushT = setTimeout(push, delay == null ? 700 : delay); }
 async function push(){
@@ -705,7 +792,22 @@ function initSync(){
 function setBanner(t){ const b = $("#banner"); b.textContent = t; b.hidden = false; }
 
 /* ---------- derived ---------- */
-function baseOf(t){ return SIZE[t.size||"m"]; }
+function baseOf(t){ return t.size === "c" ? Math.max(1, parseInt(t.pts, 10) || 25) : SIZE[t.size || "m"]; }
+function sizeLabel(t){ return t.size === "c" ? T("{n} 功德", {n:baseOf(t)}) : T(SIZE_NAME[t.size || "m"]); }
+function minOf(x){ return x.min || (x.w || 1) * 30; }
+function subMin(x){ return x.min || 60; }
+function starsOf(x){ return x.stars || 3; }
+function fmtMin(m){
+  if(m < 60) return T("{n} 分钟", {n:m});
+  const h = Math.round(m / 30) / 2;
+  return T("{n} 小时", {n:h});
+}
+function remainMin(t){
+  if(t.done) return 0;
+  const st = t.steps || [], sb = t.subs || [];
+  if(!st.length && !sb.length) return t.est || 0;
+  return st.filter(x=>!x.done).reduce((a,x)=>a+minOf(x),0) + sb.filter(x=>!x.done).reduce((a,x)=>a+subMin(x),0);
+}
 function bonusOf(t){ return Math.round(baseOf(t) * 0.5); }
 // split a task's base merit across its steps by weight (sums exactly to base)
 function allocate(B, weights){
@@ -715,7 +817,7 @@ function allocate(B, weights){
   raw.map((x,i)=>[x-fl[i],i]).sort((a,b)=>b[0]-a[0]).forEach(([,i]) => { if(r > 0){ fl[i]++; r--; } });
   return fl;
 }
-function stepAlloc(t){ const st = t.steps || []; return allocate(baseOf(t), st.map(x => x.w || 1)); }
+function stepAlloc(t){ const st = t.steps || []; return allocate(baseOf(t), st.map(minOf)); }
 function onTime(t){ return t.done && t.doneAt && t.doneAt <= new Date(t.due).getTime(); }
 function taskPoints(t){
   const st = t.steps || [];
@@ -732,9 +834,9 @@ function nextSub(t){ return subsOf(t).filter(x=>!x.done).sort((a,b)=>new Date(a.
 function doneRatio(t){
   if(t.done) return 1;
   const st = t.steps || [], sb = t.subs || [];
-  const W = st.reduce((a,x)=>a+(x.w||1),0) + sb.length;
+  const W = st.reduce((a,x)=>a+minOf(x),0) + sb.reduce((a,x)=>a+subMin(x),0);
   if(!W) return 0;
-  return (st.filter(x=>x.done).reduce((a,x)=>a+(x.w||1),0) + sb.filter(x=>x.done).length) / W;
+  return (st.filter(x=>x.done).reduce((a,x)=>a+minOf(x),0) + sb.filter(x=>x.done).reduce((a,x)=>a+subMin(x),0)) / W;
 }
 function timeRatio(t){
   const from = new Date(t.start || t.created || Date.now()).getTime(), to = new Date(t.due).getTime();
@@ -769,6 +871,24 @@ function fmtDue(due){
   return fmtDate(d, {weekday:"short", month:"short", day:"numeric"}) + ", " + hm;
 }
 function fmtDate(d, opt){ try{ return new Intl.DateTimeFormat(LOCALE[lang], opt).format(d); }catch(e){ return d.toDateString(); } }
+function iso(d){ d = new Date(d); const p = n => String(n).padStart(2,"0"); return d.getFullYear() + "-" + p(d.getMonth()+1) + "-" + p(d.getDate()); }
+function hm(d){ const p = n => String(n).padStart(2,"0"); return p(d.getHours()) + ":" + p(d.getMinutes()); }
+function occursOn(ev, d){
+  const k = iso(d);
+  if(ev.repeat !== "weekly") return ev.date === k;
+  if(k < ev.date || (ev.until && k > ev.until)) return false;
+  return new Date(ev.date + "T12:00").getDay() === new Date(k + "T12:00").getDay();
+}
+function eventsOn(d){ return (state.events || []).filter(ev => occursOn(ev, d)).sort((a,b) => (a.startTime || "").localeCompare(b.startTime || "")); }
+function evTimes(ev, d){
+  const k = iso(d);
+  const st = new Date(k + "T" + (ev.startTime || "00:00")), en = new Date(k + "T" + (ev.endTime || ev.startTime || "23:59"));
+  return [st.getTime(), en.getTime()];
+}
+function memoOf(k, create){
+  if(!state.memos[k] && create) state.memos[k] = {text:"", items:[]};
+  return state.memos[k] || {text:"", items:[]};
+}
 
 /* ---------- render ---------- */
 function el(tag, attrs, kids){
@@ -802,11 +922,17 @@ function render(){
   if(tab === "cal") return renderCalendar(v);
 
   const list = state.tasks.filter(t => tab === "done" ? t.done : !t.done)
-    .sort((a,b) => tab === "done" ? (b.doneAt||0) - (a.doneAt||0) : new Date(a.due) - new Date(b.due));
-  if(tab === "todo"){ const sug = ideaSuggest(list); if(sug) v.append(sug); }
+    .sort((a,b) => tab === "done" ? (b.doneAt||0) - (a.doneAt||0) : sortTasks(a, b));
+  if(tab === "todo"){
+    renderToday(v);
+    const fc = freeCard(); if(fc) v.append(fc);
+    const sug = ideaSuggest(list); if(sug) v.append(sug);
+  }
   if(tab === "todo" && list.length){
     renderNow(v, list);
-    v.append(el("div",{class:"toolbar"},[el("button",{class:"link",text:T("导出全部到日历"),onclick:()=>exportICS(list)})]));
+    const sw = el("div",{class:"sortsw",role:"group","aria-label":T("排序")},[el("span",{text:T("排序")}),
+      ...[["due", T("按截止")], ["star", T("按重要")]].map(([k, l]) => el("button",{type:"button","aria-pressed":sortMode() === k,text:l,onclick:()=>{ lsSet("ddl-sort", k); render(); }}))]);
+    v.append(el("div",{class:"toolbar"},[sw, el("button",{class:"link",text:T("导出全部到日历"),onclick:()=>exportICS(list)})]));
   }
   if(!list.length){
     v.append(el("div",{class:"empty-state"},[
@@ -820,6 +946,115 @@ function render(){
   v.append(ul);
 }
 function stepsOf(t){ return t.steps || (t.steps = []); }
+function sortMode(){ return lsGet("ddl-sort") === "star" ? "star" : "due"; }
+function sortTasks(a, b){
+  const da = new Date(a.due), db = new Date(b.due);
+  if(sortMode() === "star") return (starsOf(b) - starsOf(a)) || (da - db);
+  // by deadline; on the same day the more important one comes first
+  if(dayKey(da) === dayKey(db) && starsOf(a) !== starsOf(b)) return starsOf(b) - starsOf(a);
+  return da - db;
+}
+function starEl(n){ return el("span",{class:"stars-s","aria-label":T("重要程度 {n}/5", {n}),text:"★".repeat(n)}); }
+function durSelect(val, label){
+  const sel = el("select",{"aria-label":label || T("预计时长")});
+  const opts = DURS.slice(); if(val > 0 && !opts.includes(val)){ opts.push(val); opts.sort((a,b)=>a-b); }
+  opts.forEach(m => sel.append(el("option",{value:String(m),text:fmtMin(m)})));
+  sel.value = String(val > 0 ? val : 30);
+  return sel;
+}
+/* ---------- today: schedule + daily memo ---------- */
+function evRow(ev, d, opts){
+  const [st, en] = evTimes(ev, d), now = Date.now();
+  const li = el("li",{class: en < now ? "past" : ""});
+  const title = el("div",{class:"et"},[document.createTextNode(ev.title),
+    ev.repeat === "weekly" ? el("span",{class:"badge",text:T("每周")}) : null,
+    (st <= now && now < en) ? el("span",{class:"badge now",text:T("进行中")}) : null,
+    ev.notes ? el("small",{text:ev.notes}) : null]);
+  const acts = el("div",{class:"acts"});
+  if(opts && opts.edit){
+    acts.append(el("button",{text:T("编辑"),onclick:()=>startEditEvent(ev.id)}));
+    acts.append(el("button",{class:"danger",text:T("删除"),onclick:(e)=>{
+      if(e.currentTarget.dataset.armed){ state.events = state.events.filter(x=>x.id!==ev.id); save(); render(); toast(T("日程已删除")); }
+      else { e.currentTarget.dataset.armed = 1; e.currentTarget.textContent = ev.repeat === "weekly" ? T("再点一次（会删除每周所有这一项）") : T("再点一次确认删除"); }
+    }}));
+  }
+  li.append(el("span",{class:"tm",text:(ev.startTime || "") + (ev.endTime ? "–" + ev.endTime : "")}), title, acts);
+  return li;
+}
+function memoBlock(k, withText){
+  const m = memoOf(k, false), box = el("div",{class:"memo"});
+  const ul = el("ul");
+  (m.items || []).forEach(x => {
+    const cid = "mm-" + k + "-" + x.id;
+    ul.append(el("li",{class: x.done ? "ok" : ""},[
+      el("input",{type:"checkbox",id:cid,checked: x.done ? "" : false,onchange:()=>{ x.done = !x.done; save(); render(); }}),
+      el("label",{for:cid,text:x.text}),
+      el("button",{class:"x","aria-label":T("删除这条备忘"),text:"×",onclick:()=>{ const mm = memoOf(k, true); mm.items = mm.items.filter(y=>y.id!==x.id); save(); render(); }})
+    ]));
+  });
+  box.append(ul);
+  const inp = el("input",{placeholder:T("加一条今天要做的小事"),maxlength:"80","aria-label":T("备忘")});
+  const add = () => { const tx = inp.value.trim(); if(!tx) return; memoOf(k, true).items.push({id:uid(), text:tx, done:false}); save(); render();
+    const i = document.querySelector('.memo[data-k="'+k+'"] .addm input'); if(i) i.focus(); };
+  inp.addEventListener("keydown", e => { if(e.key === "Enter" && !e.isComposing){ e.preventDefault(); add(); } });
+  box.append(el("div",{class:"addm"},[inp, el("button",{type:"button","aria-label":T("加一条备忘"),text:"+",onclick:add})]));
+  if(withText){
+    const ta = el("textarea",{placeholder:T("随手记点什么……"),"aria-label":T("当天备忘")});
+    ta.value = m.text || "";
+    let tt; ta.addEventListener("input", () => { clearTimeout(tt); tt = setTimeout(() => { memoOf(k, true).text = ta.value; save(); }, 500); });
+    box.append(ta);
+  }
+  box.dataset.k = k;
+  return box;
+}
+function renderToday(v){
+  const d = new Date(), evs = eventsOn(d), k = iso(d), m = memoOf(k, false);
+  const card = el("div",{class:"todaycard"},[el("h3",{text:T("今天") + " · " + fmtDate(d, {month:"long", day:"numeric", weekday:"short"})})]);
+  if(evs.length){ const ul = el("ul",{class:"evlist"}); evs.forEach(ev => ul.append(evRow(ev, d))); card.append(ul); }
+  card.append(memoBlock(k, false));
+  if(m.text) card.append(el("p",{class:"remain",text:m.text}));
+  card.append(el("div",{class:"dayacts"},[
+    el("button",{class:"link",text:T("+ 日程"),onclick:()=>newEvent(d)}),
+    el("button",{class:"link",text:T("在日历里看"),onclick:()=>{ calSel = new Date(k + "T00:00"); calMonth = new Date(calSel.getFullYear(), calSel.getMonth(), 1); tab = "cal"; render(); }})
+  ]));
+  v.append(card);
+}
+/* ---------- free-time suggestion ---------- */
+function devGet(){ let d = {}; try{ d = JSON.parse(lsGet("ddl-dev") || "{}"); }catch(e){} return Object.assign({notify:false, freeRemind:true, quietFrom:"23:00", quietTo:"08:00"}, d); }
+function devSet(patch){ lsSet("ddl-dev", JSON.stringify(Object.assign(devGet(), patch))); }
+function inQuiet(now){
+  const dv = devGet(), cur = hm(new Date(now)), f = dv.quietFrom || "23:00", t = dv.quietTo || "08:00";
+  if(f === t) return false;
+  return f < t ? (cur >= f && cur < t) : (cur >= f || cur < t);
+}
+function busyNow(now){
+  return eventsOn(new Date(now)).some(ev => { const [st, en] = evTimes(ev, new Date(now)); return (st <= now && now < en) || (st > now && st - now <= 45*60000); });
+}
+function freeSuggestion(){
+  const now = Date.now();
+  if(!devGet().freeRemind || inQuiet(now) || busyNow(now)) return null;
+  const todo = state.tasks.filter(t => !t.done);
+  if(!todo.length) return null;
+  const soon = t => { const left = new Date(t.due).getTime() - now; return left < 24*3600e3 ? 0 : left < 3*24*3600e3 ? 1 : 2; };
+  const t = todo.slice().sort((a,b) => (soon(a) - soon(b)) || (starsOf(b) - starsOf(a)) || (new Date(a.due) - new Date(b.due)))[0];
+  return t;
+}
+function freeCard(){
+  const t = freeSuggestion(); if(!t) return null;
+  const dis = parseInt(lsGet("ddl-free-dismiss") || "0", 10);
+  if(Date.now() - dis < 3600e3) return null;
+  const nx = nextStep(t), sb = nextSub(t), rm = remainMin(t);
+  return el("div",{class:"freecard"},[
+    el("h3",{text:T("现在有空")}),
+    el("p",{},[document.createTextNode(T("接下来没有日程，可以做：")), el("b",{text:t.title}),
+      document.createTextNode(nx ? SP() + T("下一步：") + nx.text : sb ? SP() + T("下一个子 DDL：") + sb.title : ""),
+      document.createTextNode(rm ? SP() + T("还需约 {h}", {h:fmtMin(rm)}) : "")]),
+    el("div",{class:"row"},[
+      el("button",{class:"small-btn",text:T("去做"),onclick:()=>{ openId = t.id; lsSet("ddl-free-dismiss", String(Date.now())); render(); const r = document.querySelector('.list [data-id="'+t.id+'"]'); if(r) r.scrollIntoView({behavior:"smooth",block:"center"}); }}),
+      el("button",{class:"link",text:T("1 小时后再说"),onclick:()=>{ lsSet("ddl-free-dismiss", String(Date.now())); render(); }})
+    ])
+  ]);
+}
 function startLabel(){ return M() ? T("开始了 +") + START_PTS : T("开始了"); }
 function subNextEl(t){
   if(t.done) return null;
@@ -862,13 +1097,16 @@ function renderNow(v, list){
     const behind = cd.ms < 0 || tr - dr > 0.25;
     const kids = [
       el("div",{class:"top"},[
-        el("button",{class:"ct",text:t.title,onclick:()=>{ openId = t.id; render(); const r = document.querySelector('.list [data-id="'+t.id+'"]'); if(r) r.scrollIntoView({behavior:"smooth",block:"center"}); }}),
+        el("button",{class:"ct",text:t.title + (starsOf(t) >= 4 ? " " + "★".repeat(starsOf(t)) : ""),onclick:()=>{ openId = t.id; render(); const r = document.querySelector('.list [data-id="'+t.id+'"]'); if(r) r.scrollIntoView({behavior:"smooth",block:"center"}); }}),
         el("span",{class:"cd",text:cd.text})
       ]),
       el("div",{class:"bars"}, barRow(T("完成"), "done", dr, Math.round(dr*100) + "%").concat(
         barRow(T("时间"), "time" + (behind ? " behind" : ""), tr, cd.ms < 0 ? T("已过") : Math.round(tr*100) + "%")))
     ];
     if(behind && cd.ms >= 0) kids.push(el("div",{class:"behind-note",text:T("时间比进度走得快一些，先做下一小步就好")}));
+    const rm = remainMin(t);
+    if(rm && cd.ms > 0){ const tight = rm * 60000 > cd.ms * 0.4;
+      kids.push(el("div",{class:"remain" + (tight ? " tight" : "")},[document.createTextNode(T("还需约 {h}", {h:fmtMin(rm)}) + (tight ? SP() + T("时间有点紧") : ""))])); }
     const sn = subNextEl(t); if(sn) kids.push(sn);
     const nx = nextStep(t);
     if(nx){
@@ -893,7 +1131,8 @@ function taskRow(t){
   const mid = el("div",{},[
     el("button",{class:"title",text:t.title,"aria-expanded":openId===t.id,onclick:()=>{ openId = openId === t.id ? null : t.id; render(); }}),
     (() => {
-      const m = el("div",{class:"meta",text: T("截止 {d}", {d:fmtDue(t.due)}) + (M() ? SP() + T("工作量{s}", {s:T(SIZE_NAME[t.size||"m"])}) : "")});
+      const m = el("div",{class:"meta",text: T("截止 {d}", {d:fmtDue(t.due)}) + (M() ? SP() + (t.size === "c" ? sizeLabel(t) : T("工作量{s}", {s:sizeLabel(t)})) : "")});
+      m.append(starEl(starsOf(t)));
       if(!t.done && t.startedAt) m.append(el("span",{class:"tag doing",text:T("进行中")}));
       else if(shouldStart(t)) m.append(el("span",{class:"tag go",text:T("该开始了")}));
       return m;
@@ -918,18 +1157,21 @@ function taskRow(t){
     stepsUl.append(el("li",{class: x.done ? "ok" : ""},[
       el("input",{type:"checkbox",id:cid,checked: x.done ? "" : false,onchange:()=>toggleStep(t.id, x.id)}),
       el("label",{for:cid,text:x.text}),
+      el("span",{class:"durs",text:fmtMin(minOf(x))}),
       el("span",{class:"sp merit-only",text:"+" + al[i]}),
       el("button",{class:"x","aria-label":T("删除这一步"),text:"×",onclick:()=>{ t.steps = stepsOf(t).filter(y=>y.id!==x.id); save(); render(); }})
     ]));
   });
   const stepIn = el("input",{placeholder:T("加一个小步骤"),maxlength:"80"});
-  const addStep = () => { const tx = stepIn.value.trim(); if(!tx) return; stepsOf(t).push({id:uid(),text:tx,done:false,w:1}); save(); render();
+  const stepDur = durSelect(30);
+  const addStep = () => { const tx = stepIn.value.trim(); if(!tx) return; stepsOf(t).push({id:uid(),text:tx,done:false,min:parseInt(stepDur.value,10)||30}); save(); render();
     const i = document.querySelector('[data-id="'+t.id+'"] .addstep input'); if(i) i.focus(); };
   stepIn.addEventListener("keydown", e => { if(e.key === "Enter" && !e.isComposing){ e.preventDefault(); addStep(); } });
   const more = el("div",{class:"more"},[
     stepsOf(t).length ? stepsUl : null,
-    !t.done ? el("div",{class:"addstep"},[stepIn, el("button",{"aria-label":T("加一步"),text:"+",style:"font-size:20px",onclick:addStep})]) : null,
+    !t.done ? el("div",{class:"addstep"},[stepIn, stepDur, el("button",{"aria-label":T("加一步"),text:"+",style:"font-size:20px",onclick:addStep})]) : null,
     subsSection(t),
+    (!t.done && remainMin(t)) ? el("div",{class:"remain",text:T("还需约 {h}", {h:fmtMin(remainMin(t))})}) : null,
     el("div",{class:"notes" + (t.notes ? "" : " empty"),text: t.notes || T("没有写具体内容")}),
     el("div",{class:"mini"},[
       (!t.done && !t.startedAt) ? el("button",{text:startLabel(),onclick:()=>startTask(t.id)}) : null,
@@ -960,6 +1202,7 @@ function subsSection(t){
       ul.append(el("li",{class: x.done ? "ok" : ""},[
         el("input",{type:"checkbox",id:cid,checked: x.done ? "" : false,onchange:()=>toggleSub(t.id, x.id)}),
         el("label",{for:cid},[document.createTextNode(x.title), when]),
+        el("span",{class:"durs",text:fmtMin(subMin(x))}),
         el("span",{class:"sp merit-only",style:"font-size:12px;color:var(--gold);white-space:nowrap;margin-top:2px",text: x.done ? "+" + (subOnTime(x) ? SUB_PTS : SUB_LATE) : "+" + SUB_PTS}),
         el("button",{class:"x","aria-label":T("删除子 DDL ") + x.title,text:"×",onclick:()=>{ t.subs = subsOf(t).filter(y=>y.id!==x.id); save(); render(); }})
       ]));
@@ -969,23 +1212,24 @@ function subsSection(t){
   if(!t.done){
     const ti = el("input",{placeholder:T("子 DDL，比如：周三交初稿"),maxlength:"80","aria-label":T("子 DDL 名称")});
     const du = el("input",{type:"datetime-local",value:defaultSubDue(t),"aria-label":T("子 DDL 截止时间")});
+    const sd = durSelect(60, T("子 DDL 预计时长"));
     const add = () => {
       const tx = ti.value.trim();
       if(!tx){ toast(T("写上子 DDL 的名称")); ti.focus(); return; }
       if(!du.value || isNaN(new Date(du.value))){ toast(T("选一个子 DDL 的截止时间")); du.focus(); return; }
       if(new Date(du.value) > new Date(t.due)){ toast(T("子 DDL 不能晚于整个任务的截止时间（{d}）", {d:fmtDue(t.due)})); du.focus(); return; }
-      subsOf(t).push({id:uid(), title:tx, due:new Date(du.value).toISOString(), done:false, doneAt:null});
+      subsOf(t).push({id:uid(), title:tx, due:new Date(du.value).toISOString(), done:false, doneAt:null, min:parseInt(sd.value,10)||60});
       save(); render(); toast(T("已加子 DDL：") + tx);
       const i = document.querySelector('[data-id="'+t.id+'"] .addsub input'); if(i) i.focus();
     };
     ti.addEventListener("keydown", e => { if(e.key === "Enter" && !e.isComposing){ e.preventDefault(); add(); } });
-    wrap.append(el("div",{class:"addsub"},[ti, du, el("button",{type:"button","aria-label":T("加子 DDL"),text:"+",onclick:add})]));
+    wrap.append(el("div",{class:"addsub"},[ti, du, sd, el("button",{type:"button","aria-label":T("加子 DDL"),text:"+",onclick:add})]));
   }
   return wrap;
 }
 
 /* ---------- ideas ---------- */
-function openIdeas(){ return state.ideas.filter(i=>!i.done).sort((a,b)=>(b.created||0)-(a.created||0)); }
+function openIdeas(){ return state.ideas.filter(i=>!i.done).sort((a,b)=>(starsOf(b)-starsOf(a)) || ((b.created||0)-(a.created||0))); }
 function ideaSuggest(list){
   const ideas = openIdeas();
   if(!ideas.length) return null;
@@ -1015,7 +1259,7 @@ function ideaRow(i){
   const d = new Date(i.done ? i.doneAt : i.created);
   const mid = el("div",{},[
     el("button",{class:"title",text:i.text,"aria-expanded":openId===i.id,onclick:()=>{ openId = openId === i.id ? null : i.id; render(); }}),
-    el("div",{class:"meta",text:T(i.done ? "做于 {d}" : "记于 {d}", {d:fmtDate(d, {month:"short", day:"numeric"})}) + (i.notes && openId !== i.id ? SP() + T("有备注") : "")})
+    el("div",{class:"meta"},[document.createTextNode(T(i.done ? "做于 {d}" : "记于 {d}", {d:fmtDate(d, {month:"short", day:"numeric"})}) + (i.notes && openId !== i.id ? SP() + T("有备注") : "")), starEl(starsOf(i))])
   ]);
   const del = el("button",{class:"danger",text:T("删除"),onclick:(e)=>{
     if(e.currentTarget.dataset.armed){ state.ideas = state.ideas.filter(x=>x.id!==i.id); save(); render(); }
@@ -1036,7 +1280,7 @@ function renderIdeas(v){
   const inp = el("input",{placeholder:T("记下一个以后有空想做的事"),maxlength:"80","aria-label":T("新想法")});
   const add = () => {
     const tx = inp.value.trim(); if(!tx){ inp.focus(); return; }
-    state.ideas.push({id:uid(), text:tx, notes:"", created:Date.now(), done:false, doneAt:null});
+    state.ideas.push({id:uid(), text:tx, notes:"", created:Date.now(), done:false, doneAt:null, stars:3});
     save(); render(); toast(T("记下了，最近没 DDL 的时候会提醒你"));
     const q = document.querySelector(".quick input"); if(q) q.focus();
   };
@@ -1068,7 +1312,7 @@ function toggleIdea(id){
 function convertIdea(id){
   const i = state.ideas.find(x=>x.id===id); if(!i) return;
   resetForm(); convertingIdea = id; setKind("ddl");
-  $("#fTitle").value = i.text; $("#fNotes").value = i.notes || "";
+  $("#fTitle").value = i.text; $("#fNotes").value = i.notes || ""; fStars = starsOf(i); paintStars();
   if(i.notes) $("#fMore").open = true;
   updateMoreSum(); lockKind();
   setFormTitle(); $("#fCancel").hidden = false;
@@ -1077,7 +1321,7 @@ function convertIdea(id){
 function startEditIdea(id){
   const i = state.ideas.find(x=>x.id===id); if(!i) return;
   resetForm(); editingIdea = id; setKind("idea");
-  $("#fTitle").value = i.text; $("#fIdeaNotes").value = i.notes || ""; lockKind();
+  $("#fTitle").value = i.text; $("#fIdeaNotes").value = i.notes || ""; fStars = starsOf(i); paintStars(); lockKind();
   setFormTitle(); $("#fCancel").hidden = false;
   $("#addBox").open = true; $("#addBox").scrollIntoView({behavior:"smooth",block:"start"}); $("#fTitle").focus();
 }
@@ -1111,7 +1355,8 @@ function renderCalendar(v){
     const chips = el("div",{class:"chips"});
     const starts = startDay[dayKey(d)] || [];
     const subsD = subDay[dayKey(d)] || [];
-    const all = list.map(t => ({txt:t.title, cls: t.done ? "done" : urgency(new Date(t.due) - Date.now())}))
+    const evD = eventsOn(d);
+    const all = evD.map(ev => ({txt:(ev.startTime || "") + " " + ev.title, cls:"ev"})).concat(list.map(t => ({txt:t.title, cls: t.done ? "done" : urgency(new Date(t.due) - Date.now())})))
       .concat(starts.map(t => ({txt:"▶ " + t.title, cls:"start " + urgency(new Date(t.due) - Date.now())})))
       .concat(subsD.map(({t,x}) => ({txt:"◆ " + x.title, cls:"sub " + (x.done || t.done ? "done" : urgency(new Date(x.due) - Date.now()))})));
     all.slice(0,3).forEach(c => chips.append(el("span",{class:"chip " + c.cls,text:c.txt})));
@@ -1119,7 +1364,7 @@ function renderCalendar(v){
     grid.append(el("button",{
       class: (d.getMonth() !== m ? "out " : "") + (sameDay(d, Date.now()) ? "today" : ""),
       "aria-pressed": sameDay(d, calSel),
-      "aria-label": fmtDate(d, {month:"long", day:"numeric"}) + ", " + (list.length ? T("{n} 个 DDL", {n:list.length}) : T("没有 DDL")) + (subsD.length ? ", " + T("{n} 个子 DDL", {n:subsD.length}) : ""),
+      "aria-label": fmtDate(d, {month:"long", day:"numeric"}) + ", " + (list.length ? T("{n} 个 DDL", {n:list.length}) : T("没有 DDL")) + (subsD.length ? ", " + T("{n} 个子 DDL", {n:subsD.length}) : "") + (evD.length ? ", " + T("{n} 个日程", {n:evD.length}) : ""),
       onclick: () => { calSel = d; if(d.getMonth() !== m) calMonth = new Date(d.getFullYear(), d.getMonth(), 1); render(); }
     },[el("span",{class:"dn",text:String(d.getDate())}), chips]));
   }
@@ -1127,12 +1372,22 @@ function renderCalendar(v){
   const sel = [...new Set((byDay[dayKey(calSel)] || []).concat(startDay[dayKey(calSel)] || [], (subDay[dayKey(calSel)] || []).map(o => o.t)))];
   v.append(el("div",{class:"dayhead"},[
     el("h2",{text:fmtDate(calSel, {month:"long", day:"numeric", weekday:"short"})}),
-    el("button",{class:"link",text:T("在这天加一个 DDL"),onclick:()=>{
-      resetForm(); const d = new Date(calSel); d.setHours(23,59,0,0); $("#fDue").value = toLocalInput(d);
-      $("#addBox").open = true; $("#addBox").scrollIntoView({behavior:"smooth",block:"start"}); $("#fTitle").focus();
-    }})
+    el("div",{class:"dayacts"},[
+      el("button",{class:"link",text:T("+ 日程"),onclick:()=>newEvent(calSel)}),
+      el("button",{class:"link",text:T("+ DDL"),onclick:()=>{
+        resetForm(); const d = new Date(calSel); d.setHours(23,59,0,0); $("#fDue").value = toLocalInput(d);
+        $("#addBox").open = true; $("#addBox").scrollIntoView({behavior:"smooth",block:"start"}); $("#fTitle").focus();
+      }})
+    ])
   ]));
-  if(!sel.length){ v.append(el("div",{class:"empty-state"},[el("p",{text:T("这天没有 DDL。")})])); return; }
+  const evs = eventsOn(calSel);
+  v.append(el("div",{class:"daysec",text:T("日程")}));
+  if(evs.length){ const eul = el("ul",{class:"evlist"}); evs.forEach(ev => eul.append(evRow(ev, calSel, {edit:true}))); v.append(eul); }
+  else v.append(el("p",{class:"remain",text:T("这天没有日程。")}));
+  v.append(el("div",{class:"daysec",text:T("备忘")}));
+  v.append(memoBlock(iso(calSel), true));
+  v.append(el("div",{class:"daysec",text:T("DDL")}));
+  if(!sel.length){ v.append(el("p",{class:"remain",text:T("这天没有 DDL。")})); return; }
   const ul = el("ul",{class:"list"});
   sel.forEach(t => ul.append(taskRow(t)));
   v.append(ul);
@@ -1142,13 +1397,25 @@ function renderRewards(v){
   const sw = el("input",{type:"checkbox",role:"switch",checked:"",id:"rwSwitch"});
   sw.addEventListener("change", () => { setMerit(false); toast(T("已关闭功德与奖励，攒的功德会保留")); });
   v.append(el("label",{class:"switch rwswitch"},[el("span",{},[document.createTextNode(T("功德与奖励")), el("small",{text:T("不需要的话可以关掉，界面会只保留 DDL 和想法。点木鱼可以随时再打开。")})]), sw]));
-  v.append(el("p",{class:"stats",text:T("开始一个任务 +5；任务的功德（小 10 / 中 25 / 大 50）按比重分给每个步骤，做完一步拿一份；按时完成再多 50%。每个子 DDL 按时完成 +5，迟了 +2。攒够了就兑换一个奖励。")}));
+  v.append(el("p",{class:"stats",text:T("开始一个任务 +5；任务的功德（小 10 / 中 25 / 大 50，或自定义）按预计时长分给每个步骤，做完一步拿一份；按时完成再多 50%。每个子 DDL 按时完成 +5，迟了 +2。攒够了就兑换一个奖励，奖励可以点「改」换成你想要的。")}));
   state.rewards.forEach(r => {
+    if(editingReward === r.id){
+      const n = el("input",{value:r.name,maxlength:"40","aria-label":T("奖励名称")}), c = el("input",{type:"number",min:"1",value:String(r.cost),inputmode:"numeric","aria-label":T("功德")});
+      const ok = () => { const nv = n.value.trim(), cv = parseInt(c.value,10); if(!nv || !(cv>0)){ toast(T("写上奖励名称和需要的功德")); return; }
+        r.name = nv; r.cost = cv; editingReward = null; save(); render(); toast(T("奖励已更新")); };
+      n.addEventListener("keydown", e => { if(e.key === "Enter" && !e.isComposing){ e.preventDefault(); ok(); } });
+      v.append(el("div",{class:"rw"},[n, el("div",{class:"rwedit"},[c]), el("div",{},[
+        el("button",{class:"small-btn",text:T("保存"),onclick:ok}),
+        el("button",{class:"link",style:"margin-left:8px",text:T("取消"),onclick:()=>{ editingReward = null; render(); }})])]));
+      setTimeout(() => { n.focus(); const i = n.value.indexOf("＿＿"); if(i >= 0) n.setSelectionRange(i, i + 2); }, 0);
+      return;
+    }
     v.append(el("div",{class:"rw"},[
       el("div",{text:r.name}),
       el("span",{class:"cost",text:r.cost}),
       el("div",{},[
         el("button",{class:"small-btn",text:T("兑换"),disabled: p < r.cost ? "" : false,onclick:()=>redeem(r)}),
+        el("button",{class:"link",style:"margin:0 6px 0 10px",text:T("改"),"aria-label":T("修改奖励 ") + r.name,onclick:()=>{ editingReward = r.id; render(); }}),
         el("button",{class:"x","aria-label":T("删除奖励 ") + r.name,text:"×",onclick:()=>{ state.rewards = state.rewards.filter(x=>x.id!==r.id); save(); render(); }})
       ])
     ]));
@@ -1255,9 +1522,7 @@ function stepRow(x){
   x = x || {};
   const row = el("div",{class:"steprow","data-sid":x.id || "","data-done":x.done ? "1" : ""});
   const inp = el("input",{placeholder:T("比如：打开作业 PDF，读第一题"),maxlength:"80",value:x.text || ""});
-  const sel = el("select",{"aria-label":T("比重")});
-  [1,2,3,4,5].forEach(n => sel.append(el("option",{value:String(n),text:T("比重 {n}", {n})})));
-  sel.value = String(x.w || 1);
+  const sel = durSelect(x.text ? minOf(x) : 30);
   inp.addEventListener("keydown", e => { if(e.key === "Enter" && !e.isComposing){ e.preventDefault(); const r = stepRow(); row.after(r); r.querySelector("input").focus(); updateHint(); } });
   inp.addEventListener("input", updateHint); sel.addEventListener("change", updateHint);
   row.append(inp, sel, el("button",{type:"button",class:"rm","aria-label":T("删除这一步"),text:"×",onclick:()=>{ row.remove(); if(!$("#fStepRows").children.length) $("#fStepRows").append(stepRow()); updateHint(); }}));
@@ -1266,19 +1531,29 @@ function stepRow(x){
 function readRows(){
   return [...document.querySelectorAll("#fStepRows .steprow")].map(r => ({
     id: r.dataset.sid || null, done: !!r.dataset.done,
-    text: r.querySelector("input").value.trim(), w: parseInt(r.querySelector("select").value,10) || 1
+    text: r.querySelector("input").value.trim(), min: parseInt(r.querySelector("select").value,10) || 30
   })).filter(x => x.text);
 }
 function setKind(k){
   kind = k; $("#addBox").dataset.kind = k;
   document.querySelectorAll("#fKind button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === k));
-  $("#fTitleLbl").textContent = k === "idea" ? T("想做的事") : T("任务名称");
-  $("#fTitle").placeholder = k === "idea" ? T("例如：学会做一道菜、读完一本书") : T("例如：C++ 作业 3");
+  $("#fTitleLbl").textContent = k === "idea" ? T("想做的事") : k === "event" ? T("日程名称") : T("任务名称");
+  $("#fTitle").placeholder = k === "idea" ? T("例如：学会做一道菜、读完一本书") : k === "event" ? T("例如：C++ 课、小组会议") : T("例如：C++ 作业 3");
   clearErr();
 }
 function setFormTitle(){
-  const t = editingId && state.tasks.find(x=>x.id===editingId), i = editingIdea && state.ideas.find(x=>x.id===editingIdea);
-  $("#formTitle").textContent = t ? T("编辑：{t}", {t:t.title}) : i ? T("编辑想法：{t}", {t:i.text}) : convertingIdea ? T("把想法定成 DDL") : T("新增 DDL 或想法");
+  const t = editingId && state.tasks.find(x=>x.id===editingId), i = editingIdea && state.ideas.find(x=>x.id===editingIdea), ev = editingEvent && state.events.find(x=>x.id===editingEvent);
+  $("#formTitle").textContent = t ? T("编辑：{t}", {t:t.title}) : i ? T("编辑想法：{t}", {t:i.text}) : ev ? T("编辑日程：{t}", {t:ev.title}) : convertingIdea ? T("把想法定成 DDL") : T("新增 DDL、想法或日程");
+}
+function paintStars(){
+  const box = $("#fStars"); box.innerHTML = "";
+  for(let n = 1; n <= 5; n++) box.append(el("button",{type:"button",role:"radio","aria-checked":n === fStars,class: n <= fStars ? "on" : "","aria-label":T("重要程度 {n}/5", {n}),text:"★",onclick:()=>{ fStars = n; paintStars(); }}));
+}
+function fillEst(v){
+  const sel = $("#fEst"); sel.innerHTML = "";
+  sel.append(el("option",{value:"",text:T("不填")}));
+  DURS.concat([600, 720, 960, 1200]).forEach(m => sel.append(el("option",{value:String(m),text:fmtMin(m)})));
+  sel.value = v ? String(v) : "";
 }
 function lockKind(){ $("#fKind").hidden = true; }
 function updateMoreSum(){
@@ -1288,15 +1563,17 @@ function updateMoreSum(){
   const n = readRows().length; if(n) parts.push(T("{n} 个步骤", {n}));
   if($("#fNotes").value.trim()) parts.push(T("具体内容"));
   if(M() && size !== "m") parts.push(T("工作量"));
+  if($("#fEst").value) parts.push(T("预计时长"));
   $("#fMoreSum").textContent = parts.length ? T("已填：") + parts.join(lang === "zh" ? "、" : ", ")
-    : T("开始时间 · 提醒 · 拆步骤 · 具体内容") + (M() ? T(" · 工作量") : "");
+    : T("开始时间 · 提醒 · 拆步骤 · 预计时长 · 具体内容") + (M() ? T(" · 工作量") : "");
 }
 function updateHint(){
   updateMoreSum();
-  const rows = readRows(), B = SIZE[size];
-  if(!M()){ $("#fStepHint").textContent = rows.length ? T("比重决定这一步在进度条里占多少。") : T("拆成小步骤后，每次只需要想下一步。"); return; }
-  if(!rows.length){ $("#fStepHint").textContent = T("这个任务共 {b} 功德，拆成步骤后按比重分给每一步。", {b:B}); return; }
-  const al = allocate(B, rows.map(x=>x.w));
+  const rows = readRows(), B = size === "c" ? Math.max(1, parseInt($("#fPts").value, 10) || 25) : SIZE[size];
+  const tot = rows.reduce((a,x)=>a+x.min,0);
+  if(!M()){ $("#fStepHint").textContent = rows.length ? T("共约 {h}；预计时长决定每一步在进度条里占多少。", {h:fmtMin(tot)}) : T("拆成小步骤后，每次只需要想下一步。"); return; }
+  if(!rows.length){ $("#fStepHint").textContent = T("这个任务共 {b} 功德，拆成步骤后按预计时长分给每一步。", {b:B}); return; }
+  const al = allocate(B, rows.map(x=>x.min));
   $("#fStepHint").textContent = T("共 {b} 功德，分配：{list}；按时完成再 +{x}", {b:B, list:rows.map((x,i)=>T("第{i}步 +{p}", {i:i+1, p:al[i]})).join(lang === "zh" ? "，" : ", "), x:Math.round(B*.5)});
 }
 function fillRows(steps){
@@ -1307,9 +1584,12 @@ function fillRows(steps){
 ["#fTitle","#fDue","#fStart"].forEach(id => $(id).addEventListener("input", clearErr));
 ["#fStart","#fNotes"].forEach(id => $(id).addEventListener("input", updateMoreSum));
 $("#fRemind").addEventListener("change", updateMoreSum);
+$("#fEst").addEventListener("change", updateMoreSum);
+$("#fPts").addEventListener("input", updateHint);
+$("#fEvWeekly").addEventListener("change", () => { $("#fEvUntilWrap").hidden = !$("#fEvWeekly").checked; });
 $("#fKind").addEventListener("click", e => { const b = e.target.closest("button"); if(b){ setKind(b.dataset.k); $("#fTitle").focus(); } });
 $("#addBox").addEventListener("toggle", () => {
-  if($("#addBox").open && !editingId && !editingIdea && !convertingIdea && !$("#fTitle").value) setKind(tab === "ideas" ? "idea" : "ddl");
+  if($("#addBox").open && !editingId && !editingIdea && !editingEvent && !convertingIdea && !$("#fTitle").value) setKind(tab === "ideas" ? "idea" : "ddl");
 });
 $("#setMerit").addEventListener("change", e => {
   setMerit(e.target.checked);
@@ -1319,20 +1599,58 @@ $("#addBox").addEventListener("toggle", () => { if(!$("#addBox").open && renderL
 $("#fAddRow").addEventListener("click", () => { const r = stepRow(); $("#fStepRows").append(r); r.querySelector("input").focus(); updateHint(); });
 function resetForm(){
   if($("#fErr")) clearErr();
-  editingId = null; editingIdea = null; convertingIdea = null;
-  $("#fTitle").value = ""; $("#fNotes").value = ""; $("#fIdeaNotes").value = ""; $("#fRemind").value = "1d"; $("#fStart").value = ""; fillRows([]);
+  editingId = null; editingIdea = null; convertingIdea = null; editingEvent = null;
+  $("#fTitle").value = ""; $("#fNotes").value = ""; $("#fIdeaNotes").value = ""; $("#fEvNotes").value = ""; $("#fRemind").value = "1d"; $("#fStart").value = ""; fillRows([]);
+  fStars = 3; paintStars(); fillEst(null); $("#fPts").value = "30";
+  setEventDefaults(new Date());
   const d = new Date(); d.setDate(d.getDate()+1); d.setHours(23,59,0,0); $("#fDue").value = toLocalInput(d);
   $("#fMore").open = false; $("#fKind").hidden = false; setKind("ddl");
   setSize("m"); setFormTitle(); $("#fCancel").hidden = true;
 }
-function setSize(v){ size = v; if($("#fStepRows")) updateHint(); document.querySelectorAll("#fSize button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.v === v)); }
+function setSize(v){ size = v; $("#fPtsWrap").hidden = v !== "c"; if($("#fStepRows")) updateHint(); document.querySelectorAll("#fSize button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.v === v)); }
+function setEventDefaults(d){
+  const n = new Date(); n.setMinutes(0, 0, 0); n.setHours(n.getHours() + 1);
+  const e = new Date(n.getTime() + 3600e3);
+  $("#fEvDate").value = iso(d); $("#fEvStart").value = hm(n); $("#fEvEnd").value = e.getDate() === n.getDate() ? hm(e) : "23:59";
+  $("#fEvWeekly").checked = false; $("#fEvUntil").value = ""; $("#fEvUntilWrap").hidden = true;
+}
+function newEvent(d){
+  resetForm(); setKind("event"); setEventDefaults(d || new Date());
+  $("#addBox").open = true; $("#addBox").scrollIntoView({behavior:"smooth",block:"start"}); $("#fTitle").focus();
+}
+function startEditEvent(id){
+  const ev = state.events.find(x=>x.id===id); if(!ev) return;
+  resetForm(); editingEvent = id; setKind("event"); lockKind();
+  $("#fTitle").value = ev.title; $("#fEvDate").value = ev.date; $("#fEvStart").value = ev.startTime || ""; $("#fEvEnd").value = ev.endTime || "";
+  $("#fEvWeekly").checked = ev.repeat === "weekly"; $("#fEvUntil").value = ev.until || ""; $("#fEvUntilWrap").hidden = ev.repeat !== "weekly";
+  $("#fEvNotes").value = ev.notes || "";
+  setFormTitle(); $("#fCancel").hidden = false;
+  $("#addBox").open = true; $("#addBox").scrollIntoView({behavior:"smooth",block:"start"}); $("#fTitle").focus();
+}
+function saveEvent(){
+  const title = $("#fTitle").value.trim(), date = $("#fEvDate").value, st = $("#fEvStart").value, en = $("#fEvEnd").value;
+  if(!title){ formErr(T("先写上日程名称"), $("#fTitle")); return; }
+  if(!date){ formErr(T("选一个日期"), $("#fEvDate")); return; }
+  if(!st){ formErr(T("选一个开始时间"), $("#fEvStart")); return; }
+  if(en && en <= st){ formErr(T("结束时间要晚于开始时间"), $("#fEvEnd")); return; }
+  const weekly = $("#fEvWeekly").checked, until = weekly ? $("#fEvUntil").value : "";
+  if(until && until < date){ formErr(T("重复截止日期早于开始日期了"), $("#fEvUntil")); return; }
+  const data = {title, date, startTime:st, endTime:en || "", repeat: weekly ? "weekly" : "none", until: until || "", notes:$("#fEvNotes").value.trim()};
+  if(editingEvent){ const ev = state.events.find(x=>x.id===editingEvent); if(ev) Object.assign(ev, data); toast(T("已保存修改")); }
+  else { state.events.push(Object.assign({id:uid(), created:Date.now()}, data)); toast(weekly ? T("已加入每周日程") : T("已加入日程")); }
+  save(); resetForm(); $("#addBox").open = false;
+  calSel = new Date(date + "T00:00"); calMonth = new Date(calSel.getFullYear(), calSel.getMonth(), 1);
+  if(tab !== "todo" || date !== iso(new Date())) tab = "cal";
+  render();
+}
 function startEdit(id){
   const t = state.tasks.find(x=>x.id===id); if(!t) return;
   editingId = id; $("#fTitle").value = t.title; $("#fNotes").value = t.notes || "";
-  $("#fDue").value = toLocalInput(new Date(t.due)); $("#fRemind").value = t.remind || "1d"; setSize(t.size || "m");
+  $("#fDue").value = toLocalInput(new Date(t.due)); $("#fRemind").value = t.remind || "1d"; if(t.size === "c") $("#fPts").value = String(baseOf(t)); setSize(t.size || "m");
+  fStars = starsOf(t); paintStars(); fillEst(t.est);
   $("#fStart").value = t.start ? toLocalInput(new Date(t.start)) : ""; fillRows(stepsOf(t));
   setKind("ddl"); lockKind();
-  $("#fMore").open = !!(t.start || stepsOf(t).length || t.notes || (t.remind && t.remind !== "1d") || (M() && t.size && t.size !== "m"));
+  $("#fMore").open = !!(t.start || stepsOf(t).length || t.notes || t.est || (t.remind && t.remind !== "1d") || (M() && t.size && t.size !== "m"));
   updateMoreSum();
   setFormTitle(); $("#fCancel").hidden = false;
   $("#addBox").open = true; $("#addBox").scrollIntoView({behavior:"smooth",block:"start"}); $("#fTitle").focus();
@@ -1354,10 +1672,10 @@ function saveIdea(){
   const text = $("#fTitle").value.trim(), notes = $("#fIdeaNotes").value.trim();
   if(!text){ formErr(T("先写上想做的事"), $("#fTitle")); return; }
   if(editingIdea){
-    const i = state.ideas.find(x=>x.id===editingIdea); if(i){ i.text = text; i.notes = notes; }
+    const i = state.ideas.find(x=>x.id===editingIdea); if(i){ i.text = text; i.notes = notes; i.stars = fStars; }
     toast(T("已保存修改"));
   } else {
-    state.ideas.push({id:uid(), text, notes, created:Date.now(), done:false, doneAt:null});
+    state.ideas.push({id:uid(), text, notes, created:Date.now(), done:false, doneAt:null, stars:fStars});
     toast(T("记下了，最近没 DDL 的时候会提醒你"));
   }
   save(); resetForm(); $("#addBox").open = false;
@@ -1367,6 +1685,7 @@ function saveIdea(){
 function saveForm(){
   clearErr();
   if(kind === "idea") return saveIdea();
+  if(kind === "event") return saveEvent();
   const title = $("#fTitle").value.trim(), dueStr = $("#fDue").value;
   if(!title){ formErr(T("先写上任务名称"), $("#fTitle")); return; }
   if(!dueStr || isNaN(new Date(dueStr))){ formErr(T("选一个截止时间"), $("#fDue")); return; }
@@ -1376,17 +1695,19 @@ function saveForm(){
   const start = startStr ? new Date(startStr).toISOString() : null;
   if(start && new Date(start) > new Date(due)){ formErr(T("计划开始时间晚于截止时间了，改一下其中一个再保存"), $("#fStart")); return; }
   const rows = readRows();
-  const data = {title, due, start, notes:$("#fNotes").value.trim(), size, remind:$("#fRemind").value};
+  if(size === "c" && !(parseInt($("#fPts").value, 10) > 0)){ formErr(T("自定义功德数要填一个正整数"), $("#fPts")); return; }
+  const data = {title, due, start, notes:$("#fNotes").value.trim(), size, remind:$("#fRemind").value, stars:fStars,
+    est: parseInt($("#fEst").value, 10) || null, pts: size === "c" ? parseInt($("#fPts").value, 10) : null};
   if(editingId){
     const t = state.tasks.find(x=>x.id===editingId);
     if(t){
-      t.steps = rows.map(r => ({id: r.id || uid(), text: r.text, w: r.w, done: r.done}));
+      t.steps = rows.map(r => ({id: r.id || uid(), text: r.text, min: r.min, done: r.done}));
       if((t.start||null) !== start) notified.delete(t.id);
       Object.assign(t, data); }
     toast(T("已保存修改"));
   } else {
     state.tasks.push(Object.assign({id:uid(), done:false, doneAt:null, startedAt:null, created:Date.now(),
-      steps: rows.map(r => ({id:uid(), text:r.text, w:r.w, done:false})), subs:[]}, data));
+      steps: rows.map(r => ({id:uid(), text:r.text, min:r.min, done:false})), subs:[]}, data));
     if(convertingIdea){ state.ideas = state.ideas.filter(x=>x.id!==convertingIdea); toast(T("想法已经变成 DDL 了")); }
     else toast(T("已加入，记得导出到日历"));
   }
@@ -1481,7 +1802,7 @@ function buildICS(tasks){
     L.push("BEGIN:VEVENT","UID:" + t.id + "@baofojiao-ddl","DTSTAMP:" + now,
       "DTSTART:" + icsDate(start),"DTEND:" + icsDate(end),
       "SUMMARY:" + icsText("DDL｜" + t.title),
-      "DESCRIPTION:" + icsText((t.notes || "") + (M() ? "\n\n" + T("工作量：") + T(SIZE_NAME[t.size||"m"]) : "")));
+      "DESCRIPTION:" + icsText((t.notes || "") + (M() ? "\n\n" + T("工作量：") + sizeLabel(t) : "")));
     const trig = {"1d":"-P1D","3h":"-PT3H","1h":"-PT1H"}[t.remind];
     if(trig) L.push("BEGIN:VALARM","ACTION:DISPLAY","TRIGGER:" + trig,"DESCRIPTION:" + icsText(T("DDL 快到了：") + t.title),"END:VALARM");
     L.push("END:VEVENT");
@@ -1548,22 +1869,90 @@ $("#bkFile").addEventListener("change", async e => {
   toast(T("已导入 {n} 个任务", {n:incoming.tasks.length}));
 });
 
+/* ---------- desktop notifications (only while the page is open) ---------- */
+function canNotify(){ return "Notification" in window; }
+function notify(title, body, tag){
+  if(!devGet().notify || !canNotify() || Notification.permission !== "granted") return;
+  const opt = {body: body || "", tag: tag || title, icon: "icon-192.png", badge: "icon-192.png"};
+  const fallback = () => { try{ const n = new Notification(title, opt); n.onclick = () => { window.focus(); n.close(); }; }catch(e){} };
+  if(navigator.serviceWorker && navigator.serviceWorker.getRegistration){
+    navigator.serviceWorker.getRegistration().then(r => { if(r && r.showNotification) r.showNotification(title, opt).catch(fallback); else fallback(); }).catch(fallback);
+  } else fallback();
+}
+function firedGet(){ try{ return JSON.parse(lsGet("ddl-fired") || "{}"); }catch(e){ return {}; } }
+function fireOnce(key, at, title, body){
+  const f = firedGet(); if(f[key]) return;
+  const now = Date.now(); Object.keys(f).forEach(k => { if(now - f[k] > 4*24*3600e3) delete f[k]; });
+  f[key] = at; lsSet("ddl-fired", JSON.stringify(f));
+  notify(title, body, key);
+}
+function tickReminders(){
+  if(!devGet().notify) return;
+  const now = Date.now(), win = 2*3600e3;
+  const OFF = {"1d":864e5, "3h":3*36e5, "1h":36e5};
+  state.tasks.filter(t => !t.done).forEach(t => {
+    const due = new Date(t.due).getTime(), off = OFF[t.remind || "1d"];
+    if(off){ const at = due - off; if(now >= at && now - at < win && now < due) fireOnce("r-" + t.id + "-" + due, at, T("DDL 快到了：") + t.title, countdown(t.due).text); }
+    subsOf(t).filter(x => !x.done).forEach(x => {
+      const d2 = new Date(x.due).getTime();
+      if(off){ const at = d2 - off; if(now >= at && now - at < win && now < d2) fireOnce("s-" + x.id + "-" + d2, at, T("子 DDL 快到了：") + x.title, t.title + SP() + countdown(x.due).text); }
+    });
+    if(t.start && !t.startedAt){
+      const at = new Date(t.start).getTime(), nx = nextStep(t);
+      if(now >= at && now - at < win) fireOnce("st-" + t.id + "-" + at, at, T("该开始了：") + t.title, nx ? T("只要先做：") + nx.text : T("打开材料，看一眼就行"));
+    }
+  });
+  eventsOn(new Date(now)).forEach(ev => {
+    const [st] = evTimes(ev, new Date(now)), at = st - 10*60000;
+    if(now >= at && now < st + 5*60000) fireOnce("e-" + ev.id + "-" + iso(now), at, T("日程快开始了：") + ev.title, (ev.startTime || "") + (ev.endTime ? "–" + ev.endTime : ""));
+  });
+  const t = freeSuggestion(), last = parseInt(lsGet("ddl-free-last") || "0", 10);
+  if(t && now - last >= 3600e3 && now - parseInt(lsGet("ddl-free-dismiss") || "0", 10) >= 3600e3){
+    lsSet("ddl-free-last", String(now));
+    const nx = nextStep(t);
+    notify(T("现在有空，可以做「{t}」", {t:t.title}), nx ? T("下一步：") + nx.text : countdown(t.due).text, "free");
+  }
+}
+function paintDevSettings(){
+  const dv = devGet();
+  $("#setNotify").checked = !!dv.notify && canNotify() && Notification.permission === "granted";
+  $("#setFree").checked = !!dv.freeRemind;
+  $("#quietFrom").value = dv.quietFrom || "23:00"; $("#quietTo").value = dv.quietTo || "08:00";
+  const st = $("#notifyStatus");
+  if(!canNotify()){ st.hidden = false; st.textContent = T("这个浏览器不支持桌面通知。iPhone 需要先「添加到主屏幕」再从图标打开。"); }
+  else if(Notification.permission === "denied"){ st.hidden = false; st.textContent = T("浏览器没有允许通知。需要的话，在浏览器的网站设置里允许通知后再打开。"); }
+  else st.hidden = true;
+}
+$("#setNotify").addEventListener("change", async e => {
+  if(!e.target.checked){ devSet({notify:false}); paintDevSettings(); return; }
+  if(!canNotify()){ paintDevSettings(); toast(T("这个浏览器不支持桌面通知。iPhone 需要先「添加到主屏幕」再从图标打开。")); return; }
+  let perm = Notification.permission;
+  if(perm === "default"){ try{ perm = await Notification.requestPermission(); }catch(err){} }
+  if(perm === "granted"){
+    devSet({notify:true}); paintDevSettings();
+    notify(T("通知已打开"), T("DDL、日程和空闲提醒会这样弹出来。"), "test");
+  } else { devSet({notify:false}); paintDevSettings(); }
+});
+$("#setFree").addEventListener("change", e => { devSet({freeRemind: e.target.checked}); render(); });
+["#quietFrom","#quietTo"].forEach(id => $(id).addEventListener("change", () => { devSet({quietFrom: $("#quietFrom").value || "23:00", quietTo: $("#quietTo").value || "08:00"}); render(); }));
+
 $("#langSw").addEventListener("click", e => {
   const b = e.target.closest("button"); if(!b || b.dataset.l === lang) return;
   lang = b.dataset.l; try{ localStorage.setItem("ddl-lang", lang); }catch(err){}
-  applyI18n(); setKind(kind); setFormTitle(); updateHint(); render(); renderAcct(true);
+  applyI18n(); setKind(kind); setFormTitle(); paintStars(); fillEst($("#fEst").value || null); fillRows(readRows().length ? readRows() : []); paintDevSettings(); render(); renderAcct(true);
 });
 applyI18n();
 resetForm();
+paintDevSettings();
 initLocal();
 initSync();
 if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register("sw.js").catch(()=>{});
 setInterval(() => {
-  checkStarts();
+  checkStarts(); tickReminders();
   const typing = document.activeElement && /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
   if(tab !== "rewards" && !$("#addBox").open && !typing) render();
 }, 30000);
-setTimeout(checkStarts, 1500);
+setTimeout(() => { checkStarts(); tickReminders(); }, 1500);
 })();
 </script>
 </body>
